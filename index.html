@@ -1,0 +1,2297 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>yy8 的世界</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Hiragino Mincho ProN", "Hiragino Mincho Pro", "HiraMinProN-W3", "Songti SC", "Noto Serif SC", "STSongti-SC-Light", "Source Han Serif SC", "Source Han Serif CN", serif;
+            font-weight: 300;
+            background: linear-gradient(135deg, #fef9ff 0%, #f9e8f4 25%, #e8e8ff 50%, #fef9ff 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            position: relative;
+            letter-spacing: 0.02em;
+            line-height: 1.8;
+            color: #5a3d5a;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(255, 182, 193, 0.35) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(200, 162, 200, 0.28) 0%, transparent 50%),
+                radial-gradient(circle at 60% 80%, rgba(221, 160, 221, 0.25) 0%, transparent 55%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .site-header {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(15px);
+            border-radius: 0 0 28px 28px;
+            padding: 32px 28px;
+            margin-bottom: 24px;
+            box-shadow: 0 8px 32px rgba(150, 100, 150, 0.08);
+        }
+
+        .site-title {
+            font-size: 1.65rem;
+            font-weight: 300;
+            background: linear-gradient(135deg, #9b59b6, #e91e63);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 0.18em;
+            margin-bottom: 8px;
+        }
+
+        .site-subtitle {
+            font-size: 0.82rem;
+            color: #9b6eb0;
+            opacity: 0.9;
+            letter-spacing: 0.1em;
+        }
+
+        .header-right {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .header-right span {
+            font-size: 0.8rem;
+            color: #b080c0;
+            opacity: 0.8;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.45);
+            backdrop-filter: blur(15px);
+            border-radius: 18px;
+            padding: 12px 18px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 6px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            border: 1px solid rgba(200, 160, 200, 0.3);
+        }
+
+        .navbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .nav-btn {
+            flex-shrink: 0;
+            padding: 10px 18px;
+            background: transparent;
+            color: #8b5a8b;
+            border: none;
+            border-radius: 16px;
+            font-size: 0.88rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+            font-family: inherit;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+        }
+
+        .nav-btn:hover {
+            background: rgba(200, 160, 200, 0.15);
+        }
+
+        .nav-btn.active {
+            background: rgba(200, 160, 200, 0.2);
+            color: #7a3d7a;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 28px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(150, 100, 150, 0.06);
+            border: 1px solid rgba(200, 160, 200, 0.25);
+        }
+
+        .card-title {
+            font-size: 1rem;
+            font-weight: 300;
+            color: #6b4a6b;
+            margin-bottom: 18px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(200, 160, 200, 0.2);
+            letter-spacing: 0.08em;
+        }
+
+        .home-main {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .home-content {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .home-content-wide {
+            grid-column: 1 / -1;
+        }
+
+        @media (max-width: 900px) {
+            .home-main {
+                grid-template-columns: 1fr;
+            }
+            .home-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .search-container {
+            position: relative;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 14px 18px 14px 48px;
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(200, 160, 200, 0.25);
+            border-radius: 16px;
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.3s;
+            font-family: inherit;
+            color: #5a3d5a;
+        }
+
+        .search-box::placeholder {
+            color: #b090c0;
+        }
+
+        .search-box:focus {
+            border-color: rgba(200, 160, 200, 0.5);
+            box-shadow: 0 0 0 3px rgba(200, 160, 200, 0.2);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #b090c0;
+        }
+
+        .profile-card {
+            background: linear-gradient(135deg, rgba(255, 182, 193, 0.12) 0%, rgba(200, 160, 200, 0.12) 100%);
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .avatar-wrapper {
+            position: relative;
+        }
+
+        .avatar {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid rgba(220, 180, 220, 0.5);
+            box-shadow: 0 4px 16px rgba(150, 100, 150, 0.12);
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        .nickname {
+            font-size: 1.35rem;
+            font-weight: 300;
+            color: #6b4a6b;
+            margin-bottom: 6px;
+            letter-spacing: 0.08em;
+        }
+
+        .signature {
+            font-size: 0.88rem;
+            color: #9b6eb0;
+            font-style: normal;
+            margin-bottom: 8px;
+            letter-spacing: 0.05em;
+        }
+
+        .bio {
+            font-size: 0.85rem;
+            color: #8b5a8b;
+            line-height: 1.8;
+        }
+
+        .stats-row {
+            display: flex;
+            gap: 25px;
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(200, 160, 200, 0.15);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.25rem;
+            font-weight: 300;
+            color: #8b5a8b;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 0.78rem;
+            color: #b080c0;
+            margin-top: 2px;
+            letter-spacing: 0.05em;
+        }
+
+        .music-card {
+            background: linear-gradient(135deg, rgba(200, 160, 220, 0.1) 0%, rgba(255, 182, 193, 0.1) 100%);
+        }
+
+        .music-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .music-cover {
+            width: 65px;
+            height: 65px;
+            border-radius: 12px;
+            object-fit: cover;
+            box-shadow: 0 3px 12px rgba(150, 100, 150, 0.12);
+        }
+
+        .music-info {
+            flex: 1;
+        }
+
+        .music-title {
+            font-size: 1rem;
+            font-weight: 300;
+            color: #6b4a6b;
+            margin-bottom: 4px;
+            letter-spacing: 0.05em;
+        }
+
+        .music-artist {
+            font-size: 0.82rem;
+            color: #9b6eb0;
+        }
+
+        .music-progress {
+            height: 4px;
+            background: rgba(200, 160, 200, 0.2);
+            border-radius: 2px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, rgba(200, 160, 200, 0.5), rgba(255, 182, 193, 0.5));
+            border-radius: 2px;
+            width: 45%;
+        }
+
+        .audio-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .time-display {
+            font-size: 0.78rem;
+            color: #b080c0;
+        }
+
+        .play-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: rgba(200, 160, 200, 0.25);
+            color: #7a3d7a;
+            border: none;
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 3px 12px rgba(150, 100, 150, 0.12);
+            transition: all 0.3s;
+        }
+
+        .play-btn:hover {
+            background: rgba(200, 160, 200, 0.35);
+            transform: scale(1.05);
+        }
+
+        .clock-card {
+            background: linear-gradient(135deg, rgba(255, 182, 193, 0.08) 0%, rgba(200, 160, 220, 0.08) 100%);
+        }
+
+        .clock-display {
+            font-size: 2.2rem;
+            font-weight: 300;
+            text-align: center;
+            color: #6b4a6b;
+            font-family: "Didot", "Bodoni MT", "Times New Roman", serif;
+            letter-spacing: 0.12em;
+            margin-bottom: 8px;
+        }
+
+        .clock-date {
+            text-align: center;
+            font-size: 0.82rem;
+            color: #b080c0;
+            letter-spacing: 0.05em;
+        }
+
+        .daily-card {
+            background: linear-gradient(135deg, rgba(200, 160, 220, 0.08) 0%, rgba(255, 182, 193, 0.08) 100%);
+        }
+
+        .daily-text {
+            font-size: 0.95rem;
+            color: #6b4a6b;
+            line-height: 2;
+            text-align: center;
+            padding: 10px 5px;
+            letter-spacing: 0.05em;
+        }
+
+        .content-item-card {
+            background: rgba(255, 255, 255, 0.7);
+        }
+
+        .content-item-card img {
+            width: 100%;
+            height: 110px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 12px;
+        }
+
+        .content-item-title {
+            font-size: 0.92rem;
+            font-weight: 300;
+            color: #6b4a6b;
+            margin-bottom: 6px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            letter-spacing: 0.03em;
+        }
+
+        .content-item-meta {
+            font-size: 0.78rem;
+            color: #b080c0;
+            display: flex;
+            gap: 10px;
+        }
+
+        .tags-card {
+            background: rgba(255, 255, 255, 0.65);
+        }
+
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .tag {
+            padding: 7px 14px;
+            background: rgba(200, 160, 200, 0.15);
+            border-radius: 14px;
+            font-size: 0.8rem;
+            color: #7a3d7a;
+            cursor: pointer;
+            transition: all 0.3s;
+            letter-spacing: 0.03em;
+        }
+
+        .tag:hover {
+            transform: translateY(-2px);
+            background: rgba(200, 160, 200, 0.25);
+        }
+
+        .post-item {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(12px);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(200, 160, 200, 0.2);
+        }
+
+        .post-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 14px;
+        }
+
+        .post-title {
+            font-size: 1.1rem;
+            font-weight: 300;
+            color: #6b4a6b;
+            letter-spacing: 0.05em;
+        }
+
+        .post-time {
+            font-size: 0.78rem;
+            color: #b080c0;
+        }
+
+        .post-content {
+            color: #5a3d5a;
+            line-height: 2;
+            margin-bottom: 14px;
+            font-size: 0.95rem;
+        }
+
+        .post-image {
+            width: 100%;
+            max-height: 280px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 14px;
+        }
+
+        .post-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 14px;
+        }
+
+        .post-tag {
+            padding: 5px 12px;
+            background: rgba(200, 160, 200, 0.18);
+            border-radius: 12px;
+            font-size: 0.78rem;
+            color: #7a3d7a;
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 18px;
+            padding-top: 14px;
+            border-top: 1px solid rgba(200, 160, 200, 0.15);
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: 14px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+            font-family: inherit;
+            color: #7a3d7a;
+            background: rgba(200, 160, 200, 0.12);
+        }
+
+        .like-btn:hover {
+            background: rgba(255, 182, 193, 0.2);
+        }
+
+        .comment-btn:hover {
+            background: rgba(200, 160, 220, 0.2);
+        }
+
+        .comment-form {
+            margin-bottom: 24px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid rgba(200, 160, 200, 0.15);
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 300;
+            color: #6b4a6b;
+            font-size: 0.9rem;
+            letter-spacing: 0.05em;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid rgba(200, 160, 200, 0.25);
+            border-radius: 12px;
+            font-size: 0.92rem;
+            outline: none;
+            transition: all 0.3s;
+            background: rgba(255, 255, 255, 0.85);
+            font-family: inherit;
+            color: #5a3d5a;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: rgba(200, 160, 200, 0.5);
+            box-shadow: 0 0 12px rgba(200, 160, 200, 0.15);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, rgba(200, 160, 200, 0.3), rgba(255, 182, 193, 0.3));
+            color: #6b4a6b;
+            border: none;
+            border-radius: 16px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+            font-weight: 300;
+            letter-spacing: 0.08em;
+        }
+
+        .submit-btn:hover {
+            background: linear-gradient(135deg, rgba(200, 160, 200, 0.4), rgba(255, 182, 193, 0.4));
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(200, 160, 200, 0.2);
+        }
+
+        .comment-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .comment-item {
+            background: rgba(255, 255, 255, 0.75);
+            padding: 18px;
+            border-radius: 14px;
+            border: 1px solid rgba(200, 160, 200, 0.2);
+        }
+
+        .comment-author {
+            font-weight: 300;
+            color: #6b4a6b;
+            margin-bottom: 6px;
+            font-size: 0.92rem;
+            letter-spacing: 0.05em;
+        }
+
+        .comment-content {
+            color: #5a3d5a;
+            line-height: 1.9;
+            margin-bottom: 6px;
+            font-size: 0.9rem;
+        }
+
+        .comment-time {
+            font-size: 0.76rem;
+            color: #b080c0;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: #b080c0;
+            padding: 36px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 16px;
+            font-size: 0.9rem;
+        }
+
+        .music-item {
+            display: flex;
+            gap: 14px;
+            padding: 18px;
+            background: rgba(255, 255, 255, 0.75);
+            border-radius: 14px;
+            margin-bottom: 14px;
+            border: 1px solid rgba(200, 160, 200, 0.2);
+        }
+
+        .music-item-cover {
+            width: 70px;
+            height: 70px;
+            border-radius: 10px;
+            object-fit: cover;
+        }
+
+        .music-item-info {
+            flex: 1;
+        }
+
+        .music-item-title {
+            font-weight: 300;
+            color: #6b4a6b;
+            margin-bottom: 4px;
+            font-size: 0.98rem;
+            letter-spacing: 0.05em;
+        }
+
+        .music-item-artist {
+            color: #9b6eb0;
+            margin-bottom: 6px;
+            font-size: 0.85rem;
+        }
+
+        .music-item-desc {
+            font-size: 0.82rem;
+            color: #b080c0;
+            line-height: 1.7;
+        }
+
+        .photo-info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+
+        .photo-info-card {
+            background: rgba(255, 255, 255, 0.7);
+            padding: 18px;
+            border-radius: 14px;
+            border: 1px solid rgba(200, 160, 200, 0.2);
+        }
+
+        .photo-info-label {
+            font-weight: 300;
+            color: #7a3d7a;
+            margin-bottom: 6px;
+            font-size: 0.85rem;
+            letter-spacing: 0.05em;
+        }
+
+        .photo-info-value {
+            color: #5a3d5a;
+            font-size: 0.88rem;
+            line-height: 1.8;
+        }
+
+        .photos-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .photos-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .photo-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 3px 12px rgba(150, 100, 150, 0.08);
+            cursor: pointer;
+        }
+
+        .photo-card img {
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: cover;
+        }
+
+        .photo-card-info {
+            padding: 12px;
+        }
+
+        .photo-card-title {
+            font-weight: 300;
+            color: #6b4a6b;
+            margin-bottom: 4px;
+            font-size: 0.88rem;
+        }
+
+        .photo-card-meta {
+            font-size: 0.76rem;
+            color: #b080c0;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 14px;
+        }
+
+        .contact-item {
+            background: rgba(255, 255, 255, 0.75);
+            padding: 24px;
+            border-radius: 14px;
+            text-align: center;
+            border: 1px solid rgba(200, 160, 200, 0.2);
+        }
+
+        .contact-icon {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .contact-label {
+            font-weight: 300;
+            color: #7a3d7a;
+            margin-bottom: 6px;
+            font-size: 0.86rem;
+            letter-spacing: 0.05em;
+        }
+
+        .contact-value {
+            color: #5a3d5a;
+            font-size: 0.9rem;
+            word-break: break-all;
+        }
+
+        .admin-fab {
+            position: fixed;
+            bottom: 28px;
+            right: 28px;
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(200, 160, 200, 0.35), rgba(255, 182, 193, 0.35));
+            color: #7a3d7a;
+            border: none;
+            font-size: 1.3rem;
+            box-shadow: 0 6px 20px rgba(150, 100, 150, 0.2);
+            cursor: pointer;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .admin-fab:hover {
+            transform: scale(1.08);
+            box-shadow: 0 8px 26px rgba(150, 100, 150, 0.25);
+            background: linear-gradient(135deg, rgba(200, 160, 200, 0.45), rgba(255, 182, 193, 0.45));
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.45);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            backdrop-filter: blur(6px);
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(16px);
+            border-radius: 20px;
+            padding: 28px;
+            width: 100%;
+            max-width: 750px;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 1px solid rgba(255, 255, 255, 0.7);
+        }
+
+        .modal-title {
+            font-size: 1.15rem;
+            font-weight: 300;
+            color: #4a4038;
+            margin-bottom: 20px;
+            text-align: center;
+            letter-spacing: 0.08em;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 24px;
+        }
+
+        .modal-buttons button {
+            flex: 1;
+            padding: 12px;
+            border-radius: 14px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            font-family: inherit;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+        }
+
+        .btn-primary {
+            background: rgba(180, 160, 140, 0.22);
+            color: #5a4a3a;
+        }
+
+        .btn-primary:hover {
+            background: rgba(180, 160, 140, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(180, 160, 140, 0.1);
+            color: #6a5a4a;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(180, 160, 140, 0.18);
+        }
+
+        .btn-danger {
+            background: rgba(220, 140, 140, 0.25);
+            color: #8a4a4a;
+        }
+
+        .btn-danger:hover {
+            background: rgba(220, 140, 140, 0.35);
+        }
+
+        .error-message {
+            color: #aa6a6a;
+            text-align: center;
+            margin-bottom: 14px;
+            font-size: 0.88rem;
+        }
+
+        .admin-tabs {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 22px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .admin-tab {
+            flex-shrink: 0;
+            padding: 9px 16px;
+            background: rgba(180, 160, 140, 0.1);
+            color: #6a5a4a;
+            border: none;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.85rem;
+            font-family: inherit;
+            font-weight: 300;
+            letter-spacing: 0.03em;
+        }
+
+        .admin-tab.active {
+            background: rgba(180, 160, 140, 0.2);
+            color: #5a4a3a;
+        }
+
+        .admin-section {
+            display: none;
+        }
+
+        .admin-section.active {
+            display: block;
+        }
+
+        .upload-area {
+            border: 2px dashed rgba(180, 160, 140, 0.25);
+            border-radius: 12px;
+            padding: 22px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: rgba(180, 160, 140, 0.05);
+            color: #7a6a5a;
+            font-size: 0.9rem;
+        }
+
+        .upload-area:hover {
+            border-color: rgba(180, 160, 140, 0.45);
+            background: rgba(180, 160, 140, 0.1);
+        }
+
+        .upload-preview {
+            max-width: 160px;
+            max-height: 160px;
+            border-radius: 10px;
+            margin-top: 12px;
+        }
+
+        .admin-editor {
+            margin-bottom: 18px;
+            padding: 18px;
+            background: rgba(180, 160, 140, 0.06);
+            border-radius: 14px;
+        }
+
+        .admin-editor h4 {
+            margin-bottom: 10px;
+            color: #5a4a3a;
+            font-size: 0.95rem;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+        }
+
+        .editor-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        .save-btn, .delete-btn, .add-btn {
+            padding: 9px 18px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+            font-family: inherit;
+            font-weight: 300;
+        }
+
+        .save-btn {
+            background: rgba(140, 180, 140, 0.2);
+            color: #4a6a4a;
+        }
+
+        .save-btn:hover {
+            background: rgba(140, 180, 140, 0.3);
+        }
+
+        .delete-btn {
+            background: rgba(220, 140, 140, 0.2);
+            color: #8a4a4a;
+        }
+
+        .delete-btn:hover {
+            background: rgba(220, 140, 140, 0.3);
+        }
+
+        .add-btn {
+            background: rgba(180, 160, 140, 0.18);
+            color: #5a4a3a;
+            width: 100%;
+            margin-top: 14px;
+        }
+
+        .add-btn:hover {
+            background: rgba(180, 160, 140, 0.26);
+        }
+
+        .warning-text {
+            background: rgba(220, 180, 180, 0.12);
+            padding: 14px;
+            border-radius: 12px;
+            color: #8a6a6a;
+            margin-bottom: 18px;
+            font-size: 0.85rem;
+            line-height: 1.8;
+        }
+
+        .image-preview-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 3000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .image-preview-modal.active {
+            display: flex;
+        }
+
+        .preview-image-large {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 12px;
+        }
+
+        .preview-close {
+            position: absolute;
+            top: 28px;
+            right: 28px;
+            color: white;
+            font-size: 2.2rem;
+            cursor: pointer;
+            font-weight: 300;
+        }
+
+        .footer {
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(12px);
+            border-radius: 16px;
+            padding: 18px;
+            margin-top: 26px;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 12px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .footer-item {
+            color: #7a6a5a;
+            font-size: 0.8rem;
+        }
+
+        audio {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .file-input {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="site-header">
+        <div class="container" style="padding: 0; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <div class="site-title">✿ yy8 的世界</div>
+                <div class="site-subtitle">记录生活 · 分享美好</div>
+            </div>
+            <div class="header-right">
+                <span id="header-date"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="navbar">
+            <button class="nav-btn active" onclick="switchPage('home')">✿ 首页</button>
+            <button class="nav-btn" onclick="switchPage('posts')">✎ 发布</button>
+            <button class="nav-btn" onclick="switchPage('comments')">✿ 留言</button>
+            <button class="nav-btn" onclick="switchPage('music')">♪ 音乐</button>
+            <button class="nav-btn" onclick="switchPage('photography')">✿ 摄影</button>
+            <button class="nav-btn" onclick="switchPage('contact')">✉ 联系</button>
+        </div>
+
+        <div class="page active" id="page-home">
+            <div class="card">
+                <div class="search-container">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" class="search-box" id="search-input" placeholder="搜索文章、音乐、照片...">
+                </div>
+            </div>
+
+            <div class="home-main">
+                <div class="card profile-card">
+                    <div class="profile-header">
+                        <div class="avatar-wrapper">
+                            <img id="home-avatar" class="avatar" src="" alt="头像">
+                        </div>
+                        <div class="profile-info">
+                            <div class="nickname" id="home-nickname">yy8</div>
+                            <div class="signature" id="home-signature">用文字记录生活</div>
+                            <div class="bio" id="home-bio">欢迎来到我的个人主页</div>
+                        </div>
+                    </div>
+                    <div class="stats-row">
+                        <div class="stat-item">
+                            <div class="stat-number" id="stat-posts">0</div>
+                            <div class="stat-label">发布</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="stat-photos">0</div>
+                            <div class="stat-label">照片</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="stat-comments">0</div>
+                            <div class="stat-label">留言</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="stat-music">0</div>
+                            <div class="stat-label">音乐</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card music-card">
+                    <div class="card-title">♪ 正在播放</div>
+                    <div class="music-header">
+                        <img id="featured-music-cover" class="music-cover" src="" alt="专辑封面">
+                        <div class="music-info">
+                            <div class="music-title" id="featured-music-title">精选音乐</div>
+                            <div class="music-artist" id="featured-music-artist">yy8</div>
+                        </div>
+                    </div>
+                    <div class="music-progress">
+                        <div class="progress-bar" id="music-progress-bar"></div>
+                    </div>
+                    <div class="audio-controls">
+                        <span class="time-display" id="music-current-time">00:00</span>
+                        <button class="play-btn" id="music-play-btn" onclick="toggleMusic()">▶</button>
+                        <span class="time-display" id="music-total-time">00:00</span>
+                    </div>
+                    <audio id="featured-audio"></audio>
+                </div>
+            </div>
+
+            <div class="home-content">
+                <div class="card clock-card">
+                    <div class="card-title">✿ 此刻</div>
+                    <div class="clock-display" id="clock-display">00:00:00</div>
+                    <div class="clock-date" id="clock-date"></div>
+                </div>
+
+                <div class="card daily-card">
+                    <div class="card-title">✿ 日常</div>
+                    <div class="daily-text" id="daily-text">生活不止眼前的苟且，还有诗和远方</div>
+                </div>
+
+                <div class="card tags-card">
+                    <div class="card-title">✿ 标签</div>
+                    <div class="tags-container">
+                        <span class="tag">日常</span>
+                        <span class="tag">摄影</span>
+                        <span class="tag">音乐</span>
+                        <span class="tag">旅行</span>
+                        <span class="tag">美食</span>
+                        <span class="tag">学习</span>
+                    </div>
+                </div>
+
+                <div class="card content-item-card">
+                    <div class="card-title">✿ 最新</div>
+                    <div id="latest-post-preview">
+                        <div class="empty-state" style="padding: 18px;">暂无内容</div>
+                    </div>
+                </div>
+
+                <div class="card content-item-card">
+                    <div class="card-title">✿ 照片</div>
+                    <div id="featured-photo-preview">
+                        <div class="empty-state" style="padding: 18px;">暂无照片</div>
+                    </div>
+                </div>
+
+                <div class="card content-item-card">
+                    <div class="card-title">✿ 留言</div>
+                    <div id="latest-comment-preview">
+                        <div class="empty-state" style="padding: 18px;">暂无留言</div>
+                    </div>
+                </div>
+
+                <div class="card home-content-wide">
+                    <div class="footer">
+                        <div class="footer-item">✿ 运行时间：<span id="uptime">0天</span></div>
+                        <div class="footer-item">✿ 数据已保存</div>
+                        <div class="footer-item">✿ yy8 的世界 · 感谢来访</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="page" id="page-posts">
+            <div class="card">
+                <div class="card-title">✎ 我的发布</div>
+                <div id="posts-container">
+                    <div class="empty-state">还没有发布内容</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="page" id="page-comments">
+            <div class="card">
+                <div class="card-title">✿ 留言板</div>
+                <div class="comment-form">
+                    <div class="form-group">
+                        <label>你的昵称</label>
+                        <input type="text" id="comment-nickname" placeholder="请输入昵称">
+                    </div>
+                    <div class="form-group">
+                        <label>想说的话</label>
+                        <textarea id="comment-content" placeholder="写下你的留言..." rows="4"></textarea>
+                    </div>
+                    <button class="submit-btn" onclick="submitComment()">发表留言</button>
+                </div>
+                <div id="comments-container">
+                    <div class="empty-state">还没有留言，快来留下第一条评论吧</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="page" id="page-music">
+            <div class="card">
+                <div class="card-title">♪ 音乐分享</div>
+                <div id="music-container">
+                    <div class="empty-state">还没有添加音乐</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="page" id="page-photography">
+            <div class="card">
+                <div class="card-title">✿ 我的摄影</div>
+                <div class="photo-info-grid">
+                    <div class="photo-info-card">
+                        <div class="photo-info-label">✿ 拍摄理念</div>
+                        <div class="photo-info-value" id="photo-concept">用镜头捕捉美好</div>
+                    </div>
+                    <div class="photo-info-card">
+                        <div class="photo-info-label">✿ 常用设备</div>
+                        <div class="photo-info-value" id="photo-equipment">手机 + 相机</div>
+                    </div>
+                    <div class="photo-info-card">
+                        <div class="photo-info-label">✿ 拍摄风格</div>
+                        <div class="photo-info-value" id="photo-style">自然、清新</div>
+                    </div>
+                    <div class="photo-info-card">
+                        <div class="photo-info-label">✿ 调色方式</div>
+                        <div class="photo-info-value" id="photo-color">暖色调、明亮</div>
+                    </div>
+                    <div class="photo-info-card">
+                        <div class="photo-info-label">✿ 构图方式</div>
+                        <div class="photo-info-value" id="photo-composition">三分法、对称</div>
+                    </div>
+                    <div class="photo-info-card">
+                        <div class="photo-info-label">✿ 小技巧</div>
+                        <div class="photo-info-value" id="photo-tips">注意光线，多拍多练</div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-title">✿ 作品展示</div>
+                <div class="photos-grid" id="photography-photos">
+                    <div class="empty-state" style="grid-column: 1/-1;">暂无作品</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="page" id="page-contact">
+            <div class="card">
+                <div class="card-title">✉ 联系我</div>
+                <div class="contact-grid" id="contact-grid">
+                    <div class="contact-item">
+                        <div class="contact-icon">🐧</div>
+                        <div class="contact-label">QQ</div>
+                        <div class="contact-value" id="contact-qq">-</div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">💬</div>
+                        <div class="contact-label">微信</div>
+                        <div class="contact-value" id="contact-wechat">-</div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">📧</div>
+                        <div class="contact-label">邮箱</div>
+                        <div class="contact-value" id="contact-email">-</div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">📱</div>
+                        <div class="contact-label">电话</div>
+                        <div class="contact-value" id="contact-phone">-</div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">🎵</div>
+                        <div class="contact-label">抖音</div>
+                        <div class="contact-value" id="contact-douyin">-</div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">📕</div>
+                        <div class="contact-label">小红书</div>
+                        <div class="contact-value" id="contact-xiaohongshu">-</div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">📺</div>
+                        <div class="contact-label">B站</div>
+                        <div class="contact-value" id="contact-bilibili">-</div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">✿</div>
+                        <div class="contact-label">Instagram</div>
+                        <div class="contact-value" id="contact-ig">-</div>
+                    </div>
+                </div>
+                <div class="card" style="margin-top: 18px;">
+                    <div class="card-title">✿ 备注</div>
+                    <div id="contact-note">欢迎联系我！</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button class="admin-fab" onclick="showLoginModal()">⚙</button>
+
+    <div class="modal-overlay" id="login-modal">
+        <div class="modal">
+            <div class="modal-title">✿ 管理员登录</div>
+            <div class="error-message" id="login-error"></div>
+            <div class="form-group">
+                <label>密码</label>
+                <input type="password" id="admin-password" placeholder="请输入密码">
+            </div>
+            <div class="modal-buttons">
+                <button class="btn-primary" onclick="loginAdmin()">登录</button>
+                <button class="btn-secondary" onclick="closeModal('login-modal')">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="admin-modal">
+        <div class="modal">
+            <div class="modal-title">⚙ 管理后台</div>
+            <div class="admin-tabs">
+                <button class="admin-tab active" onclick="switchAdminTab('home')">✿ 首页</button>
+                <button class="admin-tab" onclick="switchAdminTab('posts')">✎ 发布</button>
+                <button class="admin-tab" onclick="switchAdminTab('comments')">✿ 留言</button>
+                <button class="admin-tab" onclick="switchAdminTab('music')">♪ 音乐</button>
+                <button class="admin-tab" onclick="switchAdminTab('photography')">✿ 摄影</button>
+                <button class="admin-tab" onclick="switchAdminTab('contact')">✉ 联系</button>
+                <button class="admin-tab" onclick="switchAdminTab('backup')">✿ 备份</button>
+            </div>
+
+            <div class="admin-section active" id="admin-home">
+                <div class="form-group">
+                    <label>网站标题</label>
+                    <input type="text" id="edit-site-title" placeholder="yy8 的世界">
+                </div>
+                <div class="form-group">
+                    <label>昵称</label>
+                    <input type="text" id="edit-nickname" placeholder="yy8">
+                </div>
+                <div class="form-group">
+                    <label>个性签名</label>
+                    <input type="text" id="edit-signature" placeholder="用文字记录生活">
+                </div>
+                <div class="form-group">
+                    <label>个人简介</label>
+                    <textarea id="edit-bio" placeholder="欢迎来到我的个人主页"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>每日一句</label>
+                    <textarea id="edit-daily-text" placeholder="生活不止眼前的苟且"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>头像</label>
+                    <div class="upload-area" onclick="document.getElementById('avatar-upload').click()">
+                        <span>点击上传头像</span>
+                        <img id="avatar-preview" class="upload-preview" style="display: none;">
+                    </div>
+                    <input type="file" id="avatar-upload" class="file-input" accept="image/*" onchange="handleAvatarUpload(this)">
+                </div>
+            </div>
+
+            <div class="admin-section" id="admin-posts">
+                <div id="admin-posts-editor"></div>
+                <button class="add-btn" onclick="addPostEditor()">✎ 添加发布</button>
+            </div>
+
+            <div class="admin-section" id="admin-comments">
+                <div id="admin-comments-list"></div>
+                <button class="btn-danger" style="width:100%; margin-top: 14px;" onclick="clearAllComments()">✿ 清空所有留言</button>
+            </div>
+
+            <div class="admin-section" id="admin-music">
+                <div id="admin-music-editor"></div>
+                <button class="add-btn" onclick="addMusicEditor()">♪ 添加音乐</button>
+            </div>
+
+            <div class="admin-section" id="admin-photography">
+                <div class="form-group">
+                    <label>拍摄理念</label>
+                    <textarea id="edit-photo-concept" placeholder="用镜头捕捉美好"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>常用设备</label>
+                    <input type="text" id="edit-photo-equipment" placeholder="手机 + 相机">
+                </div>
+                <div class="form-group">
+                    <label>拍摄风格</label>
+                    <input type="text" id="edit-photo-style" placeholder="自然、清新">
+                </div>
+                <div class="form-group">
+                    <label>调色方式</label>
+                    <input type="text" id="edit-photo-color" placeholder="暖色调、明亮">
+                </div>
+                <div class="form-group">
+                    <label>构图方式</label>
+                    <input type="text" id="edit-photo-composition" placeholder="三分法、对称">
+                </div>
+                <div class="form-group">
+                    <label>小技巧</label>
+                    <textarea id="edit-photo-tips" placeholder="注意光线，多拍多练"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>上传照片</label>
+                    <div class="upload-area" onclick="document.getElementById('photography-upload').click()">
+                        <span>点击上传照片（可多选）</span>
+                    </div>
+                    <input type="file" id="photography-upload" class="file-input" accept="image/*" multiple onchange="handlePhotographyUpload(this)">
+                </div>
+                <div id="admin-photos-editor"></div>
+            </div>
+
+            <div class="admin-section" id="admin-contact">
+                <div class="form-group">
+                    <label>QQ</label>
+                    <input type="text" id="edit-qq" placeholder="QQ 号码">
+                </div>
+                <div class="form-group">
+                    <label>微信</label>
+                    <input type="text" id="edit-wechat" placeholder="微信号">
+                </div>
+                <div class="form-group">
+                    <label>邮箱</label>
+                    <input type="text" id="edit-email" placeholder="email@example.com">
+                </div>
+                <div class="form-group">
+                    <label>电话</label>
+                    <input type="text" id="edit-phone" placeholder="电话号码">
+                </div>
+                <div class="form-group">
+                    <label>抖音</label>
+                    <input type="text" id="edit-douyin" placeholder="抖音号">
+                </div>
+                <div class="form-group">
+                    <label>小红书</label>
+                    <input type="text" id="edit-xiaohongshu" placeholder="小红书号">
+                </div>
+                <div class="form-group">
+                    <label>B站</label>
+                    <input type="text" id="edit-bilibili" placeholder="B站号">
+                </div>
+                <div class="form-group">
+                    <label>Instagram</label>
+                    <input type="text" id="edit-ig" placeholder="Instagram 账号">
+                </div>
+                <div class="form-group">
+                    <label>备注</label>
+                    <textarea id="edit-note" placeholder="欢迎联系我！"></textarea>
+                </div>
+            </div>
+
+            <div class="admin-section" id="admin-backup">
+                <div class="warning-text">
+                    ✿ 提示：所有数据只保存在当前浏览器 localStorage 中<br>
+                    换手机需要使用导出和导入数据功能<br>
+                    清除浏览器缓存可能导致数据丢失
+                </div>
+                <div class="form-group">
+                    <button class="btn-primary" style="width:100%;" onclick="exportData()">✿ 导出数据</button>
+                </div>
+                <div class="form-group">
+                    <div class="upload-area" onclick="document.getElementById('import-file').click()">
+                        <span>点击选择 JSON 文件导入数据</span>
+                    </div>
+                    <input type="file" id="import-file" class="file-input" accept=".json" onchange="handleImport(this)">
+                </div>
+                <div class="form-group">
+                    <button class="btn-danger" style="width:100%;" onclick="clearAllData()">✿ 清空全部数据</button>
+                </div>
+            </div>
+
+            <div class="modal-buttons">
+                <button class="btn-primary" onclick="saveAdminData()">✿ 保存更改</button>
+                <button class="btn-secondary" onclick="logoutAdmin()">✿ 退出登录</button>
+                <button class="btn-secondary" onclick="closeModal('admin-modal')">✿ 关闭</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="image-preview-modal" id="preview-modal" onclick="closeImagePreview()">
+        <span class="preview-close">✕</span>
+        <img class="preview-image-large" id="preview-image">
+    </div>
+
+    <script>
+        const DEFAULT_PASSWORD = "9edyy81314520";
+        const STORAGE_KEY = "yy8-personal-site";
+        const LOGIN_KEY = "yy8-admin-logged-in";
+        const START_TIME = Date.now();
+
+        let siteData = {
+            siteTitle: "yy8 的世界",
+            nickname: "yy8",
+            avatar: "",
+            bio: "欢迎来到我的个人主页，记录生活、音乐、摄影和想说的话",
+            signature: "用文字记录生活",
+            dailyText: "生活不止眼前的苟且，还有诗和远方",
+            posts: [
+                {
+                    id: Date.now(),
+                    title: "欢迎来到 yy8 的世界",
+                    content: "这是我的个人主页，会在这里分享生活点滴、喜欢的音乐和摄影作品，欢迎大家常来看看！",
+                    image: "",
+                    tags: ["日常", "欢迎"],
+                    likes: 0,
+                    time: new Date().toLocaleString("zh-CN")
+                }
+            ],
+            comments: [
+                {
+                    id: Date.now(),
+                    nickname: "访客",
+                    content: "网站好漂亮！",
+                    time: new Date().toLocaleString("zh-CN")
+                }
+            ],
+            musicList: [
+                {
+                    id: Date.now(),
+                    title: "夜曲",
+                    artist: "周杰伦",
+                    cover: "",
+                    audioUrl: "",
+                    description: "经典老歌，百听不厌"
+                }
+            ],
+            photography: {
+                concept: "用镜头捕捉美好瞬间",
+                equipment: "iPhone + 索尼微单",
+                style: "自然、清新、日系",
+                composition: "三分法、对称、框架",
+                colorMethod: "暖色调、明亮、低对比",
+                tips: "注意光线，多拍多练，后期微调",
+                photos: []
+            },
+            contact: {
+                qq: "123456789",
+                wechat: "yy8_wx",
+                email: "yy8@example.com",
+                phone: "",
+                douyin: "@yy8",
+                kuaishou: "",
+                xiaohongshu: "@yy8",
+                bilibili: "@yy8",
+                ig: "u_u4141",
+                github: "",
+                note: "欢迎联系我交流！"
+            }
+        };
+
+        let isMusicPlaying = false;
+        let tempAvatarData = "";
+        let tempPhotoData = [];
+
+        document.addEventListener("DOMContentLoaded", function() {
+            loadData();
+            updateClock();
+            setInterval(updateClock, 1000);
+            updateUptime();
+            setInterval(updateUptime, 60000);
+            checkLoginStatus();
+        });
+
+        function loadData() {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved) {
+                try {
+                    siteData = JSON.parse(saved);
+                } catch (e) {
+                    console.error("数据加载失败，使用默认数据");
+                }
+            }
+            renderAllPages();
+        }
+
+        function saveData() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(siteData));
+        }
+
+        function checkLoginStatus() {
+            const loggedIn = sessionStorage.getItem(LOGIN_KEY);
+            if (loggedIn === "true") {
+                showAdminModal();
+            }
+        }
+
+        function switchPage(page) {
+            document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+            document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
+            document.getElementById("page-" + page).classList.add("active");
+            event.target.classList.add("active");
+        }
+
+        function renderAllPages() {
+            renderHomePage();
+            renderPostsPage();
+            renderCommentsPage();
+            renderMusicPage();
+            renderPhotographyPage();
+            renderContactPage();
+        }
+
+        function renderHomePage() {
+            document.title = siteData.siteTitle;
+            document.getElementById("header-date").textContent = new Date().toLocaleDateString("zh-CN");
+
+            if (siteData.avatar) {
+                document.getElementById("home-avatar").src = siteData.avatar;
+            } else {
+                document.getElementById("home-avatar").src = "data:image/svg+xml," + encodeURIComponent("<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><circle cx='100' cy='100' r='80' fill='#d4c4b4'/><text x='100' y='125' text-anchor='middle' font-size='60' fill='white'>✿</text></svg>");
+            }
+
+            document.getElementById("home-nickname").textContent = siteData.nickname;
+            document.getElementById("home-signature").textContent = siteData.signature;
+            document.getElementById("home-bio").textContent = siteData.bio;
+            document.getElementById("daily-text").textContent = siteData.dailyText;
+
+            document.getElementById("stat-posts").textContent = siteData.posts.length;
+            document.getElementById("stat-photos").textContent = siteData.photography.photos.length;
+            document.getElementById("stat-comments").textContent = siteData.comments.length;
+            document.getElementById("stat-music").textContent = siteData.musicList.length;
+
+            if (siteData.musicList.length > 0) {
+                const featuredMusic = siteData.musicList[0];
+                document.getElementById("featured-music-title").textContent = featuredMusic.title;
+                document.getElementById("featured-music-artist").textContent = featuredMusic.artist;
+                if (featuredMusic.cover) {
+                    document.getElementById("featured-music-cover").src = featuredMusic.cover;
+                }
+                if (featuredMusic.audioUrl) {
+                    document.getElementById("featured-audio").src = featuredMusic.audioUrl;
+                }
+            }
+
+            const latestPostPreview = document.getElementById("latest-post-preview");
+            if (siteData.posts.length > 0) {
+                const latestPost = siteData.posts[siteData.posts.length - 1];
+                latestPostPreview.innerHTML = `
+                    <div style="font-weight: 300; margin-bottom: 5px;">${latestPost.title}</div>
+                    <div style="font-size: 0.85rem; color: #7a6a5a;">${latestPost.content.substring(0, 50)}...</div>
+                `;
+            }
+
+            const featuredPhotoPreview = document.getElementById("featured-photo-preview");
+            if (siteData.photography.photos.length > 0) {
+                const latestPhoto = siteData.photography.photos[siteData.photography.photos.length - 1];
+                featuredPhotoPreview.innerHTML = `
+                    <img src="${latestPhoto.data}" alt="${latestPhoto.title}" style="width: 100%; height: 110px; object-fit: cover; border-radius: 12px;">
+                `;
+            }
+
+            const latestCommentPreview = document.getElementById("latest-comment-preview");
+            if (siteData.comments.length > 0) {
+                const latestComment = siteData.comments[siteData.comments.length - 1];
+                latestCommentPreview.innerHTML = `
+                    <div style="font-weight: 300; margin-bottom: 5px;">${latestComment.nickname}</div>
+                    <div style="font-size: 0.85rem; color: #7a6a5a;">${latestComment.content.substring(0, 50)}...</div>
+                `;
+            }
+        }
+
+        function renderPostsPage() {
+            const postsContainer = document.getElementById("posts-container");
+            if (siteData.posts.length === 0) {
+                postsContainer.innerHTML = '<div class="empty-state">还没有发布内容</div>';
+                return;
+            }
+            postsContainer.innerHTML = siteData.posts.map(post => `
+                <div class="post-item">
+                    <div class="post-header">
+                        <div class="post-title">${post.title}</div>
+                        <div class="post-time">${post.time}</div>
+                    </div>
+                    ${post.image ? `<img src="${post.image}" alt="${post.title}" class="post-image">` : ''}
+                    <div class="post-content">${post.content}</div>
+                    <div class="post-tags">
+                        ${post.tags.map(tag => `<span class="post-tag">${tag}</span>`).join('')}
+                    </div>
+                    <div class="post-actions">
+                        <button class="action-btn" onclick="likePost(${post.id})">
+                            ❤️ ${post.likes}
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderCommentsPage() {
+            const commentsContainer = document.getElementById("comments-container");
+            if (siteData.comments.length === 0) {
+                commentsContainer.innerHTML = '<div class="empty-state">还没有留言，快来留下第一条评论吧</div>';
+                return;
+            }
+            commentsContainer.innerHTML = '<div class="comment-list">' + siteData.comments.map(comment => `
+                <div class="comment-item">
+                    <div class="comment-author">${comment.nickname}</div>
+                    <div class="comment-content">${comment.content}</div>
+                    <div class="comment-time">${comment.time}</div>
+                </div>
+            `).join('') + '</div>';
+        }
+
+        function renderMusicPage() {
+            const musicContainer = document.getElementById("music-container");
+            if (siteData.musicList.length === 0) {
+                musicContainer.innerHTML = '<div class="empty-state">还没有添加音乐</div>';
+                return;
+            }
+            musicContainer.innerHTML = siteData.musicList.map(music => `
+                <div class="music-item">
+                    <img src="${music.cover || 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="#d4c4b4" width="100" height="100"/><text x="50" y="60" text-anchor="middle" font-size="40" fill="white">♪</text></svg>')}" alt="${music.title}" class="music-item-cover">
+                    <div class="music-item-info">
+                        <div class="music-item-title">${music.title}</div>
+                        <div class="music-item-artist">${music.artist}</div>
+                        <div class="music-item-desc">${music.description}</div>
+                        ${music.audioUrl ? `<audio controls src="${music.audioUrl}"></audio>` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderPhotographyPage() {
+            document.getElementById("photo-concept").textContent = siteData.photography.concept;
+            document.getElementById("photo-equipment").textContent = siteData.photography.equipment;
+            document.getElementById("photo-style").textContent = siteData.photography.style;
+            document.getElementById("photo-color").textContent = siteData.photography.colorMethod;
+            document.getElementById("photo-composition").textContent = siteData.photography.composition;
+            document.getElementById("photo-tips").textContent = siteData.photography.tips;
+
+            const photosGrid = document.getElementById("photography-photos");
+            if (siteData.photography.photos.length === 0) {
+                photosGrid.innerHTML = '<div class="empty-state" style="grid-column: 1/-1;">暂无作品</div>';
+                return;
+            }
+            photosGrid.innerHTML = siteData.photography.photos.map(photo => `
+                <div class="photo-card" onclick="openImagePreview('${photo.data}')">
+                    <img src="${photo.data}" alt="${photo.title}">
+                    <div class="photo-card-info">
+                        <div class="photo-card-title">${photo.title}</div>
+                        <div class="photo-card-meta">${photo.location} · ${photo.time}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderContactPage() {
+            document.getElementById("contact-qq").textContent = siteData.contact.qq || '-';
+            document.getElementById("contact-wechat").textContent = siteData.contact.wechat || '-';
+            document.getElementById("contact-email").textContent = siteData.contact.email || '-';
+            document.getElementById("contact-phone").textContent = siteData.contact.phone || '-';
+            document.getElementById("contact-douyin").textContent = siteData.contact.douyin || '-';
+            document.getElementById("contact-xiaohongshu").textContent = siteData.contact.xiaohongshu || '-';
+            document.getElementById("contact-bilibili").textContent = siteData.contact.bilibili || '-';
+            document.getElementById("contact-ig").textContent = siteData.contact.ig || '-';
+            document.getElementById("contact-note").textContent = siteData.contact.note;
+        }
+
+        function updateClock() {
+            const now = new Date();
+            document.getElementById("clock-display").textContent = now.toLocaleTimeString("zh-CN");
+            document.getElementById("clock-date").textContent = now.toLocaleDateString("zh-CN", {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                weekday: 'long'
+            });
+        }
+
+        function updateUptime() {
+            const elapsed = Date.now() - START_TIME;
+            const days = Math.floor(elapsed / (1000 * 60 * 60 * 24));
+            document.getElementById("uptime").textContent = `${days}天`;
+        }
+
+        function toggleMusic() {
+            const audio = document.getElementById("featured-audio");
+            const playBtn = document.getElementById("music-play-btn");
+            if (isMusicPlaying) {
+                audio.pause();
+                playBtn.textContent = "▶";
+            } else {
+                audio.play();
+                playBtn.textContent = "⏸";
+            }
+            isMusicPlaying = !isMusicPlaying;
+        }
+
+        function submitComment() {
+            const nickname = document.getElementById("comment-nickname").value.trim();
+            const content = document.getElementById("comment-content").value.trim();
+            if (!nickname || !content) {
+                alert("请填写昵称和留言内容");
+                return;
+            }
+            siteData.comments.push({
+                id: Date.now(),
+                nickname: nickname,
+                content: content,
+                time: new Date().toLocaleString("zh-CN")
+            });
+            saveData();
+            renderCommentsPage();
+            renderHomePage();
+            document.getElementById("comment-nickname").value = "";
+            document.getElementById("comment-content").value = "";
+            alert("留言已提交！");
+        }
+
+        function likePost(postId) {
+            const post = siteData.posts.find(p => p.id === postId);
+            if (post) {
+                post.likes++;
+                saveData();
+                renderPostsPage();
+            }
+        }
+
+        function openImagePreview(src) {
+            document.getElementById("preview-image").src = src;
+            document.getElementById("preview-modal").classList.add("active");
+        }
+
+        function closeImagePreview() {
+            document.getElementById("preview-modal").classList.remove("active");
+        }
+
+        function showLoginModal() {
+            document.getElementById("login-modal").classList.add("active");
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove("active");
+            document.getElementById("login-error").textContent = "";
+            document.getElementById("admin-password").value = "";
+        }
+
+        function loginAdmin() {
+            const password = document.getElementById("admin-password").value;
+            if (password === DEFAULT_PASSWORD) {
+                sessionStorage.setItem(LOGIN_KEY, "true");
+                closeModal("login-modal");
+                showAdminModal();
+                loadAdminData();
+            } else {
+                document.getElementById("login-error").textContent = "密码错误，请重试";
+            }
+        }
+
+        function logoutAdmin() {
+            sessionStorage.removeItem(LOGIN_KEY);
+            closeModal("admin-modal");
+        }
+
+        function showAdminModal() {
+            document.getElementById("admin-modal").classList.add("active");
+            loadAdminData();
+        }
+
+        function loadAdminData() {
+            document.getElementById("edit-site-title").value = siteData.siteTitle;
+            document.getElementById("edit-nickname").value = siteData.nickname;
+            document.getElementById("edit-signature").value = siteData.signature;
+            document.getElementById("edit-bio").value = siteData.bio;
+            document.getElementById("edit-daily-text").value = siteData.dailyText;
+            if (siteData.avatar) {
+                document.getElementById("avatar-preview").src = siteData.avatar;
+                document.getElementById("avatar-preview").style.display = "block";
+            }
+            tempAvatarData = siteData.avatar;
+
+            document.getElementById("edit-photo-concept").value = siteData.photography.concept;
+            document.getElementById("edit-photo-equipment").value = siteData.photography.equipment;
+            document.getElementById("edit-photo-style").value = siteData.photography.style;
+            document.getElementById("edit-photo-color").value = siteData.photography.colorMethod;
+            document.getElementById("edit-photo-composition").value = siteData.photography.composition;
+            document.getElementById("edit-photo-tips").value = siteData.photography.tips;
+
+            document.getElementById("edit-qq").value = siteData.contact.qq;
+            document.getElementById("edit-wechat").value = siteData.contact.wechat;
+            document.getElementById("edit-email").value = siteData.contact.email;
+            document.getElementById("edit-phone").value = siteData.contact.phone;
+            document.getElementById("edit-douyin").value = siteData.contact.douyin;
+            document.getElementById("edit-xiaohongshu").value = siteData.contact.xiaohongshu;
+            document.getElementById("edit-bilibili").value = siteData.contact.bilibili;
+            document.getElementById("edit-ig").value = siteData.contact.ig;
+            document.getElementById("edit-note").value = siteData.contact.note;
+
+            renderAdminPosts();
+            renderAdminComments();
+            renderAdminMusic();
+            renderAdminPhotos();
+        }
+
+        function switchAdminTab(tab) {
+            document.querySelectorAll(".admin-tab").forEach(t => t.classList.remove("active"));
+            document.querySelectorAll(".admin-section").forEach(s => s.classList.remove("active"));
+            event.target.classList.add("active");
+            document.getElementById("admin-" + tab).classList.add("active");
+        }
+
+        function handleAvatarUpload(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById("avatar-preview").src = e.target.result;
+                    document.getElementById("avatar-preview").style.display = "block";
+                    tempAvatarData = e.target.result;
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function handlePhotographyUpload(input) {
+            if (input.files && input.files.length > 0) {
+                const promises = Array.from(input.files).map(file => {
+                    return new Promise((resolve) => {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            resolve({
+                                id: Date.now() + Math.random(),
+                                title: file.name,
+                                location: "",
+                                time: new Date().toLocaleDateString("zh-CN"),
+                                description: "",
+                                data: e.target.result
+                            });
+                        };
+                        reader.readAsDataURL(file);
+                    });
+                });
+                Promise.all(promises).then(photos => {
+                    tempPhotoData = photos;
+                    renderAdminPhotos();
+                });
+            }
+        }
+
+        function renderAdminPosts() {
+            const container = document.getElementById("admin-posts-editor");
+            container.innerHTML = siteData.posts.map(post => `
+                <div class="admin-editor">
+                    <h4>编辑发布</h4>
+                    <div class="form-group">
+                        <label>标题</label>
+                        <input type="text" id="edit-post-title-${post.id}" value="${post.title}">
+                    </div>
+                    <div class="form-group">
+                        <label>内容</label>
+                        <textarea id="edit-post-content-${post.id}">${post.content}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>标签（逗号分隔）</label>
+                        <input type="text" id="edit-post-tags-${post.id}" value="${post.tags.join(', ')}">
+                    </div>
+                    <div class="editor-actions">
+                        <button class="save-btn" onclick="savePost(${post.id})">保存</button>
+                        <button class="delete-btn" onclick="deletePost(${post.id})">删除</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function addPostEditor() {
+            const newPost = {
+                id: Date.now(),
+                title: "新发布",
+                content: "",
+                image: "",
+                tags: [],
+                likes: 0,
+                time: new Date().toLocaleString("zh-CN")
+            };
+            siteData.posts.push(newPost);
+            renderAdminPosts();
+        }
+
+        function savePost(postId) {
+            const post = siteData.posts.find(p => p.id === postId);
+            if (post) {
+                post.title = document.getElementById(`edit-post-title-${postId}`).value;
+                post.content = document.getElementById(`edit-post-content-${postId}`).value;
+                post.tags = document.getElementById(`edit-post-tags-${postId}`).value.split(',').map(t => t.trim()).filter(t => t);
+                saveData();
+                renderAllPages();
+                alert("发布已保存！");
+            }
+        }
+
+        function deletePost(postId) {
+            if (confirm("确定要删除这条发布吗？")) {
+                siteData.posts = siteData.posts.filter(p => p.id !== postId);
+                saveData();
+                renderAdminPosts();
+                renderAllPages();
+                alert("发布已删除！");
+            }
+        }
+
+        function renderAdminComments() {
+            const container = document.getElementById("admin-comments-list");
+            container.innerHTML = siteData.comments.map(comment => `
+                <div class="admin-editor">
+                    <div style="margin-bottom: 8px; color: #5a4a3a;">${comment.nickname} · ${comment.time}</div>
+                    <div style="color: #7a6a5a; margin-bottom: 10px;">${comment.content}</div>
+                    <button class="delete-btn" onclick="deleteComment(${comment.id})">删除留言</button>
+                </div>
+            `).join('');
+        }
+
+        function deleteComment(commentId) {
+            if (confirm("确定要删除这条留言吗？")) {
+                siteData.comments = siteData.comments.filter(c => c.id !== commentId);
+                saveData();
+                renderAdminComments();
+                renderAllPages();
+                alert("留言已删除！");
+            }
+        }
+
+        function clearAllComments() {
+            if (confirm("确定要清空所有留言吗？")) {
+                siteData.comments = [];
+                saveData();
+                renderAdminComments();
+                renderAllPages();
+                alert("所有留言已清空！");
+            }
+        }
+
+        function renderAdminMusic() {
+            const container = document.getElementById("admin-music-editor");
+            container.innerHTML = siteData.musicList.map(music => `
+                <div class="admin-editor">
+                    <h4>编辑音乐</h4>
+                    <div class="form-group">
+                        <label>歌曲名称</label>
+                        <input type="text" id="edit-music-title-${music.id}" value="${music.title}">
+                    </div>
+                    <div class="form-group">
+                        <label>歌手</label>
+                        <input type="text" id="edit-music-artist-${music.id}" value="${music.artist}">
+                    </div>
+                    <div class="form-group">
+                        <label>描述</label>
+                        <textarea id="edit-music-desc-${music.id}">${music.description}</textarea>
+                    </div>
+                    <div class="editor-actions">
+                        <button class="save-btn" onclick="saveMusic(${music.id})">保存</button>
+                        <button class="delete-btn" onclick="deleteMusic(${music.id})">删除</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function addMusicEditor() {
+            const newMusic = {
+                id: Date.now(),
+                title: "新音乐",
+                artist: "未知",
+                cover: "",
+                audioUrl: "",
+                description: ""
+            };
+            siteData.musicList.push(newMusic);
+            renderAdminMusic();
+        }
+
+        function saveMusic(musicId) {
+            const music = siteData.musicList.find(m => m.id === musicId);
+            if (music) {
+                music.title = document.getElementById(`edit-music-title-${musicId}`).value;
+                music.artist = document.getElementById(`edit-music-artist-${musicId}`).value;
+                music.description = document.getElementById(`edit-music-desc-${musicId}`).value;
+                saveData();
+                renderAllPages();
+                alert("音乐已保存！");
+            }
+        }
+
+        function deleteMusic(musicId) {
+            if (confirm("确定要删除这首音乐吗？")) {
+                siteData.musicList = siteData.musicList.filter(m => m.id !== musicId);
+                saveData();
+                renderAdminMusic();
+                renderAllPages();
+                alert("音乐已删除！");
+            }
+        }
+
+        function renderAdminPhotos() {
+            const container = document.getElementById("admin-photos-editor");
+            const allPhotos = [...siteData.photography.photos, ...tempPhotoData];
+            container.innerHTML = allPhotos.map(photo => `
+                <div class="admin-editor">
+                    <img src="${photo.data}" style="max-width: 100%; max-height: 150px; object-fit: cover; border-radius: 8px; margin-bottom: 10px;">
+                    <div class="form-group">
+                        <label>标题</label>
+                        <input type="text" id="edit-photo-title-${photo.id}" value="${photo.title}">
+                    </div>
+                    <div class="form-group">
+                        <label>地点</label>
+                        <input type="text" id="edit-photo-location-${photo.id}" value="${photo.location}">
+                    </div>
+                    <div class="editor-actions">
+                        <button class="save-btn" onclick="savePhoto('${photo.id}')">保存</button>
+                        <button class="delete-btn" onclick="deletePhoto('${photo.id}')">删除</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function savePhoto(photoId) {
+            const id = parseFloat(photoId);
+            let photo = siteData.photography.photos.find(p => p.id === id);
+            let isTemp = false;
+            if (!photo) {
+                photo = tempPhotoData.find(p => p.id === id);
+                isTemp = true;
+            }
+            if (photo) {
+                photo.title = document.getElementById(`edit-photo-title-${photoId}`).value;
+                photo.location = document.getElementById(`edit-photo-location-${photoId}`).value;
+                if (isTemp) {
+                    siteData.photography.photos.push(photo);
+                    tempPhotoData = tempPhotoData.filter(p => p.id !== id);
+                }
+                saveData();
+                renderAdminPhotos();
+                renderAllPages();
+                alert("照片已保存！");
+            }
+        }
+
+        function deletePhoto(photoId) {
+            const id = parseFloat(photoId);
+            if (confirm("确定要删除这张照片吗？")) {
+                siteData.photography.photos = siteData.photography.photos.filter(p => p.id !== id);
+                tempPhotoData = tempPhotoData.filter(p => p.id !== id);
+                saveData();
+                renderAdminPhotos();
+                renderAllPages();
+                alert("照片已删除！");
+            }
+        }
+
+        function saveAdminData() {
+            siteData.siteTitle = document.getElementById("edit-site-title").value;
+            siteData.nickname = document.getElementById("edit-nickname").value;
+            siteData.signature = document.getElementById("edit-signature").value;
+            siteData.bio = document.getElementById("edit-bio").value;
+            siteData.dailyText = document.getElementById("edit-daily-text").value;
+            siteData.avatar = tempAvatarData;
+
+            siteData.photography.concept = document.getElementById("edit-photo-concept").value;
+            siteData.photography.equipment = document.getElementById("edit-photo-equipment").value;
+            siteData.photography.style = document.getElementById("edit-photo-style").value;
+            siteData.photography.colorMethod = document.getElementById("edit-photo-color").value;
+            siteData.photography.composition = document.getElementById("edit-photo-composition").value;
+            siteData.photography.tips = document.getElementById("edit-photo-tips").value;
+
+            siteData.contact.qq = document.getElementById("edit-qq").value;
+            siteData.contact.wechat = document.getElementById("edit-wechat").value;
+            siteData.contact.email = document.getElementById("edit-email").value;
+            siteData.contact.phone = document.getElementById("edit-phone").value;
+            siteData.contact.douyin = document.getElementById("edit-douyin").value;
+            siteData.contact.xiaohongshu = document.getElementById("edit-xiaohongshu").value;
+            siteData.contact.bilibili = document.getElementById("edit-bilibili").value;
+            siteData.contact.ig = document.getElementById("edit-ig").value;
+            siteData.contact.note = document.getElementById("edit-note").value;
+
+            saveData();
+            renderAllPages();
+            closeModal("admin-modal");
+            alert("数据已保存！");
+        }
+
+        function exportData() {
+            const dataStr = JSON.stringify(siteData, null, 2);
+            const dataBlob = new Blob([dataStr], {type: "application/json"});
+            const url = URL.createObjectURL(dataBlob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "yy8-backup.json";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            alert("数据已导出！");
+        }
+
+        function handleImport(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const importedData = JSON.parse(e.target.result);
+                        siteData = importedData;
+                        saveData();
+                        renderAllPages();
+                        alert("数据导入成功！");
+                    } catch (error) {
+                        alert("数据导入失败，请检查文件格式");
+                    }
+                };
+                reader.readAsText(input.files[0]);
+            }
+        }
+
+        function clearAllData() {
+            if (confirm("确定要清空所有数据吗？此操作不可恢复！")) {
+                localStorage.removeItem(STORAGE_KEY);
+                location.reload();
+            }
+        }
+    </script>
+</body>
+</html>

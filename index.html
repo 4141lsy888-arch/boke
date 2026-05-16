@@ -38,65 +38,56 @@
             z-index: 0;
         }
 
-        .page {
-            display: none;
+        html {
+            scroll-behavior: smooth;
         }
 
-        .page.active {
-            display: block;
+        .reveal-section {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .reveal-section.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .site-header {
-            background: linear-gradient(135deg, rgba(255, 182, 193, 0.2) 0%, rgba(200, 160, 220, 0.2) 100%);
+            background: rgba(255, 255, 255, 0.4);
             backdrop-filter: blur(15px);
-            border-radius: 0 0 36px 36px;
-            padding: 40px 28px;
+            border-radius: 0 0 28px 28px;
+            padding: 32px 28px;
             margin-bottom: 24px;
-            box-shadow: 0 8px 32px rgba(150, 100, 150, 0.1);
+            box-shadow: 0 8px 32px rgba(150, 100, 150, 0.08);
+            opacity: 0;
+            transform: translateY(-20px);
+            animation: headerReveal 1s cubic-bezier(0.2, 0.8, 0.2, 1) 0.3s forwards;
         }
 
-        .site-header .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .site-title-section {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .sakura-icon {
-            font-size: 3rem;
-            animation: float 3s ease-in-out infinite;
+        @keyframes headerReveal {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .site-title {
-            font-size: 2.5rem;
+            font-size: 1.65rem;
             font-weight: 300;
-            background: linear-gradient(135deg, #8b4c9e 0%, #c75b7a 50%, #a8326c 100%);
+            background: linear-gradient(135deg, #9b59b6, #e91e63);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            letter-spacing: 0.25em;
+            letter-spacing: 0.18em;
             margin-bottom: 8px;
-            font-family: Georgia, "Times New Roman", serif;
         }
 
         .site-subtitle {
-            font-size: 1.1rem;
+            font-size: 0.82rem;
             color: #9b6eb0;
             opacity: 0.9;
-            letter-spacing: 0.15em;
-            margin-left: 64px;
-        }
-
-        .header-date {
-            font-size: 1.2rem;
-            color: #9b6eb0;
-            opacity: 0.8;
-            font-family: Georgia, "Times New Roman", serif;
+            letter-spacing: 0.1em;
         }
 
         .header-right {
@@ -116,7 +107,7 @@
             margin: 0 auto;
             padding: 0 20px 40px;
             position: relative;
-            z-index: 10;
+            z-index: 1;
         }
 
         .navbar {
@@ -129,7 +120,17 @@
             gap: 6px;
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
-            border: 1px solid rgba(200, 160, 220, 0.3);
+            border: 1px solid rgba(200, 160, 200, 0.3);
+            opacity: 0;
+            transform: translateY(-10px);
+            animation: navbarReveal 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.5s forwards;
+        }
+
+        @keyframes navbarReveal {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .navbar::-webkit-scrollbar {
@@ -153,12 +154,12 @@
         }
 
         .nav-btn:hover {
-            background: rgba(200, 160, 220, 0.2);
+            background: rgba(200, 160, 200, 0.15);
         }
 
         .nav-btn.active {
-            background: rgba(200, 160, 220, 0.25);
-            color: #6a3a6a;
+            background: rgba(200, 160, 200, 0.2);
+            color: #7a3d7a;
         }
 
         .page {
@@ -324,6 +325,45 @@
             color: #b080c0;
             margin-top: 2px;
             letter-spacing: 0.05em;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(200, 160, 200, 0.15);
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(200, 160, 200, 0.15), rgba(255, 182, 193, 0.15));
+            text-decoration: none;
+            transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+            border: 1px solid rgba(200, 160, 200, 0.2);
+        }
+
+        .social-link:hover {
+            transform: translateY(-6px) scale(1.1);
+            background: linear-gradient(135deg, rgba(200, 160, 200, 0.25), rgba(255, 182, 193, 0.25));
+            box-shadow: 0 10px 25px rgba(150, 100, 150, 0.2);
+        }
+
+        .social-link svg {
+            width: 20px;
+            height: 20px;
+            fill: #8b5a8b;
+            transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .social-link:hover svg {
+            transform: scale(1.2);
         }
 
         .music-card {
@@ -502,44 +542,92 @@
         .post-item {
             background: rgba(255, 255, 255, 0.75);
             backdrop-filter: blur(12px);
-            border-radius: 16px;
-            padding: 24px;
-            margin-bottom: 16px;
-            border: 1px solid rgba(200, 160, 200, 0.2);
+            border-radius: 20px;
+            padding: 28px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(200, 160, 200, 0.15);
+            transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .post-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(150, 100, 150, 0.1);
         }
 
         .post-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 14px;
+            margin-bottom: 18px;
         }
 
         .post-title {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             font-weight: 300;
             color: #6b4a6b;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.08em;
         }
 
         .post-time {
-            font-size: 0.78rem;
+            font-size: 0.75rem;
             color: #b080c0;
+            letter-spacing: 0.05em;
         }
 
         .post-content {
             color: #5a3d5a;
-            line-height: 2;
-            margin-bottom: 14px;
-            font-size: 0.95rem;
+            line-height: 2.2;
+            margin-bottom: 16px;
+            font-size: 1rem;
+            font-weight: 300;
+            letter-spacing: 0.02em;
+        }
+
+        .post-content.text-only {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 1.3rem;
+            line-height: 2.4;
+            letter-spacing: 0.1em;
+            color: rgba(90, 61, 90, 0.8);
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        .post-images {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 8px;
+            margin-bottom: 16px;
         }
 
         .post-image {
             width: 100%;
-            max-height: 280px;
+            aspect-ratio: 1;
             object-fit: cover;
             border-radius: 12px;
-            margin-bottom: 14px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .post-image:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 24px rgba(150, 100, 150, 0.2);
+        }
+
+        .post-images.single-image .post-image {
+            grid-column: 1 / -1;
+            aspect-ratio: 16 / 10;
+        }
+
+        .post-images.two-images .post-image:nth-child(1) {
+            grid-column: span 2;
+            aspect-ratio: 16 / 10;
+        }
+
+        .post-images.three-images .post-image:nth-child(1) {
+            grid-column: span 2;
+            aspect-ratio: 16 / 10;
         }
 
         .post-tags {
@@ -562,6 +650,51 @@
             gap: 18px;
             padding-top: 14px;
             border-top: 1px solid rgba(200, 160, 200, 0.15);
+        }
+
+        .image-lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: opacity 0.3s ease;
+            cursor: pointer;
+        }
+
+        .lightbox-image {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            cursor: default;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .lightbox-close:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: scale(1.1);
         }
 
         .action-btn {
@@ -798,39 +931,6 @@
         .photo-card-meta {
             font-size: 0.76rem;
             color: #b080c0;
-        }
-
-        .contact-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 14px;
-        }
-
-        .contact-item {
-            background: rgba(255, 255, 255, 0.75);
-            padding: 24px;
-            border-radius: 14px;
-            text-align: center;
-            border: 1px solid rgba(200, 160, 200, 0.2);
-        }
-
-        .contact-icon {
-            font-size: 1.8rem;
-            margin-bottom: 10px;
-        }
-
-        .contact-label {
-            font-weight: 300;
-            color: #7a3d7a;
-            margin-bottom: 6px;
-            font-size: 0.86rem;
-            letter-spacing: 0.05em;
-        }
-
-        .contact-value {
-            color: #5a3d5a;
-            font-size: 0.9rem;
-            word-break: break-all;
         }
 
         .admin-fab {
@@ -1143,107 +1243,17 @@
         .file-input {
             display: none;
         }
-
-        .preview-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-            gap: 12px;
-            margin-top: 12px;
-        }
-
-        .preview-item {
-            position: relative;
-            aspect-ratio: 1;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-
-        .preview-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .remove-preview {
-            position: absolute;
-            top: 6px;
-            right: 6px;
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            background: rgba(0,0,0,0.6);
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .post-images {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 12px;
-            margin-bottom: 14px;
-        }
-
-        .social-icons-section {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            padding: 20px 0;
-            border-top: 1px solid rgba(200, 160, 220, 0.2);
-        }
-
-        .social-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, rgba(255, 182, 193, 0.3) 0%, rgba(200, 160, 220, 0.3) 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.8rem;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(150, 100, 150, 0.15);
-            border: 2px solid rgba(200, 160, 220, 0.3);
-        }
-
-        .social-icon:hover {
-            transform: scale(1.1);
-            box-shadow: 0 8px 20px rgba(150, 100, 150, 0.25);
-            background: linear-gradient(135deg, rgba(255, 182, 193, 0.4) 0%, rgba(200, 160, 220, 0.4) 100%);
-        }
-
-        .social-icon svg {
-            width: 32px;
-            height: 32px;
-            fill: #8b4c9e;
-        }
-
-        .social-icon.xhs-icon svg {
-            width: 32px;
-            height: 32px;
-        }
     </style>
 </head>
 <body>
-
-
     <div class="site-header">
-        <div class="container" style="padding: 0;">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <div class="site-title-section">
-                    <div class="sakura-icon">🌸</div>
-                    <div>
-                        <div class="site-title">yy8 的世界</div>
-                        <div class="site-subtitle">记录生活 · 分享美好</div>
-                    </div>
-                </div>
-                <div class="header-date" id="header-date"></div>
+        <div class="container" style="padding: 0; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <div class="site-title">✿ yy8 的世界</div>
+                <div class="site-subtitle">记录生活 · 分享美好</div>
+            </div>
+            <div class="header-right">
+                <span id="header-date"></span>
             </div>
         </div>
     </div>
@@ -1295,34 +1305,20 @@
                             <div class="stat-label">音乐</div>
                         </div>
                     </div>
-                    <div class="social-icons-section">
-                        <a href="https://xhslink.com/m/7Dms5LL6Y5s" target="_blank" class="social-icon xhs-icon">
-                            <svg viewBox="0 0 24 24">
-                                <circle cx="12" cy="12" r="12" fill="#FF2442"/>
-                                <text x="12" y="16" text-anchor="middle" fill="white" font-size="8" font-weight="bold">小红书</text>
-                                <circle cx="20" cy="4" r="1.2" fill="#FF85AB"/>
+                    <div class="social-links">
+                        <a href="#" class="social-link" target="_blank" rel="noopener noreferrer" title="小红书">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M19.5 3C18.67 3 18 3.67 18 4.5V15.5C18 16.33 18.67 17 19.5 17C20.33 17 21 16.33 21 15.5V4.5C21 3.67 20.33 3 19.5 3ZM6.5 21C5.67 21 5 20.33 5 19.5V5.5C5 4.67 5.67 4 6.5 4C7.33 4 8 4.67 8 5.5V19.5C8 20.33 7.33 21 6.5 21ZM12 21C11.17 21 10.5 20.33 10.5 19.5V10.5C10.5 9.67 11.17 9 12 9C12.83 9 13.5 9.67 13.5 10.5V19.5C13.5 20.33 12.83 21 12 21ZM3 21C2.17 21 1.5 20.33 1.5 19.5V14.5C1.5 13.67 2.17 13 3 13C3.83 13 4.5 13.67 4.5 14.5V19.5C4.5 20.33 3.83 21 3 21Z"/>
                             </svg>
                         </a>
-                        <a href="https://www.instagram.com/u_u4141?igsh=dG5lNzd5a205cnY%3D&utm_source=qr" target="_blank" class="social-icon instagram-icon">
-                            <svg viewBox="0 0 24 24">
-                                <path fill="url(#ig-gradient)" d="M12 2.163c3.204 0 3.584.012 4.85.07 1.17.049 1.804.206 2.227.364.418.156.739.351 1.08.692.34.34.536.661.692 1.08.158.423.315 1.057.364 2.227.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.049 1.17-.206 1.804-.364 2.227-.156.418-.351.739-.692 1.08-.34.34-.661.536-1.08.692-.423.158-1.057.315-2.227.364-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.17-.049-1.804-.206-2.227-.364-.418-.156-.739-.351-1.08-.692-.34-.34-.536-.661-.692-1.08-.158-.423-.315-1.057-.364-2.227-.058-1.266-.07-1.646-.07-4.85s.012-3.584.07-4.85c.049-1.17.206-1.804.364-2.227.156-.418.351-.739.692-1.08.34-.34.661-.536 1.08-.692.423-.158 1.057-.315 2.227-.364 1.266-.058 1.646-.07 4.85-.07zm0-2.163c-3.259 0-3.667.014-4.947.072-1.19.05-1.977.218-2.678.463-.727.252-1.342.588-1.95 1.196-.608.608-.944 1.223-1.196 1.95-.245.7-.413 1.488-.463 2.678-.058 1.28-.072 1.688-.072 4.947s.014 3.667.072 4.947c.05 1.19.218 1.977.463 2.678.252.727.588 1.342 1.196 1.95.608.608 1.223.944 1.95 1.196.7.245 1.488.413 2.678.463 1.28.058 1.688.072 4.947.072s3.667-.014 4.947-.072c1.19-.05 1.977-.218 2.678-.463.727-.252 1.342-.588 1.95-1.196.608-.608.944-1.223 1.196-1.95.245-.7.413-1.488.463-2.678.058-1.28.072-1.688.072-4.947s-.014-3.667-.072-4.947c-.05-1.19-.218-1.977-.463-2.678-.252-.727-.588-1.342-1.196-1.95-.608-.608-1.223-.944-1.95-1.196-.7-.245-1.488-.413-2.678-.463-1.28-.058-1.688-.072-4.947-.072z"/>
-                                <path fill="url(#ig-gradient)" d="M12 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.162 6.162 6.162 6.162-2.759 6.162-6.162-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4-1.791 4-4 4z"/>
-                                <circle fill="url(#ig-gradient)" cx="17.5" cy="6.5" r="1.5"/>
-                                <defs>
-                                    <linearGradient id="ig-gradient" x1="0%" y1="100%" x2="100%" y2="0%">
-                                        <stop offset="0%" stop-color="#FFDC80"/>
-                                        <stop offset="25%" stop-color="#F77737"/>
-                                        <stop offset="50%" stop-color="#F56040"/>
-                                        <stop offset="75%" stop-color="#FD1D1D"/>
-                                        <stop offset="87.5%" stop-color="#E1306C"/>
-                                        <stop offset="100%" stop-color="#C13584"/>
-                                    </linearGradient>
-                                </defs>
+                        <a href="#" class="social-link" target="_blank" rel="noopener noreferrer" title="Instagram">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
                             </svg>
                         </a>
-                        <a href="mailto:4141lsyyy8@gmail.com" class="social-icon mail-icon">
-                            <svg viewBox="0 0 24 24">
-                                <path fill="#8b4c9e" d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                        <a href="mailto:your@email.com" class="social-link" title="邮箱">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
                             </svg>
                         </a>
                     </div>
@@ -1357,8 +1353,8 @@
                 </div>
 
                 <div class="card daily-card">
-                    <div class="card-title">✿ 日常</div>
-                    <div class="daily-text" id="daily-text">生活不止眼前的苟且，还有诗和远方</div>
+                    <div class="card-title">✿ Quote</div>
+                    <div class="daily-text" id="daily-text" style="font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.1rem; letter-spacing: 0.1em; color: rgba(90, 61, 90, 0.7);">When the world is meaningless, I will wear headphones with your voice.</div>
                 </div>
 
                 <div class="card tags-card">
@@ -1406,30 +1402,6 @@
 
         <div class="page" id="page-posts">
             <div class="card">
-                <div class="card-title">✎ 发布新内容</div>
-                <div class="form-group">
-                    <label>标题</label>
-                    <input type="text" id="new-post-title" placeholder="给你的内容起个标题">
-                </div>
-                <div class="form-group">
-                    <label>内容</label>
-                    <textarea id="new-post-content" placeholder="写下你想说的话..." rows="6"></textarea>
-                </div>
-                <div class="form-group">
-                    <label>图片（可选，可多选）</label>
-                    <div class="upload-area" id="post-upload-area" onclick="document.getElementById('post-file-input').click()">
-                        <span>点击或拖拽图片到这里</span>
-                    </div>
-                    <input type="file" id="post-file-input" class="file-input" accept="image/*" multiple onchange="handlePostFiles(this.files)">
-                    <div class="preview-grid" id="post-preview-grid"></div>
-                </div>
-                <div class="form-group">
-                    <label>标签（逗号分隔）</label>
-                    <input type="text" id="new-post-tags" placeholder="日常, 生活, 心情...">
-                </div>
-                <button class="submit-btn" onclick="publishNewPost()">✿ 发布</button>
-            </div>
-            <div class="card" style="margin-top: 24px;">
                 <div class="card-title">✎ 我的发布</div>
                 <div id="posts-container">
                     <div class="empty-state">还没有发布内容</div>
@@ -1503,6 +1475,8 @@
                 </div>
             </div>
         </div>
+
+
     </div>
 
     <button class="admin-fab" onclick="showLoginModal()">⚙</button>
@@ -1650,9 +1624,9 @@
 
     <script>
         const DEFAULT_PASSWORD = "9edyy81314520";
-        const STORAGE_KEY = "yy8-personal-site";
         const LOGIN_KEY = "yy8-admin-logged-in";
         const START_TIME = Date.now();
+        const STORAGE_KEY = "yy8-site-data";
 
         let siteData = {
             siteTitle: "yy8 的世界",
@@ -1663,13 +1637,31 @@
             dailyText: "生活不止眼前的苟且，还有诗和远方",
             posts: [
                 {
-                    id: Date.now(),
-                    title: "欢迎来到 yy8 的世界",
-                    content: "这是我的个人主页，会在这里分享生活点滴、喜欢的音乐和摄影作品，欢迎大家常来看看！",
-                    image: "",
-                    tags: ["日常", "欢迎"],
+                    id: Date.now() - 1000,
+                    title: "欢迎来到我的博客",
+                    content: "这是我的第一篇文章，记录生活中的点点滴滴。希望大家喜欢！",
+                    images: [],
+                    tags: ["欢迎", "博客"],
                     likes: 0,
-                    time: new Date().toLocaleString("zh-CN")
+                    time: new Date(Date.now() - 86400000).toLocaleString("zh-CN")
+                },
+                {
+                    id: Date.now() - 2000,
+                    title: "周末小记",
+                    content: "今天阳光明媚，和朋友一起去了公园。春天真的来了，花儿都开了。",
+                    images: [],
+                    tags: ["生活", "周末"],
+                    likes: 5,
+                    time: new Date(Date.now() - 172800000).toLocaleString("zh-CN")
+                },
+                {
+                    id: Date.now() - 3000,
+                    title: "音乐推荐",
+                    content: "最近在听周杰伦的老歌，夜曲、青花瓷、晴天...每一首都是经典。",
+                    images: [],
+                    tags: ["音乐", "推荐"],
+                    likes: 3,
+                    time: new Date(Date.now() - 259200000).toLocaleString("zh-CN")
                 }
             ],
             comments: [
@@ -1698,19 +1690,6 @@
                 colorMethod: "暖色调、明亮、低对比",
                 tips: "注意光线，多拍多练，后期微调",
                 photos: []
-            },
-            contact: {
-                qq: "123456789",
-                wechat: "yy8_wx",
-                email: "yy8@example.com",
-                phone: "",
-                douyin: "@yy8",
-                kuaishou: "",
-                xiaohongshu: "@yy8",
-                bilibili: "@yy8",
-                ig: "u_u4141",
-                github: "",
-                note: "欢迎联系我交流！"
             }
         };
 
@@ -1718,14 +1697,9 @@
         let tempAvatarData = "";
         let tempPhotoData = [];
 
-        document.addEventListener("DOMContentLoaded", function() {
-            loadData();
-            updateClock();
-            setInterval(updateClock, 1000);
-            updateUptime();
-            setInterval(updateUptime, 60000);
-            checkLoginStatus();
-        });
+        function saveData() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(siteData));
+        }
 
         function loadData() {
             const saved = localStorage.getItem(STORAGE_KEY);
@@ -1734,13 +1708,111 @@
                     siteData = JSON.parse(saved);
                 } catch (e) {
                     console.error("数据加载失败，使用默认数据");
+                    saveData();
                 }
+            } else {
+                saveData();
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            loadData();
+            loadPostsFromAPI();
+            updateClock();
+            setInterval(updateClock, 1000);
+            updateUptime();
+            setInterval(updateUptime, 60000);
+            checkLoginStatus();
+        });
+
+        async function loadPostsFromAPI() {
+            try {
+                const response = await fetch('/api/posts');
+                if (response.ok) {
+                    const posts = await response.json();
+                    siteData.posts = posts.map(post => ({
+                        ...post,
+                        images: typeof post.images === 'string' ? JSON.parse(post.images) : post.images,
+                        tags: typeof post.tags === 'string' ? JSON.parse(post.tags) : post.tags,
+                        time: post.created_at ? new Date(post.created_at).toLocaleString("zh-CN") : new Date().toLocaleString("zh-CN")
+                    }));
+                    saveData();
+                }
+            } catch (error) {
+                console.error("从API加载数据失败，使用localStorage:", error);
             }
             renderAllPages();
         }
 
-        function saveData() {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(siteData));
+        async function savePostToAPI(post) {
+            try {
+                const response = await fetch('/api/posts', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        title: post.title,
+                        content: post.content,
+                        images: post.images || (post.image ? [post.image] : []),
+                        tags: post.tags || []
+                    })
+                });
+                const result = await response.json();
+                if (result.success) {
+                    post.id = result.id;
+                }
+                await loadPostsFromAPI();
+            } catch (error) {
+                console.error("保存文章失败:", error);
+            }
+        }
+
+        async function updatePostInAPI(postId, postData) {
+            try {
+                await fetch(`/api/posts/${postId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        title: postData.title,
+                        content: postData.content,
+                        images: postData.images || [],
+                        tags: postData.tags || []
+                    })
+                });
+                await loadPostsFromAPI();
+            } catch (error) {
+                console.error("更新文章失败:", error);
+            }
+        }
+
+        async function deletePostFromAPI(postId) {
+            try {
+                await fetch(`/api/posts/${postId}`, {
+                    method: 'DELETE'
+                });
+                await loadPostsFromAPI();
+            } catch (error) {
+                console.error("删除文章失败:", error);
+            }
+        }
+
+        async function likePostAPI(postId) {
+            try {
+                const response = await fetch('/api/posts/like', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: postId })
+                });
+                const result = await response.json();
+                if (result.success) {
+                    const post = siteData.posts.find(p => p.id === postId);
+                    if (post) {
+                        post.likes = result.likes;
+                    }
+                    renderPostsPage();
+                }
+            } catch (error) {
+                console.error("点赞失败:", error);
+            }
         }
 
         function checkLoginStatus() {
@@ -1830,28 +1902,52 @@
                 postsContainer.innerHTML = '<div class="empty-state">还没有发布内容</div>';
                 return;
             }
-            postsContainer.innerHTML = siteData.posts.map(post => `
-                <div class="post-item">
-                    <div class="post-header">
-                        <div class="post-title">${post.title}</div>
-                        <div class="post-time">${post.time}</div>
-                    </div>
-                    ${post.images && post.images.length > 0 ? `
-                        <div class="post-images" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; margin-bottom: 14px;">
-                            ${post.images.map(img => `<img src="${img}" alt="${post.title}" style="width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 12px; cursor: pointer;" onclick="openImagePreview('${img}')">`).join('')}
+            postsContainer.innerHTML = siteData.posts.map(post => {
+                const images = post.images || (post.image ? [post.image] : []);
+                const hasImages = images.length > 0;
+                const isTextOnly = !hasImages && post.content;
+                const imageClass = hasImages ? `post-images ${images.length === 1 ? 'single-image' : images.length === 2 ? 'two-images' : images.length === 3 ? 'three-images' : ''}` : '';
+                
+                return `
+                    <div class="post-item">
+                        <div class="post-header">
+                            <div class="post-title">${post.title || (isTextOnly ? '' : 'Untitled')}</div>
+                            <div class="post-time">${post.time}</div>
                         </div>
-                    ` : post.image ? `<img src="${post.image}" alt="${post.title}" class="post-image">` : ''}
-                    <div class="post-content">${post.content}</div>
-                    <div class="post-tags">
-                        ${post.tags.map(tag => `<span class="post-tag">${tag}</span>`).join('')}
+                        ${hasImages ? `<div class="${imageClass}">${images.map(img => `<img src="${img}" alt="${post.title}" class="post-image" onclick="openImageLightbox('${img}')">`).join('')}</div>` : ''}
+                        <div class="post-content ${isTextOnly ? 'text-only' : ''}">${post.content}</div>
+                        <div class="post-tags">
+                            ${post.tags && post.tags.length > 0 ? post.tags.map(tag => `<span class="post-tag">${tag}</span>`).join('') : ''}
+                        </div>
+                        <div class="post-actions">
+                            <button class="action-btn" onclick="likePost(${post.id})">
+                                ❤️ ${post.likes || 0}
+                            </button>
+                        </div>
                     </div>
-                    <div class="post-actions">
-                        <button class="action-btn" onclick="likePost(${post.id})">
-                            ❤️ ${post.likes}
-                        </button>
-                    </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
+        }
+
+        function openImageLightbox(src) {
+            const lightbox = document.createElement('div');
+            lightbox.className = 'image-lightbox';
+            lightbox.innerHTML = `<img src="${src}" alt="Preview" class="lightbox-image"><button class="lightbox-close" onclick="closeImageLightbox()">✕</button>`;
+            document.body.appendChild(lightbox);
+            lightbox.style.opacity = '0';
+            setTimeout(() => { lightbox.style.opacity = '1'; }, 10);
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeImageLightbox() {
+            const lightbox = document.querySelector('.image-lightbox');
+            if (lightbox) {
+                lightbox.style.opacity = '0';
+                setTimeout(() => {
+                    lightbox.remove();
+                    document.body.style.overflow = '';
+                }, 300);
+            }
         }
 
         function renderCommentsPage() {
@@ -1912,70 +2008,6 @@
             `).join('');
         }
 
-        let selectedPostImages = [];
-
-        function handlePostFiles(files) {
-            Array.from(files).forEach(file => {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    selectedPostImages.push(e.target.result);
-                    renderPostPreview();
-                };
-                reader.readAsDataURL(file);
-            });
-        }
-
-        function renderPostPreview() {
-            const container = document.getElementById("post-preview-grid");
-            container.innerHTML = selectedPostImages.map((img, i) => `
-                <div class="preview-item">
-                    <img src="${img}">
-                    <button class="remove-preview" onclick="removePostImage(${i})">✕</button>
-                </div>
-            `).join('');
-        }
-
-        function removePostImage(index) {
-            selectedPostImages.splice(index, 1);
-            renderPostPreview();
-        }
-
-        function publishNewPost() {
-            const title = document.getElementById("new-post-title").value.trim();
-            const content = document.getElementById("new-post-content").value.trim();
-            const tagsStr = document.getElementById("new-post-tags").value.trim();
-            
-            if (!title && !content && selectedPostImages.length === 0) {
-                alert("请添加标题、内容或图片！");
-                return;
-            }
-
-            const tags = tagsStr ? tagsStr.split(',').map(t => t.trim()).filter(t => t) : [];
-            
-            const newPost = {
-                id: Date.now(),
-                title: title || "未命名",
-                content: content,
-                images: [...selectedPostImages],
-                image: selectedPostImages.length > 0 ? selectedPostImages[0] : "",
-                tags: tags,
-                likes: 0,
-                time: new Date().toLocaleString("zh-CN")
-            };
-
-            siteData.posts.unshift(newPost);
-            saveData();
-            renderAllPages();
-
-            document.getElementById("new-post-title").value = "";
-            document.getElementById("new-post-content").value = "";
-            document.getElementById("new-post-tags").value = "";
-            selectedPostImages = [];
-            renderPostPreview();
-
-            alert("发布成功！");
-        }
-
         function updateClock() {
             const now = new Date();
             document.getElementById("clock-display").textContent = now.toLocaleTimeString("zh-CN");
@@ -2028,12 +2060,7 @@
         }
 
         function likePost(postId) {
-            const post = siteData.posts.find(p => p.id === postId);
-            if (post) {
-                post.likes++;
-                saveData();
-                renderPostsPage();
-            }
+            likePostAPI(postId);
         }
 
         function openImagePreview(src) {
@@ -2185,24 +2212,20 @@
             renderAdminPosts();
         }
 
-        function savePost(postId) {
+        async function savePost(postId) {
             const post = siteData.posts.find(p => p.id === postId);
             if (post) {
                 post.title = document.getElementById(`edit-post-title-${postId}`).value;
                 post.content = document.getElementById(`edit-post-content-${postId}`).value;
                 post.tags = document.getElementById(`edit-post-tags-${postId}`).value.split(',').map(t => t.trim()).filter(t => t);
-                saveData();
-                renderAllPages();
+                await updatePostInAPI(postId, post);
                 alert("发布已保存！");
             }
         }
 
-        function deletePost(postId) {
+        async function deletePost(postId) {
             if (confirm("确定要删除这条发布吗？")) {
-                siteData.posts = siteData.posts.filter(p => p.id !== postId);
-                saveData();
-                renderAdminPosts();
-                renderAllPages();
+                await deletePostFromAPI(postId);
                 alert("发布已删除！");
             }
         }
@@ -2413,6 +2436,31 @@
                 location.reload();
             }
         }
+
+        function setupScrollReveal() {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px 0px -50px 0px',
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.card').forEach(card => {
+                card.classList.add('reveal-section');
+                observer.observe(card);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            setupScrollReveal();
+        });
     </script>
 </body>
 </html>

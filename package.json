@@ -1,0 +1,11 @@
+{
+  "name": "yy8-blog",
+  "version": "1.0.0",
+  "description": "Personal blog powered by Cloudflare Pages and D1",
+  "scripts": {
+    "deploy": "wrangler pages deploy ."
+  },
+  "devDependencies": {
+    "wrangler": "^3.114.17"
+  }
+}

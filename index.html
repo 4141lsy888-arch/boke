@@ -38,31 +38,65 @@
             z-index: 0;
         }
 
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
         .site-header {
-            background: rgba(255, 255, 255, 0.4);
+            background: linear-gradient(135deg, rgba(255, 182, 193, 0.2) 0%, rgba(200, 160, 220, 0.2) 100%);
             backdrop-filter: blur(15px);
-            border-radius: 0 0 28px 28px;
-            padding: 32px 28px;
+            border-radius: 0 0 36px 36px;
+            padding: 40px 28px;
             margin-bottom: 24px;
-            box-shadow: 0 8px 32px rgba(150, 100, 150, 0.08);
+            box-shadow: 0 8px 32px rgba(150, 100, 150, 0.1);
+        }
+
+        .site-header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .site-title-section {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .sakura-icon {
+            font-size: 3rem;
+            animation: float 3s ease-in-out infinite;
         }
 
         .site-title {
-            font-size: 1.65rem;
+            font-size: 2.5rem;
             font-weight: 300;
-            background: linear-gradient(135deg, #9b59b6, #e91e63);
+            background: linear-gradient(135deg, #8b4c9e 0%, #c75b7a 50%, #a8326c 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            letter-spacing: 0.18em;
+            letter-spacing: 0.25em;
             margin-bottom: 8px;
+            font-family: Georgia, "Times New Roman", serif;
         }
 
         .site-subtitle {
-            font-size: 0.82rem;
+            font-size: 1.1rem;
             color: #9b6eb0;
             opacity: 0.9;
-            letter-spacing: 0.1em;
+            letter-spacing: 0.15em;
+            margin-left: 64px;
+        }
+
+        .header-date {
+            font-size: 1.2rem;
+            color: #9b6eb0;
+            opacity: 0.8;
+            font-family: Georgia, "Times New Roman", serif;
         }
 
         .header-right {
@@ -82,7 +116,7 @@
             margin: 0 auto;
             padding: 0 20px 40px;
             position: relative;
-            z-index: 1;
+            z-index: 10;
         }
 
         .navbar {
@@ -95,7 +129,7 @@
             gap: 6px;
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
-            border: 1px solid rgba(200, 160, 200, 0.3);
+            border: 1px solid rgba(200, 160, 220, 0.3);
         }
 
         .navbar::-webkit-scrollbar {
@@ -119,12 +153,12 @@
         }
 
         .nav-btn:hover {
-            background: rgba(200, 160, 200, 0.15);
+            background: rgba(200, 160, 220, 0.2);
         }
 
         .nav-btn.active {
-            background: rgba(200, 160, 200, 0.2);
-            color: #7a3d7a;
+            background: rgba(200, 160, 220, 0.25);
+            color: #6a3a6a;
         }
 
         .page {
@@ -1109,17 +1143,107 @@
         .file-input {
             display: none;
         }
+
+        .preview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .preview-item {
+            position: relative;
+            aspect-ratio: 1;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .remove-preview {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.6);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .post-images {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .social-icons-section {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px 0;
+            border-top: 1px solid rgba(200, 160, 220, 0.2);
+        }
+
+        .social-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(255, 182, 193, 0.3) 0%, rgba(200, 160, 220, 0.3) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(150, 100, 150, 0.15);
+            border: 2px solid rgba(200, 160, 220, 0.3);
+        }
+
+        .social-icon:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(150, 100, 150, 0.25);
+            background: linear-gradient(135deg, rgba(255, 182, 193, 0.4) 0%, rgba(200, 160, 220, 0.4) 100%);
+        }
+
+        .social-icon svg {
+            width: 32px;
+            height: 32px;
+            fill: #8b4c9e;
+        }
+
+        .social-icon.xhs-icon svg {
+            width: 32px;
+            height: 32px;
+        }
     </style>
 </head>
 <body>
+
+
     <div class="site-header">
-        <div class="container" style="padding: 0; display: flex; justify-content: space-between; align-items: center;">
-            <div>
-                <div class="site-title">✿ yy8 的世界</div>
-                <div class="site-subtitle">记录生活 · 分享美好</div>
-            </div>
-            <div class="header-right">
-                <span id="header-date"></span>
+        <div class="container" style="padding: 0;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div class="site-title-section">
+                    <div class="sakura-icon">🌸</div>
+                    <div>
+                        <div class="site-title">yy8 的世界</div>
+                        <div class="site-subtitle">记录生活 · 分享美好</div>
+                    </div>
+                </div>
+                <div class="header-date" id="header-date"></div>
             </div>
         </div>
     </div>
@@ -1131,7 +1255,6 @@
             <button class="nav-btn" onclick="switchPage('comments')">✿ 留言</button>
             <button class="nav-btn" onclick="switchPage('music')">♪ 音乐</button>
             <button class="nav-btn" onclick="switchPage('photography')">✿ 摄影</button>
-            <button class="nav-btn" onclick="switchPage('contact')">✉ 联系</button>
         </div>
 
         <div class="page active" id="page-home">
@@ -1171,6 +1294,37 @@
                             <div class="stat-number" id="stat-music">0</div>
                             <div class="stat-label">音乐</div>
                         </div>
+                    </div>
+                    <div class="social-icons-section">
+                        <a href="https://xhslink.com/m/7Dms5LL6Y5s" target="_blank" class="social-icon xhs-icon">
+                            <svg viewBox="0 0 24 24">
+                                <circle cx="12" cy="12" r="12" fill="#FF2442"/>
+                                <text x="12" y="16" text-anchor="middle" fill="white" font-size="8" font-weight="bold">小红书</text>
+                                <circle cx="20" cy="4" r="1.2" fill="#FF85AB"/>
+                            </svg>
+                        </a>
+                        <a href="https://www.instagram.com/u_u4141?igsh=dG5lNzd5a205cnY%3D&utm_source=qr" target="_blank" class="social-icon instagram-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path fill="url(#ig-gradient)" d="M12 2.163c3.204 0 3.584.012 4.85.07 1.17.049 1.804.206 2.227.364.418.156.739.351 1.08.692.34.34.536.661.692 1.08.158.423.315 1.057.364 2.227.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.049 1.17-.206 1.804-.364 2.227-.156.418-.351.739-.692 1.08-.34.34-.661.536-1.08.692-.423.158-1.057.315-2.227.364-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.17-.049-1.804-.206-2.227-.364-.418-.156-.739-.351-1.08-.692-.34-.34-.536-.661-.692-1.08-.158-.423-.315-1.057-.364-2.227-.058-1.266-.07-1.646-.07-4.85s.012-3.584.07-4.85c.049-1.17.206-1.804.364-2.227.156-.418.351-.739.692-1.08.34-.34.661-.536 1.08-.692.423-.158 1.057-.315 2.227-.364 1.266-.058 1.646-.07 4.85-.07zm0-2.163c-3.259 0-3.667.014-4.947.072-1.19.05-1.977.218-2.678.463-.727.252-1.342.588-1.95 1.196-.608.608-.944 1.223-1.196 1.95-.245.7-.413 1.488-.463 2.678-.058 1.28-.072 1.688-.072 4.947s.014 3.667.072 4.947c.05 1.19.218 1.977.463 2.678.252.727.588 1.342 1.196 1.95.608.608 1.223.944 1.95 1.196.7.245 1.488.413 2.678.463 1.28.058 1.688.072 4.947.072s3.667-.014 4.947-.072c1.19-.05 1.977-.218 2.678-.463.727-.252 1.342-.588 1.95-1.196.608-.608.944-1.223 1.196-1.95.245-.7.413-1.488.463-2.678.058-1.28.072-1.688.072-4.947s-.014-3.667-.072-4.947c-.05-1.19-.218-1.977-.463-2.678-.252-.727-.588-1.342-1.196-1.95-.608-.608-1.223-.944-1.95-1.196-.7-.245-1.488-.413-2.678-.463-1.28-.058-1.688-.072-4.947-.072z"/>
+                                <path fill="url(#ig-gradient)" d="M12 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.162 6.162 6.162 6.162-2.759 6.162-6.162-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4-1.791 4-4 4z"/>
+                                <circle fill="url(#ig-gradient)" cx="17.5" cy="6.5" r="1.5"/>
+                                <defs>
+                                    <linearGradient id="ig-gradient" x1="0%" y1="100%" x2="100%" y2="0%">
+                                        <stop offset="0%" stop-color="#FFDC80"/>
+                                        <stop offset="25%" stop-color="#F77737"/>
+                                        <stop offset="50%" stop-color="#F56040"/>
+                                        <stop offset="75%" stop-color="#FD1D1D"/>
+                                        <stop offset="87.5%" stop-color="#E1306C"/>
+                                        <stop offset="100%" stop-color="#C13584"/>
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                        </a>
+                        <a href="mailto:4141lsyyy8@gmail.com" class="social-icon mail-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path fill="#8b4c9e" d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                            </svg>
+                        </a>
                     </div>
                 </div>
 
@@ -1252,6 +1406,30 @@
 
         <div class="page" id="page-posts">
             <div class="card">
+                <div class="card-title">✎ 发布新内容</div>
+                <div class="form-group">
+                    <label>标题</label>
+                    <input type="text" id="new-post-title" placeholder="给你的内容起个标题">
+                </div>
+                <div class="form-group">
+                    <label>内容</label>
+                    <textarea id="new-post-content" placeholder="写下你想说的话..." rows="6"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>图片（可选，可多选）</label>
+                    <div class="upload-area" id="post-upload-area" onclick="document.getElementById('post-file-input').click()">
+                        <span>点击或拖拽图片到这里</span>
+                    </div>
+                    <input type="file" id="post-file-input" class="file-input" accept="image/*" multiple onchange="handlePostFiles(this.files)">
+                    <div class="preview-grid" id="post-preview-grid"></div>
+                </div>
+                <div class="form-group">
+                    <label>标签（逗号分隔）</label>
+                    <input type="text" id="new-post-tags" placeholder="日常, 生活, 心情...">
+                </div>
+                <button class="submit-btn" onclick="publishNewPost()">✿ 发布</button>
+            </div>
+            <div class="card" style="margin-top: 24px;">
                 <div class="card-title">✎ 我的发布</div>
                 <div id="posts-container">
                     <div class="empty-state">还没有发布内容</div>
@@ -1325,58 +1503,6 @@
                 </div>
             </div>
         </div>
-
-        <div class="page" id="page-contact">
-            <div class="card">
-                <div class="card-title">✉ 联系我</div>
-                <div class="contact-grid" id="contact-grid">
-                    <div class="contact-item">
-                        <div class="contact-icon">🐧</div>
-                        <div class="contact-label">QQ</div>
-                        <div class="contact-value" id="contact-qq">-</div>
-                    </div>
-                    <div class="contact-item">
-                        <div class="contact-icon">💬</div>
-                        <div class="contact-label">微信</div>
-                        <div class="contact-value" id="contact-wechat">-</div>
-                    </div>
-                    <div class="contact-item">
-                        <div class="contact-icon">📧</div>
-                        <div class="contact-label">邮箱</div>
-                        <div class="contact-value" id="contact-email">-</div>
-                    </div>
-                    <div class="contact-item">
-                        <div class="contact-icon">📱</div>
-                        <div class="contact-label">电话</div>
-                        <div class="contact-value" id="contact-phone">-</div>
-                    </div>
-                    <div class="contact-item">
-                        <div class="contact-icon">🎵</div>
-                        <div class="contact-label">抖音</div>
-                        <div class="contact-value" id="contact-douyin">-</div>
-                    </div>
-                    <div class="contact-item">
-                        <div class="contact-icon">📕</div>
-                        <div class="contact-label">小红书</div>
-                        <div class="contact-value" id="contact-xiaohongshu">-</div>
-                    </div>
-                    <div class="contact-item">
-                        <div class="contact-icon">📺</div>
-                        <div class="contact-label">B站</div>
-                        <div class="contact-value" id="contact-bilibili">-</div>
-                    </div>
-                    <div class="contact-item">
-                        <div class="contact-icon">✿</div>
-                        <div class="contact-label">Instagram</div>
-                        <div class="contact-value" id="contact-ig">-</div>
-                    </div>
-                </div>
-                <div class="card" style="margin-top: 18px;">
-                    <div class="card-title">✿ 备注</div>
-                    <div id="contact-note">欢迎联系我！</div>
-                </div>
-            </div>
-        </div>
     </div>
 
     <button class="admin-fab" onclick="showLoginModal()">⚙</button>
@@ -1405,7 +1531,6 @@
                 <button class="admin-tab" onclick="switchAdminTab('comments')">✿ 留言</button>
                 <button class="admin-tab" onclick="switchAdminTab('music')">♪ 音乐</button>
                 <button class="admin-tab" onclick="switchAdminTab('photography')">✿ 摄影</button>
-                <button class="admin-tab" onclick="switchAdminTab('contact')">✉ 联系</button>
                 <button class="admin-tab" onclick="switchAdminTab('backup')">✿ 备份</button>
             </div>
 
@@ -1488,45 +1613,6 @@
                     <input type="file" id="photography-upload" class="file-input" accept="image/*" multiple onchange="handlePhotographyUpload(this)">
                 </div>
                 <div id="admin-photos-editor"></div>
-            </div>
-
-            <div class="admin-section" id="admin-contact">
-                <div class="form-group">
-                    <label>QQ</label>
-                    <input type="text" id="edit-qq" placeholder="QQ 号码">
-                </div>
-                <div class="form-group">
-                    <label>微信</label>
-                    <input type="text" id="edit-wechat" placeholder="微信号">
-                </div>
-                <div class="form-group">
-                    <label>邮箱</label>
-                    <input type="text" id="edit-email" placeholder="email@example.com">
-                </div>
-                <div class="form-group">
-                    <label>电话</label>
-                    <input type="text" id="edit-phone" placeholder="电话号码">
-                </div>
-                <div class="form-group">
-                    <label>抖音</label>
-                    <input type="text" id="edit-douyin" placeholder="抖音号">
-                </div>
-                <div class="form-group">
-                    <label>小红书</label>
-                    <input type="text" id="edit-xiaohongshu" placeholder="小红书号">
-                </div>
-                <div class="form-group">
-                    <label>B站</label>
-                    <input type="text" id="edit-bilibili" placeholder="B站号">
-                </div>
-                <div class="form-group">
-                    <label>Instagram</label>
-                    <input type="text" id="edit-ig" placeholder="Instagram 账号">
-                </div>
-                <div class="form-group">
-                    <label>备注</label>
-                    <textarea id="edit-note" placeholder="欢迎联系我！"></textarea>
-                </div>
             </div>
 
             <div class="admin-section" id="admin-backup">
@@ -1677,7 +1763,6 @@
             renderCommentsPage();
             renderMusicPage();
             renderPhotographyPage();
-            renderContactPage();
         }
 
         function renderHomePage() {
@@ -1751,7 +1836,11 @@
                         <div class="post-title">${post.title}</div>
                         <div class="post-time">${post.time}</div>
                     </div>
-                    ${post.image ? `<img src="${post.image}" alt="${post.title}" class="post-image">` : ''}
+                    ${post.images && post.images.length > 0 ? `
+                        <div class="post-images" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; margin-bottom: 14px;">
+                            ${post.images.map(img => `<img src="${img}" alt="${post.title}" style="width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 12px; cursor: pointer;" onclick="openImagePreview('${img}')">`).join('')}
+                        </div>
+                    ` : post.image ? `<img src="${post.image}" alt="${post.title}" class="post-image">` : ''}
                     <div class="post-content">${post.content}</div>
                     <div class="post-tags">
                         ${post.tags.map(tag => `<span class="post-tag">${tag}</span>`).join('')}
@@ -1823,16 +1912,68 @@
             `).join('');
         }
 
-        function renderContactPage() {
-            document.getElementById("contact-qq").textContent = siteData.contact.qq || '-';
-            document.getElementById("contact-wechat").textContent = siteData.contact.wechat || '-';
-            document.getElementById("contact-email").textContent = siteData.contact.email || '-';
-            document.getElementById("contact-phone").textContent = siteData.contact.phone || '-';
-            document.getElementById("contact-douyin").textContent = siteData.contact.douyin || '-';
-            document.getElementById("contact-xiaohongshu").textContent = siteData.contact.xiaohongshu || '-';
-            document.getElementById("contact-bilibili").textContent = siteData.contact.bilibili || '-';
-            document.getElementById("contact-ig").textContent = siteData.contact.ig || '-';
-            document.getElementById("contact-note").textContent = siteData.contact.note;
+        let selectedPostImages = [];
+
+        function handlePostFiles(files) {
+            Array.from(files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    selectedPostImages.push(e.target.result);
+                    renderPostPreview();
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function renderPostPreview() {
+            const container = document.getElementById("post-preview-grid");
+            container.innerHTML = selectedPostImages.map((img, i) => `
+                <div class="preview-item">
+                    <img src="${img}">
+                    <button class="remove-preview" onclick="removePostImage(${i})">✕</button>
+                </div>
+            `).join('');
+        }
+
+        function removePostImage(index) {
+            selectedPostImages.splice(index, 1);
+            renderPostPreview();
+        }
+
+        function publishNewPost() {
+            const title = document.getElementById("new-post-title").value.trim();
+            const content = document.getElementById("new-post-content").value.trim();
+            const tagsStr = document.getElementById("new-post-tags").value.trim();
+            
+            if (!title && !content && selectedPostImages.length === 0) {
+                alert("请添加标题、内容或图片！");
+                return;
+            }
+
+            const tags = tagsStr ? tagsStr.split(',').map(t => t.trim()).filter(t => t) : [];
+            
+            const newPost = {
+                id: Date.now(),
+                title: title || "未命名",
+                content: content,
+                images: [...selectedPostImages],
+                image: selectedPostImages.length > 0 ? selectedPostImages[0] : "",
+                tags: tags,
+                likes: 0,
+                time: new Date().toLocaleString("zh-CN")
+            };
+
+            siteData.posts.unshift(newPost);
+            saveData();
+            renderAllPages();
+
+            document.getElementById("new-post-title").value = "";
+            document.getElementById("new-post-content").value = "";
+            document.getElementById("new-post-tags").value = "";
+            selectedPostImages = [];
+            renderPostPreview();
+
+            alert("发布成功！");
         }
 
         function updateClock() {
@@ -1954,16 +2095,6 @@
             document.getElementById("edit-photo-color").value = siteData.photography.colorMethod;
             document.getElementById("edit-photo-composition").value = siteData.photography.composition;
             document.getElementById("edit-photo-tips").value = siteData.photography.tips;
-
-            document.getElementById("edit-qq").value = siteData.contact.qq;
-            document.getElementById("edit-wechat").value = siteData.contact.wechat;
-            document.getElementById("edit-email").value = siteData.contact.email;
-            document.getElementById("edit-phone").value = siteData.contact.phone;
-            document.getElementById("edit-douyin").value = siteData.contact.douyin;
-            document.getElementById("edit-xiaohongshu").value = siteData.contact.xiaohongshu;
-            document.getElementById("edit-bilibili").value = siteData.contact.bilibili;
-            document.getElementById("edit-ig").value = siteData.contact.ig;
-            document.getElementById("edit-note").value = siteData.contact.note;
 
             renderAdminPosts();
             renderAdminComments();
@@ -2237,16 +2368,6 @@
             siteData.photography.colorMethod = document.getElementById("edit-photo-color").value;
             siteData.photography.composition = document.getElementById("edit-photo-composition").value;
             siteData.photography.tips = document.getElementById("edit-photo-tips").value;
-
-            siteData.contact.qq = document.getElementById("edit-qq").value;
-            siteData.contact.wechat = document.getElementById("edit-wechat").value;
-            siteData.contact.email = document.getElementById("edit-email").value;
-            siteData.contact.phone = document.getElementById("edit-phone").value;
-            siteData.contact.douyin = document.getElementById("edit-douyin").value;
-            siteData.contact.xiaohongshu = document.getElementById("edit-xiaohongshu").value;
-            siteData.contact.bilibili = document.getElementById("edit-bilibili").value;
-            siteData.contact.ig = document.getElementById("edit-ig").value;
-            siteData.contact.note = document.getElementById("edit-note").value;
 
             saveData();
             renderAllPages();

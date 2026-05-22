@@ -1,2 +1,15 @@
-.DS_Store
+# Local development server
+local-server/
+data.json
+
+# Node
 node_modules/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Wrangler
+.wrangler/
+wrangler.toml.local

@@ -2523,6 +2523,11 @@
     </div>
 
     <script>
+        // ============================================
+        // API 配置
+        // ============================================
+        const API_BASE = "https://boke-api.4141lsy888.workers.dev/api";
+        
         const DEFAULT_PASSWORD = "9edyy81314520";
         const LOGIN_KEY = "yy8-admin-logged-in";
         const START_TIME = Date.now();
@@ -2668,7 +2673,7 @@
 
         async function updatePostInAPI(postId, postData) {
             try {
-                await fetch(`${api_base}/posts/${postId}`,  {
+                await fetch(`${API_BASE}/posts/${postId}`,  {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -2686,7 +2691,7 @@
 
         async function deletePostFromAPI(postId) {
             try {
-                await fetch(`${api_base}/posts/${postId}`,  {
+                await fetch(`${API_BASE}/posts/${postId}`,  {
                     method: 'DELETE'
                 });
                 await loadPostsFromAPI();

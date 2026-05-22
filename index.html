@@ -2627,7 +2627,7 @@
 
         async function loadPostsFromAPI() {
             try {
-                const response = await fetch('/api/posts');
+                const response = await fetch('http://localhost:3000/api/posts');
                 if (response.ok) {
                     const posts = await response.json();
                     siteData.posts = posts.map(post => ({
@@ -2646,7 +2646,7 @@
 
         async function savePostToAPI(post) {
             try {
-                const response = await fetch('/api/posts', {
+                const response = await fetch('http://localhost:3000/api/posts', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -2668,7 +2668,7 @@
 
         async function updatePostInAPI(postId, postData) {
             try {
-                await fetch(`/api/posts/${postId}`, {
+                await fetch(`${api_base}/posts/`{postId}`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -2686,7 +2686,7 @@
 
         async function deletePostFromAPI(postId) {
             try {
-                await fetch(`/api/posts/${postId}`, {
+                await fetch(`${api_base}/posts/`{postId}`, {
                     method: 'DELETE'
                 });
                 await loadPostsFromAPI();

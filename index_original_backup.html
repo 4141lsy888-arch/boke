@@ -38,21 +38,6 @@
             z-index: 0;
         }
 
-        html {
-            scroll-behavior: smooth;
-        }
-
-        .reveal-section {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
-        }
-
-        .reveal-section.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
         .site-header {
             background: rgba(255, 255, 255, 0.4);
             backdrop-filter: blur(15px);
@@ -60,16 +45,6 @@
             padding: 32px 28px;
             margin-bottom: 24px;
             box-shadow: 0 8px 32px rgba(150, 100, 150, 0.08);
-            opacity: 0;
-            transform: translateY(-20px);
-            animation: headerReveal 1s cubic-bezier(0.2, 0.8, 0.2, 1) 0.3s forwards;
-        }
-
-        @keyframes headerReveal {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
         }
 
         .site-title {
@@ -121,16 +96,6 @@
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
             border: 1px solid rgba(200, 160, 200, 0.3);
-            opacity: 0;
-            transform: translateY(-10px);
-            animation: navbarReveal 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.5s forwards;
-        }
-
-        @keyframes navbarReveal {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
         }
 
         .navbar::-webkit-scrollbar {
@@ -327,56 +292,6 @@
             letter-spacing: 0.05em;
         }
 
-        .social-links {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            margin-top: 16px;
-            padding-top: 16px;
-            border-top: 1px solid rgba(200, 160, 200, 0.15);
-        }
-
-        .social-icon {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, rgba(200, 160, 220, 0.3) 0%, rgba(255, 182, 193, 0.3) 100%);
-            text-decoration: none;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(150, 100, 150, 0.15);
-            border: 2px solid rgba(200, 160, 220, 0.3);
-            overflow: hidden;
-        }
-
-        .social-icon:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 20px rgba(150, 100, 150, 0.25);
-        }
-
-        .social-icon svg {
-            width: 32px;
-            height: 32px;
-        }
-
-        .social-icon.ig-icon {
-            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
-        }
-
-        .social-icon.ig-icon:hover {
-            box-shadow: 0 8px 20px rgba(220, 39, 67, 0.35);
-        }
-
-        .social-icon.mail-icon {
-            background: linear-gradient(135deg, rgba(139, 76, 158, 0.8) 0%, rgba(180, 100, 180, 0.8) 100%);
-        }
-
-        .social-icon.mail-icon:hover {
-            box-shadow: 0 8px 20px rgba(139, 76, 158, 0.35);
-        }
-
         .music-card {
             background: linear-gradient(135deg, rgba(200, 160, 220, 0.1) 0%, rgba(255, 182, 193, 0.1) 100%);
         }
@@ -411,102 +326,6 @@
         .music-artist {
             font-size: 0.82rem;
             color: #9b6eb0;
-        }
-
-        .custom-player {
-            margin-top: 10px;
-        }
-
-        .player-progress {
-            height: 4px;
-            background: rgba(123, 75, 196, 0.15);
-            border-radius: 2px;
-            cursor: pointer;
-            overflow: hidden;
-        }
-
-        .player-progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, #7B4BC4, #9B59B6, #8E44AD);
-            border-radius: 2px;
-            width: 0%;
-            transition: width 0.1s linear;
-        }
-
-        .player-time {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 8px;
-            font-size: 0.75rem;
-            color: #9b6eb0;
-        }
-
-        .player-btn {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            border: none;
-            background: linear-gradient(135deg, #7B4BC4, #9B59B6);
-            color: white;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-        }
-
-        .player-btn:hover {
-            opacity: 0.85;
-        }
-        .song-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            background: rgba(123, 75, 196, 0.03);
-            margin-bottom: 8px;
-        }
-
-        .song-item:hover {
-            background: rgba(123, 75, 196, 0.1);
-            transform: translateX(5px);
-        }
-
-        .song-cover {
-            width: 45px;
-            height: 45px;
-            border-radius: 8px;
-            object-fit: cover;
-        }
-
-        .song-info {
-            flex: 1;
-        }
-
-        .song-title {
-            font-size: 0.9rem;
-            font-weight: 400;
-            color: #5a4a5a;
-            margin-bottom: 2px;
-        }
-
-        .song-artist {
-            font-size: 0.75rem;
-            color: #9b6eb0;
-        }
-
-        .song-play-icon {
-            color: #7B4BC4;
-            font-size: 0.8rem;
-            opacity: 0.6;
-        }
-
-        .song-item:hover .song-play-icon {
-            opacity: 1;
         }
 
         .music-progress {
@@ -646,792 +465,47 @@
             background: rgba(200, 160, 200, 0.25);
         }
 
-        /* 图片网格布局 - 微信朋友圈风格 */
-        .image-grid {
-            display: grid;
-            gap: 4px;
-            width: 100%;
-        }
-
-        .image-grid.single {
-            grid-template-columns: 1fr;
-            max-width: 320px;
-            margin: 0 auto;
-        }
-
-        .image-grid.double {
-            grid-template-columns: repeat(2, 1fr);
-        }
-
-        .image-grid.triple {
-            grid-template-columns: repeat(3, 1fr);
-        }
-
-        .image-grid.four {
-            grid-template-columns: repeat(2, 1fr);
-        }
-
-        .image-grid.nine {
-            grid-template-columns: repeat(3, 1fr);
-        }
-
-        .image-grid img {
-            width: 100%;
-            aspect-ratio: 1;
-            object-fit: cover;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .image-grid img:hover {
-            transform: scale(1.02);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Mood标签样式 */
-        .mood-tag {
-            padding: 6px 14px;
-            background: rgba(123, 75, 196, 0.15);
-            backdrop-filter: blur(8px);
-            border-radius: 20px;
-            font-size: 0.8rem;
-            color: #7B4BC4;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(123, 75, 196, 0.2);
-            display: inline-block;
-            margin: 4px;
-        }
-
-        .mood-tag:hover {
-            background: rgba(123, 75, 196, 0.25);
-            box-shadow: 0 0 15px rgba(123, 75, 196, 0.3);
-            transform: translateY(-2px);
-        }
-
-        .mood-tag.active {
-            background: rgba(123, 75, 196, 0.35);
-            box-shadow: 0 0 15px rgba(123, 75, 196, 0.4);
-        }
-
-        /* 黑胶唱片播放器 */
-        .vinyl-player {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .vinyl-container {
-            position: relative;
-            width: 220px;
-            height: 220px;
-            margin-bottom: 20px;
-        }
-
-        .vinyl-record {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 50%, #1a1a1a 100%);
-            box-shadow: 0 0 0 3px #333, 0 0 0 6px #1a1a1a, 0 0 0 8px #333, 0 10px 30px rgba(0, 0, 0, 0.4);
-            position: relative;
-            transition: transform 0.1s linear;
-        }
-
-        .vinyl-record.playing {
-            animation: spin 3s linear infinite;
-        }
-
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        .vinyl-center {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #333, #1a1a1a);
-            border: 3px solid #444;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .vinyl-label {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #8B0000, #A52A2A);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 6px;
-            font-weight: bold;
-        }
-
-        .vinyl-grooves {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            background: repeating-radial-gradient(circle at center, transparent 0px, transparent 2px, rgba(255,255,255,0.03) 2px, rgba(255,255,255,0.03) 3px);
-        }
-
-        .vinyl-arm {
-            position: absolute;
-            top: -5px;
-            right: -20px;
-            width: 120px;
-            height: 8px;
-            background: linear-gradient(90deg, #8B7355, #6B5344);
-            border-radius: 4px;
-            transform-origin: right center;
-            transition: transform 0.5s ease;
-            transform: rotate(-30deg);
-        }
-
-        .vinyl-arm.playing {
-            transform: rotate(-10deg);
-        }
-
-        .vinyl-needle {
-            position: absolute;
-            left: 5px;
-            top: 100%;
-            width: 25px;
-            height: 4px;
-            background: linear-gradient(180deg, #333, #1a1a1a);
-            transform: rotate(30deg);
-            transform-origin: top left;
-        }
-
-        .player-controls {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .player-btn {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            background: rgba(200, 160, 200, 0.25);
-            border: none;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1rem;
-            transition: all 0.3s;
-        }
-
-        .player-btn:hover {
-            background: rgba(200, 160, 200, 0.4);
-            transform: scale(1.05);
-        }
-
-        .player-btn.play {
-            width: 55px;
-            height: 55px;
-            background: linear-gradient(135deg, rgba(123, 75, 196, 0.6), rgba(255, 182, 193, 0.6));
-            color: white;
-            font-size: 1.2rem;
-        }
-
-        /* AirPods弹窗 */
-        .airpods-popup {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(20px);
-            border-radius: 24px;
-            padding: 30px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
-            z-index: 1000;
-            animation: fadeInUp 0.5s ease;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translate(-50%, -45%);
-            }
-            to {
-                opacity: 1;
-                transform: translate(-50%, -50%);
-            }
-        }
-
-        .airpods-container {
-            display: flex;
-            align-items: center;
-            gap: 30px;
-        }
-
-        .airpods-image {
-            width: 120px;
-            height: 120px;
-            object-fit: contain;
-        }
-
-        .airpods-info {
-            text-align: center;
-        }
-
-        .airpods-title {
-            font-size: 1.2rem;
-            color: #333;
-            margin-bottom: 8px;
-        }
-
-        .airpods-status {
-            font-size: 0.9rem;
-            color: #666;
-            margin-bottom: 15px;
-        }
-
-        .airpods-battery {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-        }
-
-        .battery-item {
-            text-align: center;
-        }
-
-        .battery-percent {
-            font-size: 1rem;
-            font-weight: 500;
-            color: #333;
-        }
-
-        .battery-label {
-            font-size: 0.7rem;
-            color: #999;
-        }
-
-        /* 锁屏歌词 */
-        .lockscreen-lyrics {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            background: linear-gradient(180deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-            z-index: 9999;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: white;
-        }
-
-        .lockscreen-time {
-            font-size: 5rem;
-            font-weight: 300;
-            margin-bottom: 8px;
-            letter-spacing: 0.1em;
-        }
-
-        .lockscreen-date {
-            font-size: 1rem;
-            color: rgba(255, 255, 255, 0.7);
-            margin-bottom: 60px;
-        }
-
-        .lyrics-container {
-            text-align: center;
-            max-width: 80%;
-        }
-
-        .lyrics-line {
-            font-size: 1.3rem;
-            line-height: 2.5;
-            opacity: 0.5;
-            transition: all 0.5s;
-        }
-
-        .lyrics-line.active {
-            font-size: 1.6rem;
-            opacity: 1;
-            transform: scale(1.05);
-        }
-
-        .lockscreen-album {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            margin-bottom: 20px;
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { box-shadow: 0 0 20px rgba(255, 182, 193, 0.3); }
-            50% { box-shadow: 0 0 40px rgba(255, 182, 193, 0.6); }
-        }
-
-        /* Diary页面 */
-        .diary-card {
-            background: rgba(255, 255, 255, 0.65);
-            backdrop-filter: blur(15px);
-            border-radius: 20px;
-            padding: 25px;
-            margin-bottom: 15px;
-            border: 1px solid rgba(200, 160, 200, 0.2);
-        }
-
-        .diary-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .diary-date {
-            font-size: 0.85rem;
-            color: #9b6eb0;
-        }
-
-        .diary-location {
-            font-size: 0.8rem;
-            color: #b080c0;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .diary-content {
-            font-size: 0.95rem;
-            color: #5a3d5a;
-            line-height: 2;
-            margin-bottom: 15px;
-            letter-spacing: 0.03em;
-        }
-
-        .diary-images {
-            margin-bottom: 15px;
-        }
-
-        .diary-moods {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-
-        /* Voice Memories录音系统 */
-        .voice-recorder {
-            background: rgba(255, 255, 255, 0.7);
-            border-radius: 20px;
-            padding: 25px;
-        }
-
-        .recorder-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .recorder-title {
-            font-size: 1rem;
-            color: #6b4a6b;
-            font-weight: 300;
-        }
-
-        .recorder-time {
-            font-size: 0.85rem;
-            color: #9b6eb0;
-        }
-
-        .waveform-container {
-            height: 80px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 2px;
-            margin-bottom: 20px;
-            background: rgba(200, 160, 200, 0.1);
-            border-radius: 10px;
-            padding: 15px;
-        }
-
-        .waveform-bar {
-            width: 3px;
-            background: linear-gradient(180deg, rgba(123, 75, 196, 0.8), rgba(255, 182, 193, 0.8));
-            border-radius: 2px;
-            transition: height 0.1s ease;
-        }
-
-        .recorder-controls {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-        }
-
-        .recorder-btn {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            border: none;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s;
-        }
-
-        .recorder-btn.record {
-            background: linear-gradient(135deg, #ff6b6b, #ee5a5a);
-            color: white;
-            font-size: 1.2rem;
-        }
-
-        .recorder-btn.record:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 20px rgba(255, 107, 107, 0.4);
-        }
-
-        .recorder-btn.stop {
-            background: linear-gradient(135deg, #4ecdc4, #44a3a0);
-            color: white;
-            font-size: 1rem;
-        }
-
-        .recorder-btn.play {
-            background: rgba(200, 160, 200, 0.3);
-            color: #7a3d7a;
-        }
-
-        .recorder-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .voice-list {
-            margin-top: 20px;
-        }
-
-        .voice-item {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.6);
-            border-radius: 15px;
-            margin-bottom: 10px;
-        }
-
-        .voice-wave {
-            flex: 1;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            gap: 1px;
-        }
-
-        .voice-wave-bar {
-            width: 2px;
-            background: rgba(123, 75, 196, 0.5);
-            border-radius: 1px;
-        }
-
-        .voice-time {
-            font-size: 0.78rem;
-            color: #9b6eb0;
-            min-width: 60px;
-        }
-
-        .voice-moods {
-            display: flex;
-            gap: 6px;
-        }
-
-        /* 悬浮蝴蝶动画 */
-        .butterfly-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 100;
-            overflow: hidden;
-        }
-
-        .butterfly {
-            position: absolute;
-            width: 50px;
-            height: 50px;
-            animation: floatButterfly 8s ease-in-out infinite;
-        }
-
-        .butterfly svg {
-            width: 100%;
-            height: 100%;
-            filter: drop-shadow(0 2px 10px rgba(123, 75, 196, 0.3));
-        }
-
-        @keyframes floatButterfly {
-            0%, 100% {
-                transform: translate(0, 0) rotate(0deg);
-                opacity: 0.6;
-            }
-            25% {
-                transform: translate(100px, -50px) rotate(15deg);
-                opacity: 0.8;
-            }
-            50% {
-                transform: translate(50px, -100px) rotate(-10deg);
-                opacity: 0.6;
-            }
-            75% {
-                transform: translate(150px, -30px) rotate(20deg);
-                opacity: 0.7;
-            }
-        }
-
-        /* 微粒子效果 */
-        .particles-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 50;
-            overflow: hidden;
-        }
-
-        .particle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: rgba(123, 75, 196, 0.4);
-            border-radius: 50%;
-            animation: floatParticle 10s linear infinite;
-        }
-
-        @keyframes floatParticle {
-            0% {
-                transform: translateY(100vh) rotate(0deg);
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            90% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-10vh) rotate(360deg);
-                opacity: 0;
-            }
-        }
-
-        /* 页面淡入效果 */
-        .page-fade-in {
-            animation: pageFadeIn 0.8s ease-out forwards;
-        }
-
-        @keyframes pageFadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* 社交链接图标 */
-        .social-links {
-            display: flex;
-            gap: 12px;
-            justify-content: center;
-            margin-top: 15px;
-        }
-
-        .social-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(10px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s;
-            box-shadow: 0 2px 10px rgba(150, 100, 150, 0.1);
-        }
-
-        .social-icon:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 20px rgba(150, 100, 150, 0.2);
-        }
-
-        .social-icon svg {
-            width: 22px;
-            height: 22px;
-        }
-
-        .images-preview {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 10px;
-        }
-
-        .preview-item {
-            position: relative;
-            width: 80px;
-            height: 80px;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-
-        .preview-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .remove-img {
-            position: absolute;
-            top: 4px;
-            right: 4px;
-            width: 20px;
-            height: 20px;
-            background: rgba(0, 0, 0, 0.6);
-            border-radius: 50%;
-            color: white;
-            font-size: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-        }
-
-        .diary-filter {
-            margin-bottom: 20px;
-        }
-
-        .filter-label {
-            font-size: 0.85rem;
-            color: #9b6eb0;
-            margin-right: 10px;
-        }
-
-        .mood-tags-filter {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 8px;
-        }
-
         .post-item {
             background: rgba(255, 255, 255, 0.75);
             backdrop-filter: blur(12px);
-            border-radius: 20px;
-            padding: 28px;
-            margin-bottom: 20px;
-            border: 1px solid rgba(200, 160, 200, 0.15);
-            transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-        }
-
-        .post-item:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 40px rgba(150, 100, 150, 0.1);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(200, 160, 200, 0.2);
         }
 
         .post-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 18px;
+            margin-bottom: 14px;
         }
 
         .post-title {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: 300;
             color: #6b4a6b;
-            letter-spacing: 0.08em;
+            letter-spacing: 0.05em;
         }
 
         .post-time {
-            font-size: 0.75rem;
+            font-size: 0.78rem;
             color: #b080c0;
-            letter-spacing: 0.05em;
         }
 
         .post-content {
             color: #5a3d5a;
-            line-height: 2.2;
-            margin-bottom: 16px;
-            font-size: 1rem;
-            font-weight: 300;
-            letter-spacing: 0.02em;
-        }
-
-        .post-content.text-only {
-            font-family: 'Cormorant Garamond', serif;
-            font-style: italic;
-            font-size: 1.3rem;
-            line-height: 2.4;
-            letter-spacing: 0.1em;
-            color: rgba(90, 61, 90, 0.8);
-            padding: 20px 0;
-            text-align: center;
-        }
-
-        .post-images {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 8px;
-            margin-bottom: 16px;
+            line-height: 2;
+            margin-bottom: 14px;
+            font-size: 0.95rem;
         }
 
         .post-image {
             width: 100%;
-            aspect-ratio: 1;
+            max-height: 280px;
             object-fit: cover;
             border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-        }
-
-        .post-image:hover {
-            transform: scale(1.02);
-            box-shadow: 0 8px 24px rgba(150, 100, 150, 0.2);
-        }
-
-        .post-images.single-image .post-image {
-            grid-column: 1 / -1;
-            aspect-ratio: 16 / 10;
-        }
-
-        .post-images.two-images .post-image:nth-child(1) {
-            grid-column: span 2;
-            aspect-ratio: 16 / 10;
-        }
-
-        .post-images.three-images .post-image:nth-child(1) {
-            grid-column: span 2;
-            aspect-ratio: 16 / 10;
+            margin-bottom: 14px;
         }
 
         .post-tags {
@@ -1454,51 +528,6 @@
             gap: 18px;
             padding-top: 14px;
             border-top: 1px solid rgba(200, 160, 200, 0.15);
-        }
-
-        .image-lightbox {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            transition: opacity 0.3s ease;
-            cursor: pointer;
-        }
-
-        .lightbox-image {
-            max-width: 90%;
-            max-height: 90%;
-            object-fit: contain;
-            border-radius: 16px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-            cursor: default;
-        }
-
-        .lightbox-close {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            border: none;
-            background: rgba(255, 255, 255, 0.15);
-            color: white;
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-        }
-
-        .lightbox-close:hover {
-            background: rgba(255, 255, 255, 0.25);
-            transform: scale(1.1);
         }
 
         .action-btn {
@@ -1737,6 +766,39 @@
             color: #b080c0;
         }
 
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 14px;
+        }
+
+        .contact-item {
+            background: rgba(255, 255, 255, 0.75);
+            padding: 24px;
+            border-radius: 14px;
+            text-align: center;
+            border: 1px solid rgba(200, 160, 200, 0.2);
+        }
+
+        .contact-icon {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .contact-label {
+            font-weight: 300;
+            color: #7a3d7a;
+            margin-bottom: 6px;
+            font-size: 0.86rem;
+            letter-spacing: 0.05em;
+        }
+
+        .contact-value {
+            color: #5a3d5a;
+            font-size: 0.9rem;
+            word-break: break-all;
+        }
+
         .admin-fab {
             position: fixed;
             bottom: 28px;
@@ -1838,18 +900,6 @@
 
         .btn-secondary:hover {
             background: rgba(180, 160, 140, 0.18);
-        }
-
-        .admin-editor button {
-            padding: 8px 16px;
-            border-radius: 12px;
-            border: none;
-            cursor: pointer;
-            font-size: 0.85rem;
-            transition: all 0.3s;
-            font-family: inherit;
-            font-weight: 300;
-            letter-spacing: 0.05em;
         }
 
         .btn-danger {
@@ -2078,10 +1128,10 @@
         <div class="navbar">
             <button class="nav-btn active" onclick="switchPage('home')">✿ 首页</button>
             <button class="nav-btn" onclick="switchPage('posts')">✎ 发布</button>
-            <button class="nav-btn" onclick="switchPage('music')">♪ 音乐</button>
-            <button class="nav-btn" onclick="switchPage('voice')">🎤 Voice</button>
             <button class="nav-btn" onclick="switchPage('comments')">✿ 留言</button>
+            <button class="nav-btn" onclick="switchPage('music')">♪ 音乐</button>
             <button class="nav-btn" onclick="switchPage('photography')">✿ 摄影</button>
+            <button class="nav-btn" onclick="switchPage('contact')">✉ 联系</button>
         </div>
 
         <div class="page active" id="page-home">
@@ -2122,42 +1172,10 @@
                             <div class="stat-label">音乐</div>
                         </div>
                     </div>
-                    <div class="social-links">
-                        <a href="https://xhslink.com/m/7Dms5LL6Y5s" target="_blank" class="social-icon xhs-icon" title="小红书">
-                            <svg viewBox="0 0 24 24">
-                                <circle cx="12" cy="12" r="12" fill="#FF2442"/>
-                                <text x="12" y="16" text-anchor="middle" fill="white" font-size="7" font-weight="bold">小红书</text>
-                                <circle cx="20" cy="4" r="1.2" fill="#FF85AB"/>
-                            </svg>
-                        </a>
-                        <a href="https://www.instagram.com/u_u4141?igsh=dG5lNzd5a205cnY%3D&utm_source=qr" target="_blank" class="social-icon ig-icon" title="Instagram">
-                            <svg viewBox="0 0 24 24">
-                                <rect x="0" y="0" width="24" height="24" rx="6" fill="white"/>
-                                <circle cx="12" cy="12" r="10" fill="url(#ig-gradient)"/>
-                                <defs>
-                                    <linearGradient id="ig-gradient" x1="0%" y1="100%" x2="100%" y2="0%">
-                                        <stop offset="0%" style="stop-color:#f09433"/>
-                                        <stop offset="25%" style="stop-color:#e6683c"/>
-                                        <stop offset="50%" style="stop-color:#dc2743"/>
-                                        <stop offset="75%" style="stop-color:#cc2366"/>
-                                        <stop offset="100%" style="stop-color:#bc1888"/>
-                                    </linearGradient>
-                                </defs>
-                                <circle cx="12" cy="12" r="4" fill="none" stroke="white" stroke-width="1.5"/>
-                                <circle cx="17.5" cy="6.5" r="1" fill="white"/>
-                            </svg>
-                        </a>
-                        <a href="mailto:4141lsyyy8@gmail.com" class="social-icon mail-icon" title="邮箱">
-                            <svg viewBox="0 0 24 24">
-                                <rect x="0" y="0" width="24" height="24" rx="12" fill="white"/>
-                                <path d="M4 6h16v12H4V6zm2 2v8h12V8l-6 4.5L6 8z" fill="#8b4c9e"/>
-                            </svg>
-                        </a>
-                    </div>
                 </div>
 
                 <div class="card music-card">
-                    <div class="card-title">♪ Music Recommendation</div>
+                    <div class="card-title">♪ 正在播放</div>
                     <div class="music-header">
                         <img id="featured-music-cover" class="music-cover" src="" alt="专辑封面">
                         <div class="music-info">
@@ -2165,17 +1183,15 @@
                             <div class="music-artist" id="featured-music-artist">yy8</div>
                         </div>
                     </div>
-                    <div class="custom-player">
-                        <audio id="featured-audio"></audio>
-                        <div class="player-progress" id="player-progress" onclick="seekAudio(event)">
-                            <div class="player-progress-bar" id="player-progress-bar"></div>
-                        </div>
-                        <div class="player-time">
-                            <span id="player-current-time">00:00</span>
-                            <button class="player-btn" id="player-btn" onclick="togglePlayer()">▶</button>
-                            <span id="player-duration">00:00</span>
-                        </div>
+                    <div class="music-progress">
+                        <div class="progress-bar" id="music-progress-bar"></div>
                     </div>
+                    <div class="audio-controls">
+                        <span class="time-display" id="music-current-time">00:00</span>
+                        <button class="play-btn" id="music-play-btn" onclick="toggleMusic()">▶</button>
+                        <span class="time-display" id="music-total-time">00:00</span>
+                    </div>
+                    <audio id="featured-audio"></audio>
                 </div>
             </div>
 
@@ -2187,8 +1203,20 @@
                 </div>
 
                 <div class="card daily-card">
-                    <div class="card-title">✿ Quote</div>
-                    <div class="daily-text" id="daily-text" style="font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.1rem; letter-spacing: 0.1em; color: rgba(90, 61, 90, 0.7);">When the world is meaningless, I will wear headphones with your voice.</div>
+                    <div class="card-title">✿ 日常</div>
+                    <div class="daily-text" id="daily-text">生活不止眼前的苟且，还有诗和远方</div>
+                </div>
+
+                <div class="card tags-card">
+                    <div class="card-title">✿ 标签</div>
+                    <div class="tags-container">
+                        <span class="tag">日常</span>
+                        <span class="tag">摄影</span>
+                        <span class="tag">音乐</span>
+                        <span class="tag">旅行</span>
+                        <span class="tag">美食</span>
+                        <span class="tag">学习</span>
+                    </div>
                 </div>
 
                 <div class="card content-item-card">
@@ -2231,36 +1259,6 @@
             </div>
         </div>
 
-        <div class="page" id="page-voice">
-            <div class="card music-card">
-                <div class="card-title">♪ Music Recommendation</div>
-                <div class="music-header" id="current-music-header">
-                    <img id="current-music-cover" class="music-cover" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect fill='%23d4c4b4' width='100' height='100'/%3E%3Ctext x='50' y='60' text-anchor='middle' font-size='40' fill='white'%3E%E2%99%AA%3C/text%3E%3C/svg%3E" alt="专辑封面">
-                    <div class="music-info">
-                        <div class="music-title" id="current-music-title">请选择一首歌曲</div>
-                        <div class="music-artist" id="current-music-artist"></div>
-                    </div>
-                </div>
-                <div class="custom-player" id="list-player">
-                    <audio id="list-audio">
-                    <div class="player-progress" id="list-progress" onclick="seekListAudio(event)">
-                        <div class="player-progress-bar" id="list-progress-bar"></div>
-                    </div>
-                    <div class="player-time">
-                        <span id="list-current-time">00:00</span>
-                        <button class="player-btn" id="list-play-btn" onclick="toggleListPlayer()">▶</button>
-                        <span id="list-duration">00:00</span>
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-title">✿ Song List</div>
-                <div id="song-list-container">
-                    <div class="empty-state">还没有添加音乐</div>
-                </div>
-            </div>
-        </div>
-
         <div class="page" id="page-comments">
             <div class="card">
                 <div class="card-title">✿ 留言板</div>
@@ -2283,7 +1281,7 @@
 
         <div class="page" id="page-music">
             <div class="card">
-                <div class="card-title">♪ Music List</div>
+                <div class="card-title">♪ 音乐分享</div>
                 <div id="music-container">
                     <div class="empty-state">还没有添加音乐</div>
                 </div>
@@ -2328,58 +1326,60 @@
             </div>
         </div>
 
-
-    </div>
-
-    <button class="admin-fab" onclick="showLoginModal()">⚙</button>
-
-    <!-- AirPods弹窗 -->
-    <div class="airpods-popup" id="airpods-popup" onclick="closeAirPodsPopup()">
-        <div class="airpods-container" onclick="event.stopPropagation()">
-            <img class="airpods-image" src="https://neeko-copilot.bytedance.net/api/text_to_image?prompt=white%20Apple%20AirPods%20Pro%20wireless%20earbuds%20floating%20on%20white%20background%20product%20photography&image_size=square" alt="AirPods">
-            <div class="airpods-info">
-                <div class="airpods-title">AirPods Pro</div>
-                <div class="airpods-status">已连接</div>
-                <div class="airpods-battery">
-                    <div class="battery-item">
-                        <div class="battery-percent">85%</div>
-                        <div class="battery-label">左耳</div>
+        <div class="page" id="page-contact">
+            <div class="card">
+                <div class="card-title">✉ 联系我</div>
+                <div class="contact-grid" id="contact-grid">
+                    <div class="contact-item">
+                        <div class="contact-icon">🐧</div>
+                        <div class="contact-label">QQ</div>
+                        <div class="contact-value" id="contact-qq">-</div>
                     </div>
-                    <div class="battery-item">
-                        <div class="battery-percent">82%</div>
-                        <div class="battery-label">右耳</div>
+                    <div class="contact-item">
+                        <div class="contact-icon">💬</div>
+                        <div class="contact-label">微信</div>
+                        <div class="contact-value" id="contact-wechat">-</div>
                     </div>
-                    <div class="battery-item">
-                        <div class="battery-percent">95%</div>
-                        <div class="battery-label">盒子</div>
+                    <div class="contact-item">
+                        <div class="contact-icon">📧</div>
+                        <div class="contact-label">邮箱</div>
+                        <div class="contact-value" id="contact-email">-</div>
                     </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">📱</div>
+                        <div class="contact-label">电话</div>
+                        <div class="contact-value" id="contact-phone">-</div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">🎵</div>
+                        <div class="contact-label">抖音</div>
+                        <div class="contact-value" id="contact-douyin">-</div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">📕</div>
+                        <div class="contact-label">小红书</div>
+                        <div class="contact-value" id="contact-xiaohongshu">-</div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">📺</div>
+                        <div class="contact-label">B站</div>
+                        <div class="contact-value" id="contact-bilibili">-</div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">✿</div>
+                        <div class="contact-label">Instagram</div>
+                        <div class="contact-value" id="contact-ig">-</div>
+                    </div>
+                </div>
+                <div class="card" style="margin-top: 18px;">
+                    <div class="card-title">✿ 备注</div>
+                    <div id="contact-note">欢迎联系我！</div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- 锁屏歌词 -->
-    <div class="lockscreen-lyrics" id="lockscreen-lyrics" onclick="closeLockscreenLyrics()">
-        <div class="lockscreen-time" id="lockscreen-time">00:00</div>
-        <div class="lockscreen-date" id="lockscreen-date"></div>
-        <img class="lockscreen-album" src="https://neeko-copilot.bytedance.net/api/text_to_image?prompt=purple%20lavender%20flowers%20soft%20dreamy%20album%20cover%20art&image_size=square" alt="Album">
-        <div class="lyrics-container" id="lyrics-container">
-            <div class="lyrics-line">When the world is meaningless,</div>
-            <div class="lyrics-line active">I will wear headphones with your voice.</div>
-            <div class="lyrics-line">In the silence of the night,</div>
-            <div class="lyrics-line">I hear your whispers soft and bright.</div>
-        </div>
-    </div>
-
-    <!-- 悬浮蝴蝶容器 -->
-    <div class="butterfly-container" id="butterfly-container">
-        <div class="butterfly" style="top: 20%; left: 10%; animation-delay: 0s; font-size: 48px;">🦋</div>
-        <div class="butterfly" style="top: 60%; left: 70%; animation-delay: 3s; font-size: 36px;">🦋</div>
-        <div class="butterfly" style="top: 40%; left: 40%; animation-delay: 5s; font-size: 28px;">🦋</div>
-    </div>
-
-    <!-- 微粒子容器 -->
-    <div class="particles-container" id="particles-container"></div>
+    <button class="admin-fab" onclick="showLoginModal()">⚙</button>
 
     <div class="modal-overlay" id="login-modal">
         <div class="modal">
@@ -2405,6 +1405,7 @@
                 <button class="admin-tab" onclick="switchAdminTab('comments')">✿ 留言</button>
                 <button class="admin-tab" onclick="switchAdminTab('music')">♪ 音乐</button>
                 <button class="admin-tab" onclick="switchAdminTab('photography')">✿ 摄影</button>
+                <button class="admin-tab" onclick="switchAdminTab('contact')">✉ 联系</button>
                 <button class="admin-tab" onclick="switchAdminTab('backup')">✿ 备份</button>
             </div>
 
@@ -2489,6 +1490,45 @@
                 <div id="admin-photos-editor"></div>
             </div>
 
+            <div class="admin-section" id="admin-contact">
+                <div class="form-group">
+                    <label>QQ</label>
+                    <input type="text" id="edit-qq" placeholder="QQ 号码">
+                </div>
+                <div class="form-group">
+                    <label>微信</label>
+                    <input type="text" id="edit-wechat" placeholder="微信号">
+                </div>
+                <div class="form-group">
+                    <label>邮箱</label>
+                    <input type="text" id="edit-email" placeholder="email@example.com">
+                </div>
+                <div class="form-group">
+                    <label>电话</label>
+                    <input type="text" id="edit-phone" placeholder="电话号码">
+                </div>
+                <div class="form-group">
+                    <label>抖音</label>
+                    <input type="text" id="edit-douyin" placeholder="抖音号">
+                </div>
+                <div class="form-group">
+                    <label>小红书</label>
+                    <input type="text" id="edit-xiaohongshu" placeholder="小红书号">
+                </div>
+                <div class="form-group">
+                    <label>B站</label>
+                    <input type="text" id="edit-bilibili" placeholder="B站号">
+                </div>
+                <div class="form-group">
+                    <label>Instagram</label>
+                    <input type="text" id="edit-ig" placeholder="Instagram 账号">
+                </div>
+                <div class="form-group">
+                    <label>备注</label>
+                    <textarea id="edit-note" placeholder="欢迎联系我！"></textarea>
+                </div>
+            </div>
+
             <div class="admin-section" id="admin-backup">
                 <div class="warning-text">
                     ✿ 提示：所有数据只保存在当前浏览器 localStorage 中<br>
@@ -2524,9 +1564,9 @@
 
     <script>
         const DEFAULT_PASSWORD = "9edyy81314520";
+        const STORAGE_KEY = "yy8-personal-site";
         const LOGIN_KEY = "yy8-admin-logged-in";
         const START_TIME = Date.now();
-        const STORAGE_KEY = "yy8-site-data";
 
         let siteData = {
             siteTitle: "yy8 的世界",
@@ -2537,31 +1577,13 @@
             dailyText: "生活不止眼前的苟且，还有诗和远方",
             posts: [
                 {
-                    id: Date.now() - 1000,
-                    title: "欢迎来到我的博客",
-                    content: "这是我的第一篇文章，记录生活中的点点滴滴。希望大家喜欢！",
-                    images: [],
-                    tags: ["欢迎", "博客"],
+                    id: Date.now(),
+                    title: "欢迎来到 yy8 的世界",
+                    content: "这是我的个人主页，会在这里分享生活点滴、喜欢的音乐和摄影作品，欢迎大家常来看看！",
+                    image: "",
+                    tags: ["日常", "欢迎"],
                     likes: 0,
-                    time: new Date(Date.now() - 86400000).toLocaleString("zh-CN")
-                },
-                {
-                    id: Date.now() - 2000,
-                    title: "周末小记",
-                    content: "今天阳光明媚，和朋友一起去了公园。春天真的来了，花儿都开了。",
-                    images: [],
-                    tags: ["生活", "周末"],
-                    likes: 5,
-                    time: new Date(Date.now() - 172800000).toLocaleString("zh-CN")
-                },
-                {
-                    id: Date.now() - 3000,
-                    title: "音乐推荐",
-                    content: "最近在听周杰伦的老歌，夜曲、青花瓷、晴天...每一首都是经典。",
-                    images: [],
-                    tags: ["音乐", "推荐"],
-                    likes: 3,
-                    time: new Date(Date.now() - 259200000).toLocaleString("zh-CN")
+                    time: new Date().toLocaleString("zh-CN")
                 }
             ],
             comments: [
@@ -2590,6 +1612,19 @@
                 colorMethod: "暖色调、明亮、低对比",
                 tips: "注意光线，多拍多练，后期微调",
                 photos: []
+            },
+            contact: {
+                qq: "123456789",
+                wechat: "yy8_wx",
+                email: "yy8@example.com",
+                phone: "",
+                douyin: "@yy8",
+                kuaishou: "",
+                xiaohongshu: "@yy8",
+                bilibili: "@yy8",
+                ig: "u_u4141",
+                github: "",
+                note: "欢迎联系我交流！"
             }
         };
 
@@ -2597,9 +1632,14 @@
         let tempAvatarData = "";
         let tempPhotoData = [];
 
-        function saveData() {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(siteData));
-        }
+        document.addEventListener("DOMContentLoaded", function() {
+            loadData();
+            updateClock();
+            setInterval(updateClock, 1000);
+            updateUptime();
+            setInterval(updateUptime, 60000);
+            checkLoginStatus();
+        });
 
         function loadData() {
             const saved = localStorage.getItem(STORAGE_KEY);
@@ -2608,111 +1648,13 @@
                     siteData = JSON.parse(saved);
                 } catch (e) {
                     console.error("数据加载失败，使用默认数据");
-                    saveData();
                 }
-            } else {
-                saveData();
-            }
-        }
-
-        document.addEventListener("DOMContentLoaded", function() {
-            loadData();
-            loadPostsFromAPI();
-            updateClock();
-            setInterval(updateClock, 1000);
-            updateUptime();
-            setInterval(updateUptime, 60000);
-            checkLoginStatus();
-        });
-
-        async function loadPostsFromAPI() {
-            try {
-                const response = await fetch('/api/posts');
-                if (response.ok) {
-                    const posts = await response.json();
-                    siteData.posts = posts.map(post => ({
-                        ...post,
-                        images: typeof post.images === 'string' ? JSON.parse(post.images) : post.images,
-                        tags: typeof post.tags === 'string' ? JSON.parse(post.tags) : post.tags,
-                        time: post.created_at ? new Date(post.created_at).toLocaleString("zh-CN") : new Date().toLocaleString("zh-CN")
-                    }));
-                    saveData();
-                }
-            } catch (error) {
-                console.error("从API加载数据失败，使用localStorage:", error);
             }
             renderAllPages();
         }
 
-        async function savePostToAPI(post) {
-            try {
-                const response = await fetch('/api/posts', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        title: post.title,
-                        content: post.content,
-                        images: post.images || (post.image ? [post.image] : []),
-                        tags: post.tags || []
-                    })
-                });
-                const result = await response.json();
-                if (result.success) {
-                    post.id = result.id;
-                }
-                await loadPostsFromAPI();
-            } catch (error) {
-                console.error("保存文章失败:", error);
-            }
-        }
-
-        async function updatePostInAPI(postId, postData) {
-            try {
-                await fetch(`/api/posts/${postId}`, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        title: postData.title,
-                        content: postData.content,
-                        images: postData.images || [],
-                        tags: postData.tags || []
-                    })
-                });
-                await loadPostsFromAPI();
-            } catch (error) {
-                console.error("更新文章失败:", error);
-            }
-        }
-
-        async function deletePostFromAPI(postId) {
-            try {
-                await fetch(`/api/posts/${postId}`, {
-                    method: 'DELETE'
-                });
-                await loadPostsFromAPI();
-            } catch (error) {
-                console.error("删除文章失败:", error);
-            }
-        }
-
-        async function likePostAPI(postId) {
-            try {
-                const response = await fetch('/api/posts/like', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ id: postId })
-                });
-                const result = await response.json();
-                if (result.success) {
-                    const post = siteData.posts.find(p => p.id === postId);
-                    if (post) {
-                        post.likes = result.likes;
-                    }
-                    renderPostsPage();
-                }
-            } catch (error) {
-                console.error("点赞失败:", error);
-            }
+        function saveData() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(siteData));
         }
 
         function checkLoginStatus() {
@@ -2735,6 +1677,7 @@
             renderCommentsPage();
             renderMusicPage();
             renderPhotographyPage();
+            renderContactPage();
         }
 
         function renderHomePage() {
@@ -2794,8 +1737,6 @@
                     <div style="font-size: 0.85rem; color: #7a6a5a;">${latestComment.content.substring(0, 50)}...</div>
                 `;
             }
-
-            initAudioEvents();
         }
 
         function renderPostsPage() {
@@ -2804,52 +1745,24 @@
                 postsContainer.innerHTML = '<div class="empty-state">还没有发布内容</div>';
                 return;
             }
-            postsContainer.innerHTML = siteData.posts.map(post => {
-                const images = post.images || (post.image ? [post.image] : []);
-                const hasImages = images.length > 0;
-                const isTextOnly = !hasImages && post.content;
-                const imageClass = hasImages ? `post-images ${images.length === 1 ? 'single-image' : images.length === 2 ? 'two-images' : images.length === 3 ? 'three-images' : ''}` : '';
-                
-                return `
-                    <div class="post-item">
-                        <div class="post-header">
-                            <div class="post-title">${post.title || (isTextOnly ? '' : 'Untitled')}</div>
-                            <div class="post-time">${post.time}</div>
-                        </div>
-                        ${hasImages ? `<div class="${imageClass}">${images.map(img => `<img src="${img}" alt="${post.title}" class="post-image" onclick="openImageLightbox('${img}')">`).join('')}</div>` : ''}
-                        <div class="post-content ${isTextOnly ? 'text-only' : ''}">${post.content}</div>
-                        <div class="post-tags">
-                            ${post.tags && post.tags.length > 0 ? post.tags.map(tag => `<span class="post-tag">${tag}</span>`).join('') : ''}
-                        </div>
-                        <div class="post-actions">
-                            <button class="action-btn" onclick="likePost(${post.id})">
-                                ❤️ ${post.likes || 0}
-                            </button>
-                        </div>
+            postsContainer.innerHTML = siteData.posts.map(post => `
+                <div class="post-item">
+                    <div class="post-header">
+                        <div class="post-title">${post.title}</div>
+                        <div class="post-time">${post.time}</div>
                     </div>
-                `;
-            }).join('');
-        }
-
-        function openImageLightbox(src) {
-            const lightbox = document.createElement('div');
-            lightbox.className = 'image-lightbox';
-            lightbox.innerHTML = `<img src="${src}" alt="Preview" class="lightbox-image"><button class="lightbox-close" onclick="closeImageLightbox()">✕</button>`;
-            document.body.appendChild(lightbox);
-            lightbox.style.opacity = '0';
-            setTimeout(() => { lightbox.style.opacity = '1'; }, 10);
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeImageLightbox() {
-            const lightbox = document.querySelector('.image-lightbox');
-            if (lightbox) {
-                lightbox.style.opacity = '0';
-                setTimeout(() => {
-                    lightbox.remove();
-                    document.body.style.overflow = '';
-                }, 300);
-            }
+                    ${post.image ? `<img src="${post.image}" alt="${post.title}" class="post-image">` : ''}
+                    <div class="post-content">${post.content}</div>
+                    <div class="post-tags">
+                        ${post.tags.map(tag => `<span class="post-tag">${tag}</span>`).join('')}
+                    </div>
+                    <div class="post-actions">
+                        <button class="action-btn" onclick="likePost(${post.id})">
+                            ❤️ ${post.likes}
+                        </button>
+                    </div>
+                </div>
+            `).join('');
         }
 
         function renderCommentsPage() {
@@ -2910,6 +1823,18 @@
             `).join('');
         }
 
+        function renderContactPage() {
+            document.getElementById("contact-qq").textContent = siteData.contact.qq || '-';
+            document.getElementById("contact-wechat").textContent = siteData.contact.wechat || '-';
+            document.getElementById("contact-email").textContent = siteData.contact.email || '-';
+            document.getElementById("contact-phone").textContent = siteData.contact.phone || '-';
+            document.getElementById("contact-douyin").textContent = siteData.contact.douyin || '-';
+            document.getElementById("contact-xiaohongshu").textContent = siteData.contact.xiaohongshu || '-';
+            document.getElementById("contact-bilibili").textContent = siteData.contact.bilibili || '-';
+            document.getElementById("contact-ig").textContent = siteData.contact.ig || '-';
+            document.getElementById("contact-note").textContent = siteData.contact.note;
+        }
+
         function updateClock() {
             const now = new Date();
             document.getElementById("clock-display").textContent = now.toLocaleTimeString("zh-CN");
@@ -2927,70 +1852,17 @@
             document.getElementById("uptime").textContent = `${days}天`;
         }
 
-        function togglePlayer() {
+        function toggleMusic() {
             const audio = document.getElementById("featured-audio");
-            const btn = document.getElementById("player-btn");
-
-            if (!audio || !audio.src) {
-                alert("请先在管理后台添加音乐！");
-                return;
-            }
-
+            const playBtn = document.getElementById("music-play-btn");
             if (isMusicPlaying) {
                 audio.pause();
-                btn.textContent = "▶";
+                playBtn.textContent = "▶";
             } else {
-                audio.play().catch(function(error) {
-                    alert("无法播放音乐: " + error.message);
-                    btn.textContent = "▶";
-                    return;
-                });
-                btn.textContent = "⏸";
+                audio.play();
+                playBtn.textContent = "⏸";
             }
             isMusicPlaying = !isMusicPlaying;
-        }
-
-        function seekAudio(e) {
-            const audio = document.getElementById("featured-audio");
-            const progressBar = document.getElementById("player-progress");
-            if (!audio || !audio.duration) return;
-
-            const rect = progressBar.getBoundingClientRect();
-            const percent = (e.clientX - rect.left) / rect.width;
-            audio.currentTime = percent * audio.duration;
-        }
-
-        function updateProgress() {
-            const audio = document.getElementById("featured-audio");
-            const progressBar = document.getElementById("player-progress-bar");
-            const currentTime = document.getElementById("player-current-time");
-            const duration = document.getElementById("player-duration");
-
-            if (!audio) return;
-
-            const percent = (audio.currentTime / audio.duration) * 100 || 0;
-            progressBar.style.width = percent + "%";
-            currentTime.textContent = formatTime(audio.currentTime);
-            duration.textContent = formatTime(audio.duration);
-        }
-
-        function formatTime(seconds) {
-            if (isNaN(seconds)) return "00:00";
-            const mins = Math.floor(seconds / 60);
-            const secs = Math.floor(seconds % 60);
-            return mins.toString().padStart(2, "0") + ":" + secs.toString().padStart(2, "0");
-        }
-
-        function initAudioEvents() {
-            const audio = document.getElementById("featured-audio");
-            if (audio) {
-                audio.addEventListener("timeupdate", updateProgress);
-                audio.addEventListener("loadedmetadata", updateProgress);
-                audio.addEventListener("ended", function() {
-                    document.getElementById("player-btn").textContent = "▶";
-                    isMusicPlaying = false;
-                });
-            }
         }
 
         function submitComment() {
@@ -3015,7 +1887,12 @@
         }
 
         function likePost(postId) {
-            likePostAPI(postId);
+            const post = siteData.posts.find(p => p.id === postId);
+            if (post) {
+                post.likes++;
+                saveData();
+                renderPostsPage();
+            }
         }
 
         function openImagePreview(src) {
@@ -3077,6 +1954,16 @@
             document.getElementById("edit-photo-color").value = siteData.photography.colorMethod;
             document.getElementById("edit-photo-composition").value = siteData.photography.composition;
             document.getElementById("edit-photo-tips").value = siteData.photography.tips;
+
+            document.getElementById("edit-qq").value = siteData.contact.qq;
+            document.getElementById("edit-wechat").value = siteData.contact.wechat;
+            document.getElementById("edit-email").value = siteData.contact.email;
+            document.getElementById("edit-phone").value = siteData.contact.phone;
+            document.getElementById("edit-douyin").value = siteData.contact.douyin;
+            document.getElementById("edit-xiaohongshu").value = siteData.contact.xiaohongshu;
+            document.getElementById("edit-bilibili").value = siteData.contact.bilibili;
+            document.getElementById("edit-ig").value = siteData.contact.ig;
+            document.getElementById("edit-note").value = siteData.contact.note;
 
             renderAdminPosts();
             renderAdminComments();
@@ -3142,31 +2029,6 @@
                         <textarea id="edit-post-content-${post.id}">${post.content}</textarea>
                     </div>
                     <div class="form-group">
-                        <label>定位</label>
-                        <input type="text" id="edit-post-location-${post.id}" value="${post.location || ''}" placeholder="输入城市、地址或经纬度" style="width: 100%; margin-bottom: 8px;">
-                        <div style="display: flex; gap: 8px;">
-                            <button class="btn-secondary" onclick="getCurrentLocation(${post.id})">📍 获取当前位置</button>
-                            <button class="btn-primary" onclick="showLocationPicker(${post.id})">🌍 选择位置</button>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>图片（最多9张）</label>
-                        <div class="upload-area" onclick="document.getElementById('post-images-upload-${post.id}').click()">
-                            <span>点击上传图片</span>
-                        </div>
-                        <input type="file" id="post-images-upload-${post.id}" class="file-input" accept="image/*" multiple onchange="handlePostImagesUpload(${post.id}, this)">
-                        <div id="post-images-preview-${post.id}" class="images-preview">
-                            ${post.images && post.images.length > 0 ? 
-                                post.images.map((img, idx) => `
-                                    <div class="preview-item">
-                                        <img src="${img}">
-                                        <span class="remove-img" onclick="removePostImage(${post.id}, ${idx})">✕</span>
-                                    </div>
-                                `).join('') : ''
-                            }
-                        </div>
-                    </div>
-                    <div class="form-group">
                         <label>标签（逗号分隔）</label>
                         <input type="text" id="edit-post-tags-${post.id}" value="${post.tags.join(', ')}">
                     </div>
@@ -3183,8 +2045,7 @@
                 id: Date.now(),
                 title: "新发布",
                 content: "",
-                images: [],
-                location: "",
+                image: "",
                 tags: [],
                 likes: 0,
                 time: new Date().toLocaleString("zh-CN")
@@ -3193,97 +2054,24 @@
             renderAdminPosts();
         }
 
-        function getCurrentLocation(postId) {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        const lat = position.coords.latitude;
-                        const lng = position.coords.longitude;
-                        document.getElementById(`edit-post-location-${postId}`).value = `${lat.toFixed(4)}, ${lng.toFixed(4)}`;
-                    },
-                    (error) => {
-                        alert('无法获取位置，请手动输入或选择预设位置');
-                    }
-                );
-            } else {
-                alert('您的浏览器不支持地理定位，请手动输入位置');
-            }
-        }
-
-        function showLocationPicker(postId) {
-            const locations = [
-                { name: '🏙️ 北京', value: '北京' },
-                { name: '🌆 上海', value: '上海' },
-                { name: '🌃 广州', value: '广州' },
-                { name: '🌉 深圳', value: '深圳' },
-                { name: '🌁 杭州', value: '杭州' },
-                { name: '🎑 成都', value: '成都' },
-                { name: '🗼 重庆', value: '重庆' },
-                { name: '🌊 厦门', value: '厦门' },
-                { name: '🌸 苏州', value: '苏州' },
-                { name: '🌄 西安', value: '西安' },
-                { name: '🏝️ 三亚', value: '三亚' },
-                { name: '🎡 香港', value: '香港' },
-            ];
-            
-            let locationHTML = '<div style="max-height: 300px; overflow-y: auto;">';
-            locations.forEach(loc => {
-                locationHTML += `<div style="padding: 10px; border-radius: 10px; cursor: pointer; transition: background 0.2s;" onclick="selectLocation(${postId}, '${loc.value}')" onmouseover="this.style.background='rgba(180,160,140,0.1)'" onmouseout="this.style.background='transparent'">${loc.name}</div>`;
-            });
-            locationHTML += '</div>';
-            
-            alert('位置选择器功能需要弹窗支持，请直接在输入框中输入位置或使用获取当前位置功能。\n\n可选城市：北京、上海、广州、深圳、杭州、成都、重庆、厦门、苏州、西安、三亚、香港');
-        }
-
-        function selectLocation(postId, location) {
-            document.getElementById(`edit-post-location-${postId}`).value = location;
-        }
-
-        function handlePostImagesUpload(postId, input) {
-            const post = siteData.posts.find(p => p.id === postId);
-            if (!post.images) post.images = [];
-            
-            Array.from(input.files).forEach(file => {
-                if (post.images.length >= 9) {
-                    alert('最多只能上传9张图片');
-                    return;
-                }
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    post.images.push(e.target.result);
-                    renderAdminPosts();
-                };
-                reader.readAsDataURL(file);
-            });
-            input.value = '';
-        }
-
-        function removePostImage(postId, index) {
-            const post = siteData.posts.find(p => p.id === postId);
-            if (post && post.images) {
-                post.images.splice(index, 1);
-                renderAdminPosts();
-            }
-        }
-
-        async function savePost(postId) {
+        function savePost(postId) {
             const post = siteData.posts.find(p => p.id === postId);
             if (post) {
                 post.title = document.getElementById(`edit-post-title-${postId}`).value;
                 post.content = document.getElementById(`edit-post-content-${postId}`).value;
-                post.location = document.getElementById(`edit-post-location-${postId}`).value;
                 post.tags = document.getElementById(`edit-post-tags-${postId}`).value.split(',').map(t => t.trim()).filter(t => t);
-                post.time = new Date().toLocaleString("zh-CN");
                 saveData();
-                await updatePostInAPI(postId, post);
                 renderAllPages();
                 alert("发布已保存！");
             }
         }
 
-        async function deletePost(postId) {
+        function deletePost(postId) {
             if (confirm("确定要删除这条发布吗？")) {
-                await deletePostFromAPI(postId);
+                siteData.posts = siteData.posts.filter(p => p.id !== postId);
+                saveData();
+                renderAdminPosts();
+                renderAllPages();
                 alert("发布已删除！");
             }
         }
@@ -3333,20 +2121,6 @@
                         <input type="text" id="edit-music-artist-${music.id}" value="${music.artist}">
                     </div>
                     <div class="form-group">
-                        <label>封面图片</label>
-                        <div class="upload-area" onclick="document.getElementById('music-cover-upload-${music.id}').click()">
-                            ${music.cover ? '<img src="' + music.cover + '" style="max-width: 100px; max-height: 100px;">' : '<span>点击上传封面</span>'}
-                        </div>
-                        <input type="file" id="music-cover-upload-${music.id}" class="file-input" accept="image/*" onchange="handleMusicCoverUpload(${music.id}, this)">
-                    </div>
-                    <div class="form-group">
-                        <label>音频文件</label>
-                        <div class="upload-area" onclick="document.getElementById('music-audio-upload-${music.id}').click()">
-                            ${music.audioUrl ? '<span>✓ 已上传音频</span>' : '<span>点击上传音频文件</span>'}
-                        </div>
-                        <input type="file" id="music-audio-upload-${music.id}" class="file-input" accept="audio/*" onchange="handleMusicAudioUpload(${music.id}, this)">
-                    </div>
-                    <div class="form-group">
                         <label>描述</label>
                         <textarea id="edit-music-desc-${music.id}">${music.description}</textarea>
                     </div>
@@ -3371,36 +2145,12 @@
             renderAdminMusic();
         }
 
-        function handleMusicCoverUpload(musicId, input) {
-            const music = siteData.musicList.find(m => m.id === musicId);
-            if (music && input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    music.cover = e.target.result;
-                    renderAdminMusic();
-                };
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
-        function handleMusicAudioUpload(musicId, input) {
-            const music = siteData.musicList.find(m => m.id === musicId);
-            if (music && input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    music.audioUrl = e.target.result;
-                    renderAdminMusic();
-                };
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
         function saveMusic(musicId) {
             const music = siteData.musicList.find(m => m.id === musicId);
             if (music) {
-                music.title = document.getElementById('edit-music-title-' + musicId).value;
-                music.artist = document.getElementById('edit-music-artist-' + musicId).value;
-                music.description = document.getElementById('edit-music-desc-' + musicId).value;
+                music.title = document.getElementById(`edit-music-title-${musicId}`).value;
+                music.artist = document.getElementById(`edit-music-artist-${musicId}`).value;
+                music.description = document.getElementById(`edit-music-desc-${musicId}`).value;
                 saveData();
                 renderAllPages();
                 alert("音乐已保存！");
@@ -3488,6 +2238,16 @@
             siteData.photography.composition = document.getElementById("edit-photo-composition").value;
             siteData.photography.tips = document.getElementById("edit-photo-tips").value;
 
+            siteData.contact.qq = document.getElementById("edit-qq").value;
+            siteData.contact.wechat = document.getElementById("edit-wechat").value;
+            siteData.contact.email = document.getElementById("edit-email").value;
+            siteData.contact.phone = document.getElementById("edit-phone").value;
+            siteData.contact.douyin = document.getElementById("edit-douyin").value;
+            siteData.contact.xiaohongshu = document.getElementById("edit-xiaohongshu").value;
+            siteData.contact.bilibili = document.getElementById("edit-bilibili").value;
+            siteData.contact.ig = document.getElementById("edit-ig").value;
+            siteData.contact.note = document.getElementById("edit-note").value;
+
             saveData();
             renderAllPages();
             closeModal("admin-modal");
@@ -3530,323 +2290,6 @@
             if (confirm("确定要清空所有数据吗？此操作不可恢复！")) {
                 localStorage.removeItem(STORAGE_KEY);
                 location.reload();
-            }
-        }
-
-        function setupScrollReveal() {
-            const observerOptions = {
-                root: null,
-                rootMargin: '0px 0px -50px 0px',
-                threshold: 0.1
-            };
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                    }
-                });
-            }, observerOptions);
-
-            document.querySelectorAll('.card').forEach(card => {
-                card.classList.add('reveal-section');
-                observer.observe(card);
-            });
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            setupScrollReveal();
-            initParticles();
-            initWaveform();
-        });
-
-        // 黑胶唱片播放器
-        let isVinylPlaying = false;
-        let currentTrackIndex = 0;
-        let vinylTimer = null;
-
-        const tracks = [
-            { title: "Lavender Dreams", artist: "yy8", duration: 180 },
-            { title: "Midnight Whispers", artist: "yy8", duration: 200 },
-            { title: "Purple Sunset", artist: "yy8", duration: 165 }
-        ];
-
-        function toggleVinyl() {
-            const vinyl = document.getElementById('vinyl-record');
-            const arm = document.getElementById('vinyl-arm');
-            const btn = document.getElementById('vinyl-play-btn');
-            
-            if (isVinylPlaying) {
-                vinyl.classList.remove('playing');
-                arm.classList.remove('playing');
-                btn.innerHTML = '▶';
-                clearInterval(vinylTimer);
-            } else {
-                vinyl.classList.add('playing');
-                arm.classList.add('playing');
-                btn.innerHTML = '⏸';
-                startProgress();
-            }
-            isVinylPlaying = !isVinylPlaying;
-        }
-
-        function startProgress() {
-            const progress = document.getElementById('vinyl-progress');
-            const duration = tracks[currentTrackIndex].duration;
-            let startTime = Date.now();
-            
-            vinylTimer = setInterval(() => {
-                const elapsed = (Date.now() - startTime) / 1000;
-                const percent = Math.min((elapsed / duration) * 100, 100);
-                progress.style.width = percent + '%';
-                
-                if (percent >= 100) {
-                    skipMusic(1);
-                }
-            }, 100);
-        }
-
-        function skipMusic(direction) {
-            clearInterval(vinylTimer);
-            currentTrackIndex = (currentTrackIndex + direction + tracks.length) % tracks.length;
-            document.getElementById('vinyl-title').innerHTML = tracks[currentTrackIndex].title;
-            document.getElementById('vinyl-artist').innerHTML = tracks[currentTrackIndex].artist;
-            document.getElementById('vinyl-progress').style.width = '0%';
-            
-            if (isVinylPlaying) {
-                startProgress();
-            }
-        }
-
-        // AirPods弹窗
-        function showAirPodsPopup() {
-            document.getElementById('airpods-popup').style.display = 'block';
-        }
-
-        function closeAirPodsPopup() {
-            document.getElementById('airpods-popup').style.display = 'none';
-        }
-
-        // 锁屏歌词
-        function showLockscreenLyrics() {
-            const lockscreen = document.getElementById('lockscreen-lyrics');
-            lockscreen.style.display = 'flex';
-            updateLockscreenTime();
-            setInterval(updateLockscreenTime, 1000);
-            
-            // 歌词滚动效果
-            let lineIndex = 1;
-            setInterval(() => {
-                const lines = document.querySelectorAll('.lyrics-line');
-                lines.forEach((line, i) => {
-                    line.classList.remove('active');
-                    if (i === lineIndex) {
-                        line.classList.add('active');
-                    }
-                });
-                lineIndex = (lineIndex + 1) % 4;
-            }, 3000);
-        }
-
-        function closeLockscreenLyrics() {
-            document.getElementById('lockscreen-lyrics').style.display = 'none';
-        }
-
-        function updateLockscreenTime() {
-            const now = new Date();
-            document.getElementById('lockscreen-time').innerHTML = now.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
-            document.getElementById('lockscreen-date').innerHTML = now.toLocaleDateString('zh-CN', { month: 'long', day: 'numeric', weekday: 'long' });
-        }
-
-        function getGridClass(count) {
-            if (count === 1) return 'single';
-            if (count === 2) return 'double';
-            if (count === 3) return 'triple';
-            if (count <= 4) return 'four';
-            return 'nine';
-        }
-
-        // Voice录音系统
-        let isRecording = false;
-        let isPlaying = false;
-        let mediaRecorder = null;
-        let audioChunks = [];
-        let audioBlob = null;
-        let recorderInterval = null;
-        let currentTime = 0;
-
-        function initWaveform() {
-            const container = document.getElementById('waveform-container');
-            for (let i = 0; i < 50; i++) {
-                const bar = document.createElement('div');
-                bar.className = 'waveform-bar';
-                bar.style.height = Math.random() * 30 + 10 + 'px';
-                container.appendChild(bar);
-            }
-        }
-
-        function animateWaveform(isActive) {
-            const bars = document.querySelectorAll('.waveform-bar');
-            if (isActive) {
-                recorderInterval = setInterval(() => {
-                    bars.forEach(bar => {
-                        bar.style.height = Math.random() * 50 + 10 + 'px';
-                    });
-                    currentTime++;
-                    updateRecorderTime();
-                }, 100);
-            } else {
-                clearInterval(recorderInterval);
-                bars.forEach(bar => {
-                    bar.style.height = Math.random() * 30 + 10 + 'px';
-                });
-            }
-        }
-
-        function updateRecorderTime() {
-            const mins = Math.floor(currentTime / 60);
-            const secs = currentTime % 60;
-            document.getElementById('recorder-time').innerHTML = 
-                `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-        }
-
-        async function toggleRecording() {
-            if (isRecording) {
-                stopRecording();
-            } else {
-                try {
-                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                    mediaRecorder = new MediaRecorder(stream);
-                    audioChunks = [];
-                    currentTime = 0;
-                    
-                    mediaRecorder.ondataavailable = (e) => {
-                        audioChunks.push(e.data);
-                    };
-                    
-                    mediaRecorder.onstop = () => {
-                        audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
-                        const url = URL.createObjectURL(audioBlob);
-                        saveVoiceMemo(url);
-                    };
-                    
-                    mediaRecorder.start(100);
-                    isRecording = true;
-                    animateWaveform(true);
-                    document.getElementById('voice-record').innerHTML = '⏹';
-                    document.getElementById('voice-stop').disabled = false;
-                } catch (err) {
-                    alert('无法访问麦克风，请检查权限设置');
-                }
-            }
-        }
-
-        function stopRecording() {
-            if (mediaRecorder && isRecording) {
-                mediaRecorder.stop();
-                isRecording = false;
-                animateWaveform(false);
-                document.getElementById('voice-record').innerHTML = '●';
-                document.getElementById('voice-stop').disabled = true;
-            }
-        }
-
-        function saveVoiceMemo(audioUrl) {
-            if (!siteData.voiceMemos) siteData.voiceMemos = [];
-            const memo = {
-                id: Date.now(),
-                audioUrl: audioUrl,
-                time: new Date().toLocaleString('zh-CN'),
-                duration: currentTime,
-                moods: ['平静']
-            };
-            siteData.voiceMemos.push(memo);
-            saveData();
-            renderVoiceList();
-        }
-
-        function togglePlayback() {
-            if (isPlaying) {
-                isPlaying = false;
-                animateWaveform(false);
-            } else {
-                isPlaying = true;
-                animateWaveform(true);
-            }
-        }
-
-        function backwardVoice() {
-            currentTime = Math.max(0, currentTime - 5);
-            updateRecorderTime();
-        }
-
-        function forwardVoice() {
-            currentTime += 5;
-            updateRecorderTime();
-        }
-
-        function renderVoiceList() {
-            const container = document.getElementById('voice-list-container');
-            if (siteData.voiceMemos && siteData.voiceMemos.length > 0) {
-                container.innerHTML = siteData.voiceMemos.map(memo => `
-                    <div class="voice-item">
-                        <button class="player-btn play" onclick="playVoiceMemo('${memo.audioUrl}')">▶</button>
-                        <div class="voice-wave">
-                            ${Array.from({ length: 30 }).map(() => 
-                                `<div class="voice-wave-bar" style="height: ${Math.random() * 30 + 5}px;"></div>`
-                            ).join('')}
-                        </div>
-                        <div class="voice-time">${formatTime(memo.duration)}</div>
-                        <div class="voice-moods">
-                            ${memo.moods.map(mood => `<span class="mood-tag">${mood}</span>`).join('')}
-                        </div>
-                    </div>
-                `).join('');
-            } else {
-                container.innerHTML = '<div class="empty-state">还没有录音</div>';
-            }
-        }
-
-        function formatTime(seconds) {
-            const mins = Math.floor(seconds / 60);
-            const secs = seconds % 60;
-            return `${mins}:${secs.toString().padStart(2, '0')}`;
-        }
-
-        function playVoiceMemo(url) {
-            const audio = new Audio(url);
-            audio.play();
-        }
-
-        // 微粒子效果
-        function initParticles() {
-            const container = document.getElementById('particles-container');
-            for (let i = 0; i < 30; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.animationDelay = Math.random() * 10 + 's';
-                particle.style.animationDuration = (8 + Math.random() * 4) + 's';
-                particle.style.width = (2 + Math.random() * 4) + 'px';
-                particle.style.height = particle.style.width;
-                container.appendChild(particle);
-            }
-        }
-
-        // 更新渲染函数
-        function renderAllPages() {
-            renderHome();
-            renderPosts();
-            renderDiary();
-            renderMusic();
-            renderVoiceList();
-            renderComments();
-            renderPhotography();
-            if (isAdmin) {
-                renderAdminPosts();
-                renderAdminComments();
-                renderAdminMusic();
-                renderAdminPhotos();
             }
         }
     </script>

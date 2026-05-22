@@ -2668,7 +2668,7 @@
 
         async function updatePostInAPI(postId, postData) {
             try {
-                await fetch(`${api_base}/posts/`{postId}`, {
+                await fetch(`${api_base}/posts/${postId}`,  {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -2686,7 +2686,7 @@
 
         async function deletePostFromAPI(postId) {
             try {
-                await fetch(`${api_base}/posts/`{postId}`, {
+                await fetch(`${api_base}/posts/${postId}`,  {
                     method: 'DELETE'
                 });
                 await loadPostsFromAPI();

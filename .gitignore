@@ -13,3 +13,7 @@ Thumbs.db
 # Wrangler
 .wrangler/
 wrangler.toml.local
+
+# Build output
+.next/
+out/

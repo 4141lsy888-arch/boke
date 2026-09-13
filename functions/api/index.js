@@ -33,12 +33,12 @@ export async function onRequest(context) {
     if (request.method === 'POST') {
       try {
         const body = await request.json();
-        const { title, content, images, tags } = body;
+        const { content, images, type } = body;
 
-        if (!title && !content) {
+        if (!content && (!images || images.length === 0)) {
           return new Response(JSON.stringify({ 
             success: false, 
-            error: 'Title or content is required' 
+            error: 'Content or images are required' 
           }), {
             status: 400,
             headers: { 
@@ -49,13 +49,11 @@ export async function onRequest(context) {
         }
 
         const result = await DB.prepare(
-          'INSERT INTO posts (title, content, images, tags, likes) VALUES (?, ?, ?, ?, ?)'
+          'INSERT INTO posts (content, images, type) VALUES (?, ?, ?)'
         ).bind(
-          title || '',
           content || '',
           JSON.stringify(images || []),
-          JSON.stringify(tags || []),
-          0
+          type || 'text'
         ).run();
 
         return new Response(JSON.stringify({ 

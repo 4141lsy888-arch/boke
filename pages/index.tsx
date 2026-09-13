@@ -2,10 +2,11 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
-import { Plus, Music, Image as ImageIcon, X, Trash2, Instagram, Mail } from 'lucide-react'
+import { Plus, Music, Image as ImageIcon, X, Trash2, Globe, Mail, Play, Pause, Volume2 } from 'lucide-react'
 import Butterfly from '@/components/Butterfly'
 import Peony from '@/components/Peony'
 import type { Post } from '@/pages/api/posts'
+import type { MusicTrack } from '@/pages/api/music'
 
 const animationVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -14,7 +15,7 @@ const animationVariants = {
     y: 0,
     transition: { 
       duration: 0.6,
-      ease: [0.2, 0.8, 0.2, 1]
+      ease: [0.2, 0.8, 0.2, 1] as [number, number, number, number]
     }
   }
 }
@@ -24,6 +25,19 @@ export default function Home() {
   const [posts, setPosts] = useState<Post[]>([])
   const [showComposer, setShowComposer] = useState(false)
   const [activeTab, setActiveTab] = useState<'posts' | 'music'>('posts')
+  
+  const [musicTracks, setMusicTracks] = useState<MusicTrack[]>([])
+  const [currentTrack, setCurrentTrack] = useState<MusicTrack | null>(null)
+  const [isPlaying, setIsPlaying] = useState(false)
+  const [progress, setProgress] = useState(0)
+  const [showMusicForm, setShowMusicForm] = useState(false)
+  const [newTrack, setNewTrack] = useState({
+    title: '',
+    artist: '',
+    audio_url: ''
+  })
+  
+  const audioRef = useRef<HTMLAudioElement>(null)
   
   const [newPost, setNewPost] = useState({
     content: '',
@@ -35,6 +49,7 @@ export default function Home() {
 
   useEffect(() => {
     loadPosts()
+    loadMusic()
   }, [])
 
   const loadPosts = async () => {
@@ -96,6 +111,92 @@ export default function Home() {
     })
   }
 
+  const handleDelete = async (id: number) => {
+    try {
+      await fetch(`/api/posts?id=${id}`, {
+        method: 'DELETE'
+      })
+      loadPosts()
+    } catch (e) {
+      console.error('Error deleting post:', e)
+    }
+  }
+
+  const loadMusic = async () => {
+    try {
+      const res = await fetch('/api/music')
+      const data = await res.json()
+      setMusicTracks(data)
+    } catch (e) {
+      console.error('Error loading music:', e)
+    }
+  }
+
+  const playTrack = (track: MusicTrack) => {
+    if (audioRef.current) {
+      if (currentTrack?.id === track.id && isPlaying) {
+        audioRef.current.pause()
+        setIsPlaying(false)
+      } else {
+        audioRef.current.src = track.audio_url
+        audioRef.current.play()
+        setCurrentTrack(track)
+        setIsPlaying(true)
+      }
+    }
+  }
+
+  const togglePlay = () => {
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.pause()
+      } else {
+        audioRef.current.play()
+      }
+      setIsPlaying(!isPlaying)
+    }
+  }
+
+  const handleProgress = (e: React.ChangeEvent<HTMLAudioElement>) => {
+    if (audioRef.current) {
+      setProgress((audioRef.current.currentTime / audioRef.current.duration) * 100)
+    }
+  }
+
+  const handleMusicSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    try {
+      await fetch('/api/music', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newTrack)
+      })
+      setShowMusicForm(false)
+      setNewTrack({ title: '', artist: '', audio_url: '' })
+      loadMusic()
+    } catch (e) {
+      console.error('Error adding music:', e)
+    }
+  }
+
+  const handleDeleteTrack = async (id: number) => {
+    try {
+      await fetch(`/api/music?id=${id}`, {
+        method: 'DELETE'
+      })
+      if (currentTrack?.id === id) {
+        setCurrentTrack(null)
+        setIsPlaying(false)
+        if (audioRef.current) {
+          audioRef.current.pause()
+        }
+      }
+      loadMusic()
+    } catch (e) {
+      console.error('Error deleting track:', e)
+    }
+  }
+
   return (
     <div className="min-h-screen bg-lavender-50 relative overflow-hidden">
       <div className="fixed inset-0 paper-texture z-0" />
@@ -114,7 +215,7 @@ export default function Home() {
           rel="noopener noreferrer"
           className="w-12 h-12 rounded-full bg-white/60 backdrop-blur-md flex items-center justify-center text-lavender-700 hover:bg-white/80 hover:scale-110 transition-all duration-300"
         >
-          <Instagram size={20} />
+          <Globe size={20} />
         </a>
         <a 
           href="https://xhslink.com/m/7Dms5LL6Y5s"
@@ -200,7 +301,7 @@ export default function Home() {
                     transition={{ delay: index * 0.1 }}
                     className="group"
                   >
-                    <PostCard post={post} onDelete={() => loadPosts()} />
+                    <PostCard post={post} onDelete={() => handleDelete(post.id)} />
                   </motion.div>
                 ))
               )}
@@ -208,10 +309,103 @@ export default function Home() {
           )}
 
           {activeTab === 'music' && (
-            <div className="text-center py-20">
-              <p className="font-cormorant text-2xl text-lavender-500 italic">
-                Music player coming soon...
-              </p>
+            <div className="space-y-8">
+              {currentTrack && (
+                <motion.div
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="bg-white/50 backdrop-blur-sm rounded-2xl p-6 border border-lavender-100/50"
+                >
+                  <div className="flex items-center gap-6">
+                    <button
+                      onClick={togglePlay}
+                      className="w-16 h-16 rounded-full bg-gradient-to-br from-lavender-300 to-lavender-400 flex items-center justify-center text-white hover:scale-110 transition-transform duration-300"
+                    >
+                      {isPlaying ? <Pause size={28} /> : <Play size={28} className="ml-1" />}
+                    </button>
+                    <div className="flex-1">
+                      <h3 className="font-cormorant text-2xl text-lavender-800">
+                        {currentTrack.title}
+                      </h3>
+                      <p className="font-playfair text-lavender-500">{currentTrack.artist}</p>
+                      <div className="mt-4">
+                        <div className="h-1 bg-lavender-200 rounded-full overflow-hidden">
+                          <div 
+                            className="h-full bg-gradient-to-r from-lavender-300 to-lavender-400 transition-all duration-300"
+                            style={{ width: `${progress}%` }}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div className="text-lavender-400">
+                      <Volume2 size={24} />
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+
+              <div className="bg-white/40 backdrop-blur-sm rounded-3xl p-8 border border-lavender-100/50">
+                <div className="flex justify-between items-center mb-6">
+                  <h2 className="font-cormorant text-3xl text-lavender-800 italic">Music Library</h2>
+                  <button
+                    onClick={() => setShowMusicForm(true)}
+                    className="flex items-center gap-2 px-4 py-2 bg-lavender-100 text-lavender-700 rounded-full font-playfair hover:bg-lavender-200 transition-colors"
+                  >
+                    <Plus size={18} />
+                    Add Track
+                  </button>
+                </div>
+
+                {musicTracks.length === 0 ? (
+                  <div className="text-center py-12">
+                    <p className="font-cormorant text-xl text-lavender-500 italic">
+                      No tracks yet... add your first music
+                    </p>
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    {musicTracks.map((track, index) => (
+                      <motion.div
+                        key={track.id}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.1 }}
+                        className={`flex items-center gap-4 p-4 rounded-xl cursor-pointer transition-all duration-300 ${
+                          currentTrack?.id === track.id 
+                            ? 'bg-lavender-100/50' 
+                            : 'hover:bg-white/50'
+                        }`}
+                        onClick={() => playTrack(track)}
+                      >
+                        <button className="w-10 h-10 rounded-full border border-lavender-300 flex items-center justify-center text-lavender-600 hover:bg-lavender-100 transition-colors">
+                          {currentTrack?.id === track.id && isPlaying ? (
+                            <Pause size={16} />
+                          ) : (
+                            <Play size={16} className="ml-0.5" />
+                          )}
+                        </button>
+                        <div className="flex-1">
+                          <h4 className="font-cormorant text-lg text-lavender-800">
+                            {track.title}
+                          </h4>
+                          <p className="font-playfair text-sm text-lavender-500">
+                            {track.artist}
+                          </p>
+                        </div>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            handleDeleteTrack(track.id)
+                          }}
+                          className="opacity-0 hover:opacity-100 text-lavender-400 hover:text-lavender-600 transition-opacity"
+                        >
+                          <Trash2 size={18} />
+                        </button>
+                      </motion.div>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
           )}
         </main>
@@ -228,6 +422,72 @@ export default function Home() {
           onFileSelect={handleFileSelect}
         />
       )}
+
+      {showMusicForm && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 bg-lavender-900/20 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+        >
+          <motion.div
+            initial={{ scale: 0.95, y: 20 }}
+            animate={{ scale: 1, y: 0 }}
+            className="bg-white/85 backdrop-blur-xl rounded-3xl w-full max-w-md p-8 border border-lavender-100/60"
+          >
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="font-cormorant text-3xl text-lavender-800 italic">
+                Add Music
+              </h2>
+              <button
+                onClick={() => setShowMusicForm(false)}
+                className="text-lavender-500 hover:text-lavender-700 transition-colors"
+              >
+                <X size={24} />
+              </button>
+            </div>
+
+            <form onSubmit={handleMusicSubmit} className="space-y-4">
+              <input
+                type="text"
+                value={newTrack.title}
+                onChange={(e) => setNewTrack(prev => ({ ...prev, title: e.target.value }))}
+                placeholder="Song Title"
+                className="w-full bg-white/50 border border-lavender-200 rounded-xl px-4 py-3 text-lavender-800 font-cormorant focus:outline-none focus:border-lavender-400 transition-colors"
+                required
+              />
+              <input
+                type="text"
+                value={newTrack.artist}
+                onChange={(e) => setNewTrack(prev => ({ ...prev, artist: e.target.value }))}
+                placeholder="Artist"
+                className="w-full bg-white/50 border border-lavender-200 rounded-xl px-4 py-3 text-lavender-800 font-cormorant focus:outline-none focus:border-lavender-400 transition-colors"
+                required
+              />
+              <input
+                type="url"
+                value={newTrack.audio_url}
+                onChange={(e) => setNewTrack(prev => ({ ...prev, audio_url: e.target.value }))}
+                placeholder="Audio URL"
+                className="w-full bg-white/50 border border-lavender-200 rounded-xl px-4 py-3 text-lavender-800 font-cormorant focus:outline-none focus:border-lavender-400 transition-colors"
+                required
+              />
+              <button
+                type="submit"
+                className="w-full py-4 bg-gradient-to-r from-lavender-300 to-lavender-200 text-lavender-800 font-playfair text-lg tracking-widest rounded-2xl hover:from-lavender-400 hover:to-lavender-300 transition-all duration-300"
+              >
+                Add Track
+              </button>
+            </form>
+          </motion.div>
+        </motion.div>
+      )}
+
+      <audio
+        ref={audioRef}
+        onTimeUpdate={handleProgress}
+        onEnded={() => setIsPlaying(false)}
+      />
     </div>
   )
 }

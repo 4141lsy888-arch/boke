@@ -2632,7 +2632,7 @@
 
         async function loadPostsFromAPI() {
             try {
-                const response = await fetch('http://localhost:3000/api/posts');
+                const response = await fetch(`${API_BASE}/posts`);
                 if (response.ok) {
                     const posts = await response.json();
                     siteData.posts = posts.map(post => ({
@@ -2651,7 +2651,7 @@
 
         async function savePostToAPI(post) {
             try {
-                const response = await fetch('http://localhost:3000/api/posts', {
+                const response = await fetch(`${API_BASE}/posts`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -2662,7 +2662,7 @@
                     })
                 });
                 const result = await response.json();
-                if (result.success) {
+                if (result && result.id) {
                     post.id = result.id;
                 }
                 await loadPostsFromAPI();
@@ -2702,7 +2702,7 @@
 
         async function likePostAPI(postId) {
             try {
-                const response = await fetch('/api/posts/like', {
+                const response = await fetch(`${API_BASE}/posts/like`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ id: postId })

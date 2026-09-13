@@ -44,3 +44,10 @@ export async function DELETE(request: NextRequest) {
   
   return NextResponse.json({ success: true })
 }
+
+export default async function handler(request: NextRequest) {
+  if (request.method === 'GET') return GET(request)
+  if (request.method === 'POST') return POST(request)
+  if (request.method === 'DELETE') return DELETE(request)
+  return NextResponse.json({ error: 'Method not allowed' }, { status: 405 })
+}

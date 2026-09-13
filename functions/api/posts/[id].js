@@ -16,7 +16,10 @@ export async function onRequest(context) {
       });
     }
 
-    return new Response(JSON.stringify(results[0]), {
+    const post = results[0];
+    post.images = JSON.parse(post.images || '[]');
+
+    return new Response(JSON.stringify(post), {
       headers: { 
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*'
@@ -26,15 +29,14 @@ export async function onRequest(context) {
 
   if (request.method === 'PUT') {
     const body = await request.json();
-    const { title, content, images, tags } = body;
+    const { content, images, type } = body;
 
     await DB.prepare(
-      'UPDATE posts SET title = ?, content = ?, images = ?, tags = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?'
+      'UPDATE posts SET content = ?, images = ?, type = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?'
     ).bind(
-      title || '',
       content || '',
       JSON.stringify(images || []),
-      JSON.stringify(tags || []),
+      type || 'text',
       parseInt(id)
     ).run();
 

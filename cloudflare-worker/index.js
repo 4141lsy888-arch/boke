@@ -29,19 +29,15 @@ export default {
 
       if (path === '/api/posts' && request.method === 'POST') {
         const body = await request.json();
-        const { title, content, location, tags, images, time } = body;
-        
-        const result = await env.DB.prepare(`
-          INSERT INTO posts (title, content, location, tags, images, time)
-          VALUES (?, ?, ?, ?, ?, ?)
-        `).run(
+        const { title, content, images, tags } = body;
+
+        const result = await env.DB.prepare('INSERT INTO posts (id, title, content, author, images, tags) VALUES (NULL, ?, ?, ?, ?, ?)').bind(
           title,
           content,
-          location,
-          JSON.stringify(tags || []),
+          body.author || 'yy8',
           JSON.stringify(images || []),
-          time || new Date().toISOString()
-        );
+          JSON.stringify(tags || [])
+        ).run();
         
         const newPost = await env.DB.prepare('SELECT * FROM posts WHERE id = ?').bind(result.meta.last_row_id).first();
         return new Response(JSON.stringify(newPost), {
@@ -52,13 +48,15 @@ export default {
       if (path.match(/^\/api\/posts\/\d+$/) && request.method === 'PUT') {
         const id = path.split('/')[3];
         const body = await request.json();
-        const { title, content, location, tags, images, time } = body;
-        
-        await env.DB.prepare(`
-          UPDATE posts 
-          SET title = ?, content = ?, location = ?, tags = ?, images = ?, time = ?
-          WHERE id = ?
-        `).run(title, content, location, JSON.stringify(tags || []), JSON.stringify(images || []), time, id);
+        const { title, content, images, tags } = body;
+
+        await env.DB.prepare('UPDATE posts SET title = ?, content = ?, images = ?, tags = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?').bind(
+          title,
+          content,
+          JSON.stringify(images || []),
+          JSON.stringify(tags || []),
+          id
+        ).run();
         
         const updatedPost = await env.DB.prepare('SELECT * FROM posts WHERE id = ?').bind(id).first();
         return new Response(JSON.stringify(updatedPost), {
@@ -92,10 +90,9 @@ export default {
         const body = await request.json();
         const { title, artist, description, cover, audio_url } = body;
         
-        const result = await env.DB.prepare(`
-          INSERT INTO music (title, artist, description, cover, audio_url)
-          VALUES (?, ?, ?, ?, ?)
-        `).run(title, artist, description, cover, audio_url);
+        const result = await env.DB.prepare('INSERT INTO music (title, artist, description, cover, audio_url) VALUES (?, ?, ?, ?, ?)').bind(
+          title, artist, description, cover, audio_url
+        ).run();
         
         const newMusic = await env.DB.prepare('SELECT * FROM music WHERE id = ?').bind(result.meta.last_row_id).first();
         return new Response(JSON.stringify(newMusic), {
@@ -123,10 +120,9 @@ export default {
         const body = await request.json();
         const { title, location, time, description, data } = body;
         
-        const result = await env.DB.prepare(`
-          INSERT INTO photography (title, location, time, description, data)
-          VALUES (?, ?, ?, ?, ?)
-        `).run(title, location, time, description, data);
+        const result = await env.DB.prepare('INSERT INTO photography (title, location, time, description, data) VALUES (?, ?, ?, ?, ?)').bind(
+          title, location, time, description, data
+        ).run();
         
         const newPhoto = await env.DB.prepare('SELECT * FROM photography WHERE id = ?').bind(result.meta.last_row_id).first();
         return new Response(JSON.stringify(newPhoto), {
@@ -154,10 +150,9 @@ export default {
         const body = await request.json();
         const { nickname, content, time } = body;
         
-        const result = await env.DB.prepare(`
-          INSERT INTO comments (nickname, content, time)
-          VALUES (?, ?, ?)
-        `).run(nickname, content, time || new Date().toISOString());
+        const result = await env.DB.prepare('INSERT INTO comments (nickname, content, time) VALUES (?, ?, ?)').bind(
+          nickname, content, time || new Date().toISOString()
+        ).run();
         
         const newComment = await env.DB.prepare('SELECT * FROM comments WHERE id = ?').bind(result.meta.last_row_id).first();
         return new Response(JSON.stringify(newComment), {
@@ -185,10 +180,9 @@ export default {
         const body = await request.json();
         const { title, description, audio_data, duration, time } = body;
         
-        const result = await env.DB.prepare(`
-          INSERT INTO voice_recordings (title, description, audio_data, duration, time)
-          VALUES (?, ?, ?, ?, ?)
-        `).run(title, description, audio_data, duration, time);
+        const result = await env.DB.prepare('INSERT INTO voice_recordings (title, description, audio_data, duration, time) VALUES (?, ?, ?, ?, ?)').bind(
+          title, description, audio_data, duration, time
+        ).run();
         
         const newRecording = await env.DB.prepare('SELECT * FROM voice_recordings WHERE id = ?').bind(result.meta.last_row_id).first();
         return new Response(JSON.stringify(newRecording), {
@@ -226,9 +220,10 @@ export default {
 
       // ==================== HEALTH CHECK ====================
       if (path === '/api/health') {
-        return new Response(JSON.stringify({ 
+        return new Response(JSON.stringify({
           status: 'ok',
           database: 'connected',
+          version: 'v5-bind-style',
           timestamp: new Date().toISOString()
         }), {
           headers: { 'Content-Type': 'application/json', ...corsHeaders }

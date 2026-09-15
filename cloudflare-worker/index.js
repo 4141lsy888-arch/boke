@@ -8,17 +8,34 @@ export default {
     const corsHeaders = {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Admin-Token',
     };
 
     if (request.method === 'OPTIONS') {
       return new Response(null, { headers: corsHeaders });
     }
 
+    // 管理员鉴权：写操作必须携带 X-Admin-Token（值为管理密码，经服务端校验）
+    const isAdmin = () => request.headers.get('X-Admin-Token') === env.ADMIN_PASSWORD;
+    const unauthorized = () => new Response(JSON.stringify({ error: '未授权：请先登录管理后台' }), {
+      status: 401,
+      headers: { 'Content-Type': 'application/json', ...corsHeaders }
+    });
+
     const url = new URL(request.url);
     const path = url.pathname;
 
     try {
+      // ==================== 登录验证 ====================
+      if (path === '/api/verify' && request.method === 'POST') {
+        const body = await request.json();
+        const ok = body.password === env.ADMIN_PASSWORD;
+        return new Response(JSON.stringify({ success: ok }), {
+          status: ok ? 200 : 401,
+          headers: { 'Content-Type': 'application/json', ...corsHeaders }
+        });
+      }
+
       // ==================== POSTS API ====================
       if (path === '/api/posts' && request.method === 'GET') {
         const posts = await env.DB.prepare('SELECT * FROM posts ORDER BY created_at DESC').all();
@@ -28,6 +45,7 @@ export default {
       }
 
       if (path === '/api/posts' && request.method === 'POST') {
+        if (!isAdmin()) return unauthorized();
         const body = await request.json();
         const { title, content, images, tags } = body;
 
@@ -46,6 +64,7 @@ export default {
       }
 
       if (path.match(/^\/api\/posts\/\d+$/) && request.method === 'PUT') {
+        if (!isAdmin()) return unauthorized();
         const id = path.split('/')[3];
         const body = await request.json();
         const { title, content, images, tags } = body;
@@ -65,6 +84,7 @@ export default {
       }
 
       if (path.match(/^\/api\/posts\/\d+$/) && request.method === 'DELETE') {
+        if (!isAdmin()) return unauthorized();
         const id = path.split('/')[3];
         await env.DB.prepare('DELETE FROM posts WHERE id = ?').bind(id).run();
         return new Response(JSON.stringify({ success: true }), {
@@ -87,6 +107,7 @@ export default {
       }
 
       if (path === '/api/music' && request.method === 'POST') {
+        if (!isAdmin()) return unauthorized();
         const body = await request.json();
         const { title, artist, description, cover, audio_url } = body;
         
@@ -101,6 +122,7 @@ export default {
       }
 
       if (path.match(/^\/api\/music\/\d+$/) && request.method === 'DELETE') {
+        if (!isAdmin()) return unauthorized();
         const id = path.split('/')[3];
         await env.DB.prepare('DELETE FROM music WHERE id = ?').bind(id).run();
         return new Response(JSON.stringify({ success: true }), {
@@ -117,6 +139,7 @@ export default {
       }
 
       if (path === '/api/photography' && request.method === 'POST') {
+        if (!isAdmin()) return unauthorized();
         const body = await request.json();
         const { title, location, time, description, data } = body;
         
@@ -131,6 +154,7 @@ export default {
       }
 
       if (path.match(/^\/api\/photography\/\d+$/) && request.method === 'DELETE') {
+        if (!isAdmin()) return unauthorized();
         const id = path.split('/')[3];
         await env.DB.prepare('DELETE FROM photography WHERE id = ?').bind(id).run();
         return new Response(JSON.stringify({ success: true }), {
@@ -147,6 +171,7 @@ export default {
       }
 
       if (path === '/api/comments' && request.method === 'POST') {
+        if (!isAdmin()) return unauthorized();
         const body = await request.json();
         const { nickname, content, time } = body;
         
@@ -161,6 +186,7 @@ export default {
       }
 
       if (path.match(/^\/api\/comments\/\d+$/) && request.method === 'DELETE') {
+        if (!isAdmin()) return unauthorized();
         const id = path.split('/')[3];
         await env.DB.prepare('DELETE FROM comments WHERE id = ?').bind(id).run();
         return new Response(JSON.stringify({ success: true }), {
@@ -177,6 +203,7 @@ export default {
       }
 
       if (path === '/api/voice' && request.method === 'POST') {
+        if (!isAdmin()) return unauthorized();
         const body = await request.json();
         const { title, description, audio_data, duration, time } = body;
         
@@ -191,6 +218,7 @@ export default {
       }
 
       if (path.match(/^\/api\/voice\/\d+$/) && request.method === 'DELETE') {
+        if (!isAdmin()) return unauthorized();
         const id = path.split('/')[3];
         await env.DB.prepare('DELETE FROM voice_recordings WHERE id = ?').bind(id).run();
         return new Response(JSON.stringify({ success: true }), {
@@ -200,6 +228,7 @@ export default {
 
       // ==================== BACKUP API ====================
       if (path === '/api/backup' && request.method === 'GET') {
+        if (!isAdmin()) return unauthorized();
         const posts = await env.DB.prepare('SELECT * FROM posts').all();
         const music = await env.DB.prepare('SELECT * FROM music').all();
         const photography = await env.DB.prepare('SELECT * FROM photography').all();
@@ -223,7 +252,7 @@ export default {
         return new Response(JSON.stringify({
           status: 'ok',
           database: 'connected',
-          version: 'v5-bind-style',
+          version: 'v6-secured',
           timestamp: new Date().toISOString()
         }), {
           headers: { 'Content-Type': 'application/json', ...corsHeaders }

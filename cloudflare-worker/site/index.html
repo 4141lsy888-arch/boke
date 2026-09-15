@@ -2527,9 +2527,9 @@
         // API 配置
         // ============================================
         const API_BASE = "https://blog.1114lsy.xyz/api";
-        
-        const DEFAULT_PASSWORD = "9edyy81314520";
-        const LOGIN_KEY = "yy8-admin-logged-in";
+
+        // 管理密码已移至服务器端（Cloudflare Worker 环境变量），不再存于网页源码
+        const LOGIN_KEY = "yy8-admin-token";
         const START_TIME = Date.now();
         const STORAGE_KEY = "yy8-site-data";
 
@@ -2653,7 +2653,7 @@
             try {
                 const response = await fetch(`${API_BASE}/posts`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 'Content-Type': 'application/json', 'X-Admin-Token': sessionStorage.getItem(LOGIN_KEY) || '' },
                     body: JSON.stringify({
                         title: post.title,
                         content: post.content,
@@ -2661,6 +2661,12 @@
                         tags: post.tags || []
                     })
                 });
+                if (response.status === 401) {
+                    sessionStorage.removeItem(LOGIN_KEY);
+                    alert("登录已过期，请重新登录管理后台");
+                    showLoginModal();
+                    return;
+                }
                 const result = await response.json();
                 if (result && result.id) {
                     post.id = result.id;
@@ -2673,9 +2679,9 @@
 
         async function updatePostInAPI(postId, postData) {
             try {
-                await fetch(`${API_BASE}/posts/${postId}`,  {
+                const response = await fetch(`${API_BASE}/posts/${postId}`,  {
                     method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 'Content-Type': 'application/json', 'X-Admin-Token': sessionStorage.getItem(LOGIN_KEY) || '' },
                     body: JSON.stringify({
                         title: postData.title,
                         content: postData.content,
@@ -2683,6 +2689,12 @@
                         tags: postData.tags || []
                     })
                 });
+                if (response.status === 401) {
+                    sessionStorage.removeItem(LOGIN_KEY);
+                    alert("登录已过期，请重新登录管理后台");
+                    showLoginModal();
+                    return;
+                }
                 await loadPostsFromAPI();
             } catch (error) {
                 console.error("更新文章失败:", error);
@@ -2691,9 +2703,16 @@
 
         async function deletePostFromAPI(postId) {
             try {
-                await fetch(`${API_BASE}/posts/${postId}`,  {
-                    method: 'DELETE'
+                const response = await fetch(`${API_BASE}/posts/${postId}`,  {
+                    method: 'DELETE',
+                    headers: { 'X-Admin-Token': sessionStorage.getItem(LOGIN_KEY) || '' }
                 });
+                if (response.status === 401) {
+                    sessionStorage.removeItem(LOGIN_KEY);
+                    alert("登录已过期，请重新登录管理后台");
+                    showLoginModal();
+                    return;
+                }
                 await loadPostsFromAPI();
             } catch (error) {
                 console.error("删除文章失败:", error);
@@ -2721,9 +2740,12 @@
         }
 
         function checkLoginStatus() {
-            const loggedIn = sessionStorage.getItem(LOGIN_KEY);
-            if (loggedIn === "true") {
+            const token = sessionStorage.getItem(LOGIN_KEY);
+            if (token && token !== "true") {
                 showAdminModal();
+            } else if (token === "true") {
+                // 旧版本遗留的登录状态（无令牌），清除并要求重新登录
+                sessionStorage.removeItem(LOGIN_KEY);
             }
         }
 
@@ -3042,15 +3064,24 @@
             document.getElementById("admin-password").value = "";
         }
 
-        function loginAdmin() {
+        async function loginAdmin() {
             const password = document.getElementById("admin-password").value;
-            if (password === DEFAULT_PASSWORD) {
-                sessionStorage.setItem(LOGIN_KEY, "true");
-                closeModal("login-modal");
-                showAdminModal();
-                loadAdminData();
-            } else {
-                document.getElementById("login-error").textContent = "密码错误，请重试";
+            try {
+                const response = await fetch(`${API_BASE}/verify`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ password })
+                });
+                if (response.ok) {
+                    sessionStorage.setItem(LOGIN_KEY, password);
+                    closeModal("login-modal");
+                    showAdminModal();
+                    loadAdminData();
+                } else {
+                    document.getElementById("login-error").textContent = "密码错误，请重试";
+                }
+            } catch (error) {
+                document.getElementById("login-error").textContent = "网络错误，请重试";
             }
         }
 

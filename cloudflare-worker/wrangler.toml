@@ -3,10 +3,15 @@ main = "index.js"
 compatibility_date = "2025-01-01"
 compatibility_flags = ["nodejs_compat"]
 
-# Custom domain (China-accessible)
+# Custom domains (China-accessible, auto DNS provisioning)
 routes = [
-  { pattern = "api.1114lsy.xyz", custom_domain = true }
+  { pattern = "api.1114lsy.xyz", custom_domain = true },
+  { pattern = "blog.1114lsy.xyz", custom_domain = true }
 ]
+
+# Static site assets (served first; /api/* falls through to worker)
+[assets]
+directory = "./site"
 
 # D1 Database Binding
 [[d1_databases]]

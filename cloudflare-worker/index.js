@@ -252,6 +252,52 @@ export default {
         });
       }
 
+      // ==================== 照片独立存储（每张一行，避开 1MB 单值限制） ====================
+      if (path === '/api/photos' && request.method === 'GET') {
+        const photos = await env.DB.prepare('SELECT * FROM site_photos ORDER BY id').all();
+        return new Response(JSON.stringify(photos.results), {
+          headers: { 'Content-Type': 'application/json', ...corsHeaders }
+        });
+      }
+
+      if (path === '/api/photos' && request.method === 'POST') {
+        if (!isAdmin()) return unauthorized();
+        const body = await request.json();
+        if (!body.data) {
+          return new Response(JSON.stringify({ error: '缺少图片数据' }), {
+            status: 400,
+            headers: { 'Content-Type': 'application/json', ...corsHeaders }
+          });
+        }
+        const result = await env.DB.prepare('INSERT INTO site_photos (data, title, location, time, description) VALUES (?, ?, ?, ?, ?)').bind(
+          body.data, body.title || '', body.location || '', body.time || '', body.description || ''
+        ).run();
+        return new Response(JSON.stringify({ id: result.meta.last_row_id }), {
+          headers: { 'Content-Type': 'application/json', ...corsHeaders }
+        });
+      }
+
+      if (path.match(/^\/api\/photos\/\d+$/) && request.method === 'PUT') {
+        if (!isAdmin()) return unauthorized();
+        const id = path.split('/')[3];
+        const body = await request.json();
+        await env.DB.prepare('UPDATE site_photos SET title = ?, location = ?, time = ?, description = ? WHERE id = ?').bind(
+          body.title || '', body.location || '', body.time || '', body.description || '', id
+        ).run();
+        return new Response(JSON.stringify({ success: true }), {
+          headers: { 'Content-Type': 'application/json', ...corsHeaders }
+        });
+      }
+
+      if (path.match(/^\/api\/photos\/\d+$/) && request.method === 'DELETE') {
+        if (!isAdmin()) return unauthorized();
+        const id = path.split('/')[3];
+        await env.DB.prepare('DELETE FROM site_photos WHERE id = ?').bind(id).run();
+        return new Response(JSON.stringify({ success: true }), {
+          headers: { 'Content-Type': 'application/json', ...corsHeaders }
+        });
+      }
+
       // ==================== BACKUP API ====================
       if (path === '/api/backup' && request.method === 'GET') {
         if (!isAdmin()) return unauthorized();
@@ -278,7 +324,7 @@ export default {
         return new Response(JSON.stringify({
           status: 'ok',
           database: 'connected',
-          version: 'v8-comments',
+          version: 'v9-photos',
           timestamp: new Date().toISOString()
         }), {
           headers: { 'Content-Type': 'application/json', ...corsHeaders }

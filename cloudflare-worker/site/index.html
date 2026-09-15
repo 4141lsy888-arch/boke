@@ -2731,15 +2731,25 @@
                 dailyText: siteData.dailyText,
                 avatar: siteData.avatar,
                 musicList: siteData.musicList,
-                photography: siteData.photography
+                photography: {
+                    concept: siteData.photography.concept,
+                    equipment: siteData.photography.equipment,
+                    style: siteData.photography.style,
+                    colorMethod: siteData.photography.colorMethod,
+                    composition: siteData.photography.composition,
+                    tips: siteData.photography.tips
+                }
             };
         }
 
         async function saveSiteToAPI() {
-            const json = JSON.stringify(buildSiteSyncPayload());
+            const payload = buildSiteSyncPayload();
+            let json = JSON.stringify(payload);
             if (json.length > 900000) {
-                alert("内容过大（照片/头像太多），本次修改仅保存在本机。请减少照片数量或压缩头像后再同步。");
-                return false;
+                // 头像过大时单独剥离，文字信息必须同步
+                payload.avatar = "";
+                json = JSON.stringify(payload);
+                alert("头像过大未同步（请重新上传头像，会自动压缩），文字部分继续同步");
             }
             try {
                 const response = await fetch(`${API_BASE}/site`, {
@@ -2753,6 +2763,8 @@
                     showLoginModal();
                     return false;
                 }
+                // 照片走独立通道（每张一行）
+                await syncPhotosToAPI();
                 return response.ok;
             } catch (error) {
                 console.error("站点数据同步失败:", error);
@@ -2761,23 +2773,126 @@
         }
 
         async function loadSiteFromAPI() {
+            let data = null;
             try {
                 const response = await fetch(`${API_BASE}/site`);
-                if (response.ok) {
-                    const data = await response.json();
-                    if (data && Object.keys(data).length > 0) {
-                        ["siteTitle", "nickname", "signature", "bio", "dailyText", "avatar"].forEach(k => {
-                            if (data[k] !== undefined) siteData[k] = data[k];
-                        });
-                        if (data.musicList) siteData.musicList = data.musicList;
-                        if (data.photography) siteData.photography = data.photography;
-                        saveData();
-                    }
-                }
+                if (response.ok) data = await response.json();
             } catch (error) {
                 console.error("云端站点数据加载失败:", error);
             }
+            if (data && Object.keys(data).length > 0) {
+                ["siteTitle", "nickname", "signature", "bio", "dailyText", "avatar"].forEach(k => {
+                    if (data[k] !== undefined) siteData[k] = data[k];
+                });
+                if (data.musicList) siteData.musicList = data.musicList;
+                if (data.photography) {
+                    siteData.photography.concept = data.photography.concept ?? siteData.photography.concept;
+                    siteData.photography.equipment = data.photography.equipment ?? siteData.photography.equipment;
+                    siteData.photography.style = data.photography.style ?? siteData.photography.style;
+                    siteData.photography.colorMethod = data.photography.colorMethod ?? siteData.photography.colorMethod;
+                    siteData.photography.composition = data.photography.composition ?? siteData.photography.composition;
+                    siteData.photography.tips = data.photography.tips ?? siteData.photography.tips;
+                }
+            }
+            // 照片：云端为准；本地未同步过的照片自动迁移上云
+            try {
+                const response = await fetch(`${API_BASE}/photos`);
+                if (response.ok) {
+                    const cloudPhotos = await response.json();
+                    const localOnly = [...siteData.photography.photos, ...tempPhotoData].filter(p => !p.cloudId);
+                    if (cloudPhotos.length > 0) {
+                        siteData.photography.photos = cloudPhotos.map(r => ({
+                            id: r.id, cloudId: r.id, data: r.data,
+                            title: r.title, location: r.location, time: r.time, description: r.description
+                        }));
+                        tempPhotoData = localOnly;
+                    }
+                    if (localOnly.length > 0) await syncPhotosToAPI();
+                }
+            } catch (error) {
+                console.error("云端照片加载失败:", error);
+            }
+            saveData();
             renderAllPages();
+        }
+
+        // ==================== 图片压缩（上传时缩小尺寸，控制体积） ====================
+        function compressImage(file, maxDim = 1600, quality = 0.82) {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = new Image();
+                    img.onload = function() {
+                        let w = img.width, h = img.height;
+                        if (w > maxDim || h > maxDim) {
+                            const ratio = Math.min(maxDim / w, maxDim / h);
+                            w = Math.round(w * ratio);
+                            h = Math.round(h * ratio);
+                        }
+                        const canvas = document.createElement("canvas");
+                        canvas.width = w;
+                        canvas.height = h;
+                        canvas.getContext("2d").drawImage(img, 0, 0, w, h);
+                        resolve(canvas.toDataURL("image/jpeg", quality));
+                    };
+                    img.onerror = () => resolve(e.target.result);
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // ==================== 照片云端独立同步 ====================
+        function photoMeta(photo) {
+            return { title: photo.title, location: photo.location, time: photo.time, description: photo.description };
+        }
+
+        async function syncPhotosToAPI() {
+            const all = [...siteData.photography.photos, ...tempPhotoData];
+            let ok = true;
+            for (const photo of all) {
+                try {
+                    if (!photo.cloudId) {
+                        const response = await fetch(`${API_BASE}/photos`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json', 'X-Admin-Token': sessionStorage.getItem(LOGIN_KEY) || '' },
+                            body: JSON.stringify({ data: photo.data, ...photoMeta(photo) })
+                        });
+                        if (response.status === 401) {
+                            sessionStorage.removeItem(LOGIN_KEY);
+                            alert("登录已过期，请重新登录管理后台");
+                            showLoginModal();
+                            return false;
+                        }
+                        if (response.ok) {
+                            const r = await response.json();
+                            photo.cloudId = r.id;
+                        } else {
+                            ok = false;
+                        }
+                    } else {
+                        await fetch(`${API_BASE}/photos/${photo.cloudId}`, {
+                            method: 'PUT',
+                            headers: { 'Content-Type': 'application/json', 'X-Admin-Token': sessionStorage.getItem(LOGIN_KEY) || '' },
+                            body: JSON.stringify(photoMeta(photo))
+                        });
+                    }
+                } catch (error) {
+                    ok = false;
+                }
+            }
+            if (ok) { saveData(); renderAdminPhotos(); renderAllPages(); }
+            return ok;
+        }
+
+        async function deletePhotoFromAPI(cloudId) {
+            if (!cloudId) return;
+            try {
+                await fetch(`${API_BASE}/photos/${cloudId}`, {
+                    method: 'DELETE',
+                    headers: { 'X-Admin-Token': sessionStorage.getItem(LOGIN_KEY) || '' }
+                });
+            } catch (error) { /* 本地已删，云端删除失败可忽略 */ }
         }
 
         async function likePostAPI(postId) {
@@ -3246,40 +3361,28 @@
             document.getElementById("admin-" + tab).classList.add("active");
         }
 
-        function handleAvatarUpload(input) {
+        async function handleAvatarUpload(input) {
             if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById("avatar-preview").src = e.target.result;
-                    document.getElementById("avatar-preview").style.display = "block";
-                    tempAvatarData = e.target.result;
-                };
-                reader.readAsDataURL(input.files[0]);
+                const dataUrl = await compressImage(input.files[0], 600, 0.85);
+                document.getElementById("avatar-preview").src = dataUrl;
+                document.getElementById("avatar-preview").style.display = "block";
+                tempAvatarData = dataUrl;
             }
         }
 
-        function handlePhotographyUpload(input) {
+        async function handlePhotographyUpload(input) {
             if (input.files && input.files.length > 0) {
-                const promises = Array.from(input.files).map(file => {
-                    return new Promise((resolve) => {
-                        const reader = new FileReader();
-                        reader.onload = function(e) {
-                            resolve({
-                                id: Date.now() + Math.random(),
-                                title: file.name,
-                                location: "",
-                                time: new Date().toLocaleDateString("zh-CN"),
-                                description: "",
-                                data: e.target.result
-                            });
-                        };
-                        reader.readAsDataURL(file);
-                    });
-                });
-                Promise.all(promises).then(photos => {
-                    tempPhotoData = photos;
-                    renderAdminPhotos();
-                });
+                const promises = Array.from(input.files).map(file => compressImage(file).then(dataUrl => ({
+                    id: Date.now() + Math.random(),
+                    title: file.name.replace(/\.[^.]+$/, ""),
+                    location: "",
+                    time: new Date().toLocaleDateString("zh-CN"),
+                    description: "",
+                    data: dataUrl
+                })));
+                const photos = await Promise.all(promises);
+                tempPhotoData = photos;
+                renderAdminPhotos();
             }
         }
 
@@ -3622,7 +3725,7 @@
                     tempPhotoData = tempPhotoData.filter(p => p.id !== id);
                 }
                 saveData();
-                saveSiteToAPI();
+                syncPhotosToAPI();
                 renderAdminPhotos();
                 renderAllPages();
                 alert("照片已保存！");
@@ -3632,10 +3735,11 @@
         function deletePhoto(photoId) {
             const id = parseFloat(photoId);
             if (confirm("确定要删除这张照片吗？")) {
+                const photo = siteData.photography.photos.find(p => p.id === id) || tempPhotoData.find(p => p.id === id);
+                if (photo && photo.cloudId) deletePhotoFromAPI(photo.cloudId);
                 siteData.photography.photos = siteData.photography.photos.filter(p => p.id !== id);
                 tempPhotoData = tempPhotoData.filter(p => p.id !== id);
                 saveData();
-                saveSiteToAPI();
                 renderAdminPhotos();
                 renderAllPages();
                 alert("照片已删除！");
@@ -3687,6 +3791,7 @@
                         siteData = importedData;
                         saveData();
                         saveSiteToAPI();
+                        syncPhotosToAPI();
                         renderAllPages();
                         alert("数据导入成功并开始同步！");
                     } catch (error) {

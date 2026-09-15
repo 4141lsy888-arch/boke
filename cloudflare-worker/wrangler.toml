@@ -3,6 +3,11 @@ main = "index.js"
 compatibility_date = "2025-01-01"
 compatibility_flags = ["nodejs_compat"]
 
+# Custom domain (China-accessible)
+routes = [
+  { pattern = "api.1114lsy.xyz", custom_domain = true }
+]
+
 # D1 Database Binding
 [[d1_databases]]
 binding = "DB"

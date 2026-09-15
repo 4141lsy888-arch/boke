@@ -2623,6 +2623,7 @@
         document.addEventListener("DOMContentLoaded", function() {
             loadData();
             loadPostsFromAPI();
+            loadSiteFromAPI();
             updateClock();
             setInterval(updateClock, 1000);
             updateUptime();
@@ -2717,6 +2718,65 @@
             } catch (error) {
                 console.error("删除文章失败:", error);
             }
+        }
+
+        // ==================== 站点数据云端同步 ====================
+        function buildSiteSyncPayload() {
+            return {
+                siteTitle: siteData.siteTitle,
+                nickname: siteData.nickname,
+                signature: siteData.signature,
+                bio: siteData.bio,
+                dailyText: siteData.dailyText,
+                avatar: siteData.avatar,
+                musicList: siteData.musicList,
+                photography: siteData.photography
+            };
+        }
+
+        async function saveSiteToAPI() {
+            const json = JSON.stringify(buildSiteSyncPayload());
+            if (json.length > 900000) {
+                alert("内容过大（照片/头像太多），本次修改仅保存在本机。请减少照片数量或压缩头像后再同步。");
+                return false;
+            }
+            try {
+                const response = await fetch(`${API_BASE}/site`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json', 'X-Admin-Token': sessionStorage.getItem(LOGIN_KEY) || '' },
+                    body: json
+                });
+                if (response.status === 401) {
+                    sessionStorage.removeItem(LOGIN_KEY);
+                    alert("登录已过期，请重新登录管理后台");
+                    showLoginModal();
+                    return false;
+                }
+                return response.ok;
+            } catch (error) {
+                console.error("站点数据同步失败:", error);
+                return false;
+            }
+        }
+
+        async function loadSiteFromAPI() {
+            try {
+                const response = await fetch(`${API_BASE}/site`);
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data && Object.keys(data).length > 0) {
+                        ["siteTitle", "nickname", "signature", "bio", "dailyText", "avatar"].forEach(k => {
+                            if (data[k] !== undefined) siteData[k] = data[k];
+                        });
+                        if (data.musicList) siteData.musicList = data.musicList;
+                        if (data.photography) siteData.photography = data.photography;
+                        saveData();
+                    }
+                }
+            } catch (error) {
+                console.error("云端站点数据加载失败:", error);
+            }
+            renderAllPages();
         }
 
         async function likePostAPI(postId) {
@@ -3438,6 +3498,7 @@
                 music.artist = document.getElementById('edit-music-artist-' + musicId).value;
                 music.description = document.getElementById('edit-music-desc-' + musicId).value;
                 saveData();
+                saveSiteToAPI();
                 renderAllPages();
                 alert("音乐已保存！");
             }
@@ -3447,6 +3508,7 @@
             if (confirm("确定要删除这首音乐吗？")) {
                 siteData.musicList = siteData.musicList.filter(m => m.id !== musicId);
                 saveData();
+                saveSiteToAPI();
                 renderAdminMusic();
                 renderAllPages();
                 alert("音乐已删除！");
@@ -3491,6 +3553,7 @@
                     tempPhotoData = tempPhotoData.filter(p => p.id !== id);
                 }
                 saveData();
+                saveSiteToAPI();
                 renderAdminPhotos();
                 renderAllPages();
                 alert("照片已保存！");
@@ -3503,13 +3566,14 @@
                 siteData.photography.photos = siteData.photography.photos.filter(p => p.id !== id);
                 tempPhotoData = tempPhotoData.filter(p => p.id !== id);
                 saveData();
+                saveSiteToAPI();
                 renderAdminPhotos();
                 renderAllPages();
                 alert("照片已删除！");
             }
         }
 
-        function saveAdminData() {
+        async function saveAdminData() {
             siteData.siteTitle = document.getElementById("edit-site-title").value;
             siteData.nickname = document.getElementById("edit-nickname").value;
             siteData.signature = document.getElementById("edit-signature").value;
@@ -3526,8 +3590,9 @@
 
             saveData();
             renderAllPages();
+            const synced = await saveSiteToAPI();
             closeModal("admin-modal");
-            alert("数据已保存！");
+            alert(synced ? "数据已保存并同步到云端！" : "数据已保存到本机（云同步未完成，可稍后重试）");
         }
 
         function exportData() {
@@ -3552,8 +3617,9 @@
                         const importedData = JSON.parse(e.target.result);
                         siteData = importedData;
                         saveData();
+                        saveSiteToAPI();
                         renderAllPages();
-                        alert("数据导入成功！");
+                        alert("数据导入成功并开始同步！");
                     } catch (error) {
                         alert("数据导入失败，请检查文件格式");
                     }

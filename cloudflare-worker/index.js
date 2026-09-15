@@ -226,6 +226,25 @@ export default {
         });
       }
 
+      // ==================== 站点数据同步 ====================
+      if (path === '/api/site' && request.method === 'GET') {
+        const row = await env.DB.prepare('SELECT value FROM site_settings WHERE key = ?').bind('site').first();
+        return new Response(JSON.stringify(row ? JSON.parse(row.value) : {}), {
+          headers: { 'Content-Type': 'application/json', ...corsHeaders }
+        });
+      }
+
+      if (path === '/api/site' && request.method === 'PUT') {
+        if (!isAdmin()) return unauthorized();
+        const body = await request.json();
+        await env.DB.prepare('INSERT INTO site_settings (key, value) VALUES (?, ?) ON CONFLICT (key) DO UPDATE SET value = excluded.value').bind(
+          'site', JSON.stringify(body)
+        ).run();
+        return new Response(JSON.stringify({ success: true }), {
+          headers: { 'Content-Type': 'application/json', ...corsHeaders }
+        });
+      }
+
       // ==================== BACKUP API ====================
       if (path === '/api/backup' && request.method === 'GET') {
         if (!isAdmin()) return unauthorized();
@@ -252,7 +271,7 @@ export default {
         return new Response(JSON.stringify({
           status: 'ok',
           database: 'connected',
-          version: 'v6-secured',
+          version: 'v7-site-sync',
           timestamp: new Date().toISOString()
         }), {
           headers: { 'Content-Type': 'application/json', ...corsHeaders }

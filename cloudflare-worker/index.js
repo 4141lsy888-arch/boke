@@ -164,23 +164,30 @@ export default {
 
       // ==================== COMMENTS API ====================
       if (path === '/api/comments' && request.method === 'GET') {
-        const comments = await env.DB.prepare('SELECT * FROM comments ORDER BY created_at DESC').all();
+        const comments = await env.DB.prepare('SELECT id, nickname, content, time FROM comments ORDER BY created_at DESC LIMIT 200').all();
         return new Response(JSON.stringify(comments.results), {
           headers: { 'Content-Type': 'application/json', ...corsHeaders }
         });
       }
 
+      // 留言板开放给游客写入，仅做长度限制防滥用；删除仍需管理员
       if (path === '/api/comments' && request.method === 'POST') {
-        if (!isAdmin()) return unauthorized();
         const body = await request.json();
-        const { nickname, content, time } = body;
-        
-        const result = await env.DB.prepare('INSERT INTO comments (nickname, content, time) VALUES (?, ?, ?)').bind(
-          nickname, content, time || new Date().toISOString()
+        const nickname = String(body.nickname || '').trim();
+        const content = String(body.content || '').trim();
+        if (!nickname || !content || nickname.length > 30 || content.length > 500) {
+          return new Response(JSON.stringify({ error: '昵称不超过30字，留言不超过500字' }), {
+            status: 400,
+            headers: { 'Content-Type': 'application/json', ...corsHeaders }
+          });
+        }
+
+        await env.DB.prepare('INSERT INTO comments (nickname, content, time) VALUES (?, ?, ?)').bind(
+          nickname, content, new Date().toLocaleString('zh-CN')
         ).run();
-        
-        const newComment = await env.DB.prepare('SELECT * FROM comments WHERE id = ?').bind(result.meta.last_row_id).first();
-        return new Response(JSON.stringify(newComment), {
+
+        const comments = await env.DB.prepare('SELECT id, nickname, content, time FROM comments ORDER BY created_at DESC LIMIT 200').all();
+        return new Response(JSON.stringify(comments.results), {
           headers: { 'Content-Type': 'application/json', ...corsHeaders }
         });
       }
@@ -271,7 +278,7 @@ export default {
         return new Response(JSON.stringify({
           status: 'ok',
           database: 'connected',
-          version: 'v7-site-sync',
+          version: 'v8-comments',
           timestamp: new Date().toISOString()
         }), {
           headers: { 'Content-Type': 'application/json', ...corsHeaders }

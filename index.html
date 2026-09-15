@@ -2624,6 +2624,7 @@
             loadData();
             loadPostsFromAPI();
             loadSiteFromAPI();
+            loadCommentsFromAPI();
             updateClock();
             setInterval(updateClock, 1000);
             updateUptime();
@@ -3087,18 +3088,76 @@
                 alert("请填写昵称和留言内容");
                 return;
             }
-            siteData.comments.push({
-                id: Date.now(),
-                nickname: nickname,
-                content: content,
-                time: new Date().toLocaleString("zh-CN")
-            });
-            saveData();
+            if (nickname.length > 30 || content.length > 500) {
+                alert("昵称不超过30字，留言不超过500字");
+                return;
+            }
+            submitCommentToAPI(nickname, content);
+        }
+
+        async function submitCommentToAPI(nickname, content) {
+            try {
+                const response = await fetch(`${API_BASE}/comments`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ nickname, content })
+                });
+                if (response.ok) {
+                    const comments = await response.json();
+                    siteData.comments = comments;
+                    saveData();
+                } else {
+                    const err = await response.json().catch(() => ({}));
+                    alert(err.error || "留言提交失败，请稍后再试");
+                    return;
+                }
+            } catch (error) {
+                // 网络异常时先存本地，之后刷新会尝试继续同步
+                siteData.comments.unshift({
+                    id: Date.now(),
+                    nickname,
+                    content,
+                    time: new Date().toLocaleString("zh-CN")
+                });
+                saveData();
+                alert("已保存留言（网络波动，稍后自动同步）");
+            }
             renderCommentsPage();
             renderHomePage();
             document.getElementById("comment-nickname").value = "";
             document.getElementById("comment-content").value = "";
-            alert("留言已提交！");
+        }
+
+        async function loadCommentsFromAPI() {
+            let cloudComments = null;
+            try {
+                const response = await fetch(`${API_BASE}/comments`);
+                if (response.ok) cloudComments = await response.json();
+            } catch (error) {
+                console.error("云端留言加载失败:", error);
+                renderAllPages();
+                return;
+            }
+            if (cloudComments) {
+                if (cloudComments.length === 0 && siteData.comments.length > 0) {
+                    // 云端为空而本地有历史留言：一次性把本地留言迁移上云
+                    const localCopy = siteData.comments.slice();
+                    for (const c of localCopy) {
+                        try {
+                            const r = await fetch(`${API_BASE}/comments`, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ nickname: c.nickname, content: c.content })
+                            });
+                            if (r.ok) siteData.comments = await r.json();
+                        } catch (e) { /* 迁移失败保留本地 */ }
+                    }
+                } else {
+                    siteData.comments = cloudComments;
+                }
+                saveData();
+            }
+            renderAllPages();
         }
 
         function likePost(postId) {
@@ -3395,8 +3454,14 @@
             `).join('');
         }
 
-        function deleteComment(commentId) {
+        async function deleteComment(commentId) {
             if (confirm("确定要删除这条留言吗？")) {
+                try {
+                    await fetch(`${API_BASE}/comments/${commentId}`, {
+                        method: 'DELETE',
+                        headers: { 'X-Admin-Token': sessionStorage.getItem(LOGIN_KEY) || '' }
+                    });
+                } catch (error) { /* 云端删除失败时本地也会移除 */ }
                 siteData.comments = siteData.comments.filter(c => c.id !== commentId);
                 saveData();
                 renderAdminComments();
@@ -3405,8 +3470,12 @@
             }
         }
 
-        function clearAllComments() {
+        async function clearAllComments() {
             if (confirm("确定要清空所有留言吗？")) {
+                const token = sessionStorage.getItem(LOGIN_KEY) || '';
+                await Promise.all(siteData.comments.map(c =>
+                    fetch(`${API_BASE}/comments/${c.id}`, { method: 'DELETE', headers: { 'X-Admin-Token': token } }).catch(() => {})
+                ));
                 siteData.comments = [];
                 saveData();
                 renderAdminComments();

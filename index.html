@@ -2807,7 +2807,15 @@
                         }));
                         tempPhotoData = localOnly;
                     }
-                    if (localOnly.length > 0) await syncPhotosToAPI();
+                    if (localOnly.length > 0) {
+                        await syncPhotosToAPI();
+                        if (cloudPhotos.length > 0) {
+                            // 迁移完成，把已上传的照片并入正式列表，避免滞留临时区
+                            const uploaded = localOnly.filter(p => p.cloudId);
+                            siteData.photography.photos = [...siteData.photography.photos, ...uploaded];
+                            tempPhotoData = tempPhotoData.filter(p => !p.cloudId);
+                        }
+                    }
                 }
             } catch (error) {
                 console.error("云端照片加载失败:", error);
